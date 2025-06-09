@@ -1,0 +1,33 @@
+Thank you for contacting WJ Professionals!
+
+Dear {{ submission.name }},
+
+Thank you for contacting WJ Professionals. We have received your message and will respond within 24 hours.
+
+Your Message Summary:
+====================
+Subject: {{ submission.subject }}
+Inquiry Type: {{ submission.get_inquiry_type_display }}
+Submitted: {{ submission.created_at|date:"F d, Y \a\t g:i A" }}
+
+What happens next?
+==================
+✅ Your message has been received and logged
+📧 Our team will review your inquiry  
+📞 We'll respond within 24 hours
+🤝 We'll work together to address your needs
+
+Need immediate assistance?
+=========================
+Phone: +234-803-065-5969
+Email: info@wjprofessionals.com
+Office Hours: Monday - Friday: 8:00 AM - 6:00 PM
+
+We appreciate your interest in our services and look forward to helping you achieve your financial goals.
+
+Best regards,
+The WJ Professionals Team
+
+---
+WJ Professionals - Your Trusted Accounting Partner in Nigeria
+Plot 123, Ademola Adetokunbo Crescent, Wuse II, Abuja, FCT

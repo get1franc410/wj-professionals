@@ -1,0 +1,683 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\templates\core\about.html-->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - {{ company.name }}{% endblock %}
+
+{% block content %}
+<!-- Page Title -->
+<div class="page-title dark-background">
+  <div class="container position-relative">
+    <h1>About Us</h1>
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'core:home' %}">Home</a></li>
+        <li class="current">About</li>
+      </ol>
+    </nav>
+  </div>
+</div><!-- End Page Title -->
+
+<!-- About Section -->
+<section id="about" class="about section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+      <div class="col-lg-6 order-1 order-lg-2">
+        <img src="{% static 'assets/img/about.jpg' %}" class="img-fluid" alt="About {{ company.name }}">
+      </div>
+      <div class="col-lg-6 order-2 order-lg-1 content">
+        <h3>{{ company.name|default:"WJ Professionals" }}</h3>
+        <p class="fst-italic">
+          {{ company.tagline|default:"Your Trusted Accounting Partner in Nigeria" }}
+        </p>
+        
+        <div class="about-content">
+          {{ company.about_us|safe|default:"<p>WJ Professionals is a leading accounting and financial services firm based in Nigeria, providing comprehensive solutions to individuals, small businesses, and corporations across the country. With over a decade of experience, we have established ourselves as a trusted partner for all your financial needs.</p>" }}
+        </div>
+
+        <ul>
+          <li><i class="bi bi-check2-all"></i> <span>Over {{ company.years_of_experience|default:"10" }} years of professional experience</span></li>
+          <li><i class="bi bi-check2-all"></i> <span>Certified professionals with extensive Nigerian tax knowledge</span></li>
+          <li><i class="bi bi-check2-all"></i> <span>Comprehensive services from individual tax returns to complex corporate solutions</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section><!-- /About Section -->
+
+<!-- Mission Vision Values Section -->
+<section class="mission-vision section light-background">
+  <div class="container">
+    <div class="row gy-4">
+      <!-- Mission -->
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="info-box">
+          <div class="icon">
+            <i class="bi bi-bullseye"></i>
+          </div>
+          <h3>Our Mission</h3>
+          <div class="mission-content">
+            {{ company.mission|safe|default:"<p>To provide exceptional accounting, tax, and financial advisory services that empower our clients to achieve their financial goals while ensuring full compliance with Nigerian tax laws and regulations.</p>" }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Vision -->
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="info-box">
+          <div class="icon">
+            <i class="bi bi-eye"></i>
+          </div>
+          <h3>Our Vision</h3>
+          <div class="vision-content">
+            {{ company.vision|safe|default:"<p>To be the most trusted and innovative accounting firm in Nigeria, recognized for our expertise, integrity, and commitment to client success.</p>" }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Values -->
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="info-box">
+          <div class="icon">
+            <i class="bi bi-heart"></i>
+          </div>
+          <h3>Our Values</h3>
+          <div class="values-content">
+            {{ company.values|safe|default:"<ul><li>Integrity in all our dealings</li><li>Excellence in service delivery</li><li>Trust through transparency</li><li>Innovation in solutions</li></ul>" }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /Mission Vision Values Section -->
+
+<!-- Stats Section -->
+<section id="stats" class="stats section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4 align-items-center justify-content-between">
+      <div class="col-lg-5">
+        <img src="{% static 'assets/img/stats-img.jpg' %}" alt="" class="img-fluid">
+      </div>
+
+      <div class="col-lg-6">
+        <h3 class="fw-bold fs-2 mb-3">Our Track Record</h3>
+        <p>
+          Our success is measured by the success of our clients. Here are some key metrics that demonstrate 
+          our commitment to excellence and the trust our clients place in us.
+        </p>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <div class="stats-item d-flex">
+              <i class="bi bi-emoji-smile flex-shrink-0"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{ company.clients_served|default:'500' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <p><strong>Happy Clients</strong> <span>served nationwide</span></p>
+              </div>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-6">
+            <div class="stats-item d-flex">
+              <i class="bi bi-journal-richtext flex-shrink-0"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{ company.projects_completed|default:'1200' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <p><strong>Projects</strong> <span>completed successfully</span></p>
+              </div>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-6">
+            <div class="stats-item d-flex">
+              <i class="bi bi-headset flex-shrink-0"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{ company.years_of_experience|default:'10' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <p><strong>Years Experience</strong> <span>in Nigerian market</span></p>
+              </div>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-6">
+            <div class="stats-item d-flex">
+              <i class="bi bi-people flex-shrink-0"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{ team_stats.total_members|default:'15' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <p><strong>Team Members</strong> <span>certified professionals</span></p>
+              </div>
+            </div>
+          </div><!-- End Stats Item -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /Stats Section -->
+
+<!-- Team Section -->
+<section id="team" class="team section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Team</h2>
+    <p>Meet Our Professional Team</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <!-- Leadership Team -->
+    {% if leadership %}
+    <div class="leadership-section mb-5">
+      <h3 class="text-center mb-4" data-aos="fade-up">Leadership Team</h3>
+      <div class="row gy-4 justify-content-center">
+        {% for member in leadership %}
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="{% cycle '100' '200' '300' %}">
+          <div class="team-member">
+            <div class="member-img">
+              {% if member.photo %}
+              <img src="{{ member.photo.url }}" class="img-fluid" alt="{{ member.user.get_full_name }}">
+              {% else %}
+              <div class="member-placeholder d-flex align-items-center justify-content-center">
+                <i class="bi bi-person-circle display-1 text-muted"></i>
+              </div>
+              {% endif %}
+              <div class="social">
+                {% if member.twitter %}<a href="{{ member.twitter }}"><i class="bi bi-twitter-x"></i></a>{% endif %}
+                {% if member.facebook %}<a href="{{ member.facebook }}"><i class="bi bi-facebook"></i></a>{% endif %}
+                {% if member.instagram %}<a href="{{ member.instagram }}"><i class="bi bi-instagram"></i></a>{% endif %}
+                {% if member.linkedin %}<a href="{{ member.linkedin }}"><i class="bi bi-linkedin"></i></a>{% endif %}
+              </div>
+            </div>
+            <div class="member-info">
+              <h4>{{ member.user.get_full_name }}</h4>
+              <span>{{ member.get_position_display|default:member.position }}</span>
+              <p class="mt-2">{{ member.bio|striptags|truncatewords:20 }}</p>
+            </div>
+          </div>
+        </div><!-- End Team Member -->
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- All Team Members -->
+    <div class="all-team-section">
+      <h3 class="text-center mb-4" data-aos="fade-up">Our Professional Team</h3>
+      <div class="row gy-4">
+        {% for member in team_members %}
+        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="{% cycle '100' '200' '300' '400' %}">
+          <div class="team-member">
+            <div class="member-img">
+              {% if member.photo %}
+              <img src="{{ member.photo.url }}" class="img-fluid" alt="{{ member.user.get_full_name }}">
+              {% else %}
+              <div class="member-placeholder d-flex align-items-center justify-content-center">
+                <i class="bi bi-person-circle display-1 text-muted"></i>
+              </div>
+              {% endif %}
+              <div class="social">
+                {% if member.twitter %}<a href="{{ member.twitter }}"><i class="bi bi-twitter-x"></i></a>{% endif %}
+                {% if member.facebook %}<a href="{{ member.facebook }}"><i class="bi bi-facebook"></i></a>{% endif %}
+                {% if member.instagram %}<a href="{{ member.instagram }}"><i class="bi bi-instagram"></i></a>{% endif %}
+                {% if member.linkedin %}<a href="{{ member.linkedin }}"><i class="bi bi-linkedin"></i></a>{% endif %}
+              </div>
+            </div>
+            <div class="member-info">
+              <h4>{{ member.user.get_full_name }}</h4>
+              <span>{{ member.get_position_display|default:member.position }}</span>
+              {% if member.department %}
+              <small class="text-muted d-block">{{ member.department.name }}</small>
+              {% endif %}
+            </div>
+          </div>
+        </div><!-- End Team Member -->
+        {% empty %}
+        <!-- Default team member if none exist -->
+        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+          <div class="team-member">
+            <div class="member-img">
+              <div class="member-placeholder d-flex align-items-center justify-content-center">
+                <i class="bi bi-person-circle display-1 text-muted"></i>
+              </div>
+            </div>
+            <div class="member-info">
+              <h4>Professional Team</h4>
+              <span>Certified Accountants</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="500">
+      <a href="{% url 'staff:team' %}" class="btn btn-primary btn-lg">View Full Team Details</a>
+    </div>
+  </div>
+</section><!-- /Team Section -->
+
+<!-- Achievements Section -->
+<section class="achievements section light-background">
+  <div class="container">
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Achievements</h2>
+      <p>Our Journey of Excellence</p>
+    </div><!-- End Section Title -->
+
+    <div class="row gy-4">
+      {% for achievement in achievements %}
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{% cycle '100' '200' %}">
+        <div class="achievement-item d-flex">
+          <div class="achievement-year">
+            <span class="year">{{ achievement.year }}</span>
+          </div>
+          <div class="achievement-content">
+            <h4>{{ achievement.title }}</h4>
+            <p>{{ achievement.description }}</p>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <!-- Default achievements if none exist -->
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="achievement-item d-flex">
+          <div class="achievement-year">
+            <span class="year">2010</span>
+          </div>
+          <div class="achievement-content">
+            <h4>Company Founded</h4>
+            <p>WJ Professionals was established with a vision to provide world-class accounting services.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="achievement-item d-flex">
+          <div class="achievement-year">
+            <span class="year">2015</span>
+          </div>
+          <div class="achievement-content">
+            <h4>Major Expansion</h4>
+            <p>Expanded services to include comprehensive tax advisory and business consulting.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="achievement-item d-flex">
+          <div class="achievement-year">
+            <span class="year">2020</span>
+          </div>
+          <div class="achievement-content">
+            <h4>Digital Transformation</h4>
+            <p>Launched online client portal and remote service capabilities during the pandemic.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="achievement-item d-flex">
+          <div class="achievement-year">
+            <span class="year">2024</span>
+          </div>
+          <div class="achievement-content">
+            <h4>Industry Recognition</h4>
+            <p>Recognized as one of the leading accounting firms serving Nigerian businesses.</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section><!-- /Achievements Section -->
+
+<!-- Certifications Section -->
+<section class="certifications section">
+  <div class="container">
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Certifications</h2>
+      <p>Professional Qualifications & Memberships</p>
+    </div><!-- End Section Title -->
+
+    <div class="row gy-4">
+      {% if company.certifications %}
+        {% for certification in company.certifications %}
+        <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="{% cycle '100' '200' %}">
+          <div class="certification-item d-flex align-items-center">
+            <div class="cert-icon">
+              <i class="bi bi-award-fill"></i>
+            </div>
+            <div class="cert-content">
+              <h5>{{ certification }}</h5>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+      <!-- Default certifications -->
+      <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="certification-item d-flex align-items-center">
+          <div class="cert-icon">
+            <i class="bi bi-award-fill"></i>
+          </div>
+          <div class="cert-content">
+            <h5>Institute of Chartered Accountants of Nigeria (ICAN)</h5>
+            <p class="mb-0">Professional membership and certification</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="certification-item d-flex align-items-center">
+          <div class="cert-icon">
+            <i class="bi bi-award-fill"></i>
+          </div>
+          <div class="cert-content">
+            <h5>Chartered Institute of Taxation of Nigeria (CITN)</h5>
+            <p class="mb-0">Specialized tax practice certification</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="certification-item d-flex align-items-center">
+          <div class="cert-icon">
+            <i class="bi bi-award-fill"></i>
+          </div>
+          <div class="cert-content">
+            <h5>Association of National Accountants of Nigeria (ANAN)</h5>
+            <p class="mb-0">Professional accounting body membership</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="certification-item d-flex align-items-center">
+          <div class="cert-icon">
+            <i class="bi bi-award-fill"></i>
+          </div>
+          <div class="cert-content">
+            <h5>ISO 9001:2015 Quality Management System</h5>
+            <p class="mb-0">International quality standards compliance</p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section><!-- /Certifications Section -->
+
+<!-- Client Reviews Section -->
+{% if review_stats.total_reviews %}
+<section class="reviews section light-background">
+  <div class="container">
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Client Reviews</h2>
+      <p>What Our Clients Say About Us</p>
+    </div><!-- End Section Title -->
+
+    <!-- Review Statistics -->
+    <div class="row mb-5">
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="review-stats-card text-center">
+          <div class="overall-rating">
+            <span class="rating-number">{{ overall_rating|floatformat:1 }}</span>
+            <div class="stars">
+              {% for i in "12345" %}
+                {% if forloop.counter <= overall_rating %}
+                <i class="bi bi-star-fill"></i>
+                {% else %}
+                <i class="bi bi-star"></i>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <p class="text-muted">Based on {{ total_reviews }} reviews</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+        <div class="rating-breakdown">
+          {% for source in rating_sources %}
+          <div class="rating-source d-flex justify-content-between align-items-center mb-2">
+            <span class="source-name">{{ source.name }}</span>
+            <div class="source-rating">
+              <span class="rating">{{ source.rating }}</span>
+              <div class="stars">
+                {% for i in "12345" %}
+                  {% if forloop.counter <= source.rating %}
+                  <i class="bi bi-star-fill"></i>
+                  {% else %}
+                  <i class="bi bi-star"></i>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <span class="count">({{ source.count }})</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+      <a href="{% url 'reviews:review_list' %}" class="btn btn-primary me-3">Read All Reviews</a>
+      <a href="{% url 'reviews:add_review' %}" class="btn btn-outline-primary">Leave a Review</a>
+    </div>
+  </div>
+</section><!-- /Client Reviews Section -->
+{% endif %}
+
+<!-- Call To Action Section -->
+<section id="call-to-action" class="call-to-action section dark-background">
+  <img src="{% static 'assets/img/cta-bg.jpg' %}" alt="">
+
+  <div class="container">
+    <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+      <div class="col-xl-10">
+        <div class="text-center">
+          <h3>Ready to Work With Us?</h3>
+          <p>Join hundreds of satisfied clients who trust WJ Professionals for their accounting and financial needs. 
+          Let us help you achieve your business goals with our expert guidance and personalized service.</p>
+          <a class="cta-btn" href="{% url 'contact:contact' %}">Get Started Today</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /Call To Action Section -->
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* About page specific styles */
+.member-placeholder {
+  height: 250px;
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+}
+
+.info-box {
+  background: var(--surface-color);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  height: 100%;
+  text-align: center;
+}
+
+.info-box .icon {
+  margin-bottom: 20px;
+}
+
+.info-box .icon i {
+  font-size: 48px;
+  color: var(--accent-color);
+}
+
+.achievement-item {
+  background: var(--surface-color);
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.achievement-year {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  padding: 15px;
+  border-radius: 8px;
+  margin-right: 20px;
+  text-align: center;
+  min-width: 80px;
+}
+
+.achievement-year .year {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.achievement-content h4 {
+  margin-bottom: 10px;
+  color: var(--heading-color);
+}
+
+.certification-item {
+  background: var(--surface-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.cert-icon {
+  margin-right: 15px;
+}
+
+.cert-icon i {
+  font-size: 32px;
+  color: var(--accent-color);
+}
+
+.review-stats-card {
+  background: var(--surface-color);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.overall-rating .rating-number {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--accent-color);
+  display: block;
+}
+
+.overall-rating .stars {
+  margin: 10px 0;
+}
+
+.overall-rating .stars i {
+  color: #ffc107;
+  font-size: 20px;
+  margin: 0 2px;
+}
+
+.rating-breakdown {
+  background: var(--surface-color);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.rating-source {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.rating-source:last-child {
+  border-bottom: none;
+}
+
+.source-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.source-rating .rating {
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.source-rating .stars i {
+  color: #ffc107;
+  font-size: 14px;
+}
+
+.source-rating .count {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .achievement-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .achievement-year {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .certification-item {
+    text-align: center;
+  }
+  
+  .cert-icon {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  .source-rating {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Add smooth hover effects for team members
+  const teamMembers = document.querySelectorAll('.team-member');
+  teamMembers.forEach(member => {
+    member.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateY(-5px)';
+    });
+    
+    member.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0)';
+    });
+  });
+
+  // Add click tracking for achievements
+  const achievements = document.querySelectorAll('.achievement-item');
+  achievements.forEach((achievement, index) => {
+    achievement.addEventListener('click', function() {
+      // Track achievement click if analytics is available
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'achievement_view', {
+          'achievement_index': index,
+          'page_location': window.location.href
+        });
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

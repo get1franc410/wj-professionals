@@ -1,0 +1,83 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\templates\dashboard\reply_email.html-->
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Reply to {{ contact.full_name }} - Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-reply me-2"></i>Reply to Message</h2>
+                <a href="{% url 'dashboard:email_dashboard' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Messages
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Compose Reply</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="email_subject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="email_subject" name="email_subject" 
+                                   value="{{ suggested_subject }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="reply_content" class="form-label">Message</label>
+                            <textarea class="form-control" id="reply_content" name="reply_content" 
+                                      rows="10" required placeholder="Type your reply here..."></textarea>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'dashboard:email_dashboard' %}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Send Reply
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Original Message</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <strong>From:</strong> {{ contact.full_name }}<br>
+                        <strong>Email:</strong> {{ contact.email }}<br>
+                        <strong>Phone:</strong> {{ contact.phone|default:"Not provided" }}<br>
+                        {% if contact.company %}
+                        <strong>Company:</strong> {{ contact.company }}<br>
+                        {% endif %}
+                        <strong>Date:</strong> {{ contact.created_at|date:"M d, Y H:i" }}
+                    </div>
+                    
+                    <div class="border-top pt-2">
+                        <strong>Subject:</strong> {{ contact.subject }}<br>
+                        <strong>Type:</strong> {{ contact.get_inquiry_type_display }}<br>
+                        <strong>Priority:</strong> {{ contact.get_priority_display }}
+                    </div>
+                    
+                    <div class="border-top pt-2 mt-2">
+                        <strong>Message:</strong><br>
+                        <div class="text-muted small">{{ contact.message|truncatewords:50 }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

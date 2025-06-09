@@ -1,0 +1,453 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\templates\dashboard\base.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>{% block title %}Dashboard - WJ Professionals{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom Dashboard CSS -->
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .dashboard-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h4 {
+            color: white;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .sidebar-menu .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            border: none;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin: 2px 10px;
+            border-radius: 8px;
+        }
+
+        .sidebar-menu .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-menu .nav-link.active {
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+            color: white;
+            transform: translateX(5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border-left: 4px solid #3498db;
+            font-weight: 600;
+        }
+
+        .sidebar-menu .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .sidebar-menu .nav-link i {
+            width: 20px;
+            margin-right: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu .nav-link.active i {
+            color: #3498db;
+            transform: scale(1.1);
+        }
+
+        /* Add subtle glow effect for active items */
+        .sidebar-menu .nav-link.active {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(52, 152, 219, 0.1));
+            border: 1px solid rgba(52, 152, 219, 0.3);
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 15px 30px;
+            margin: -20px -20px 30px -20px;
+            border-bottom: 1px solid #dee2e6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-header .navbar-brand {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: none;
+            transition: transform 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-card .stats-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .stats-card.primary .stats-icon { background: var(--primary-color); }
+        .stats-card.success .stats-icon { background: var(--success-color); }
+        .stats-card.warning .stats-icon { background: var(--warning-color); }
+        .stats-card.danger .stats-icon { background: var(--danger-color); }
+        .stats-card.info .stats-icon { background: var(--accent-color); }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid #dee2e6;
+            border-radius: 10px 10px 0 0 !important;
+            font-weight: 600;
+        }
+
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .badge {
+            font-weight: 500;
+            padding: 6px 12px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .dashboard-sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .dashboard-sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .dashboard-content {
+                margin-left: 0;
+            }
+        }
+
+        /* Scrollbar Styling */
+        .dashboard-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dashboard-sidebar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .dashboard-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="dashboard-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h4><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h4>
+            <small class="text-light">WJ Professionals</small>
+        </div>
+        
+        <div class="sidebar-menu">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" 
+                       href="{% url 'dashboard:home' %}">
+                        <i class="fas fa-home"></i>
+                        Dashboard Home
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if 'email' in request.resolver_match.url_name %}active{% endif %}" 
+                    href="{% url 'dashboard:email_dashboard' %}">
+                        <i class="fas fa-envelope"></i>
+                        Messages
+                        {% if unread_messages_count > 0 %}
+                        <span class="badge bg-danger ms-auto">{{ unread_messages_count }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if 'contact' in request.resolver_match.url_name %}active{% endif %}" 
+                       href="{% url 'dashboard:manage_contacts' %}">
+                        <i class="fas fa-users"></i>
+                        Contacts
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if 'article' in request.resolver_match.url_name %}active{% endif %}" 
+                       href="{% url 'dashboard:manage_articles' %}">
+                        <i class="fas fa-newspaper"></i>
+                        Articles
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if 'document' in request.resolver_match.url_name %}active{% endif %}" 
+                       href="{% url 'dashboard:manage_documents' %}">
+                        <i class="fas fa-file-alt"></i>
+                        Documents
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if 'analytics' in request.resolver_match.url_name %}active{% endif %}" 
+                       href="{% url 'dashboard:analytics' %}">
+                        <i class="fas fa-chart-line"></i>
+                        Analytics
+                    </a>
+                </li>
+                
+                <hr class="my-3" style="border-color: rgba(255,255,255,0.2);">
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="/" target="_blank">
+                        <i class="fas fa-external-link-alt"></i>
+                        View Site
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/" target="_blank">
+                        <i class="fas fa-cog"></i>
+                        Admin Panel
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/logout/">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="dashboard-content">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-link d-md-none me-2" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <span class="navbar-brand mb-0 h1">
+                        {% block page_title %}Dashboard{% endblock %}
+                    </span>
+                </div>
+                
+                <div class="d-flex align-items-center">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" 
+                                data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>
+                            {{ user.get_full_name|default:user.username }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/" target="_blank">
+                                <i class="fas fa-home me-2"></i>View Site
+                            </a></li>
+                            <li><a class="dropdown-item" href="/admin/" target="_blank">
+                                <i class="fas fa-cog me-2"></i>Admin Panel
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/admin/logout/">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        {% if messages %}
+        <div class="row">
+            <div class="col-12">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %} me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Page Content -->
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Dashboard JS -->
+    <script>
+        // Sidebar toggle for mobile
+        document.getElementById('sidebarToggle')?.addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('show');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.getElementById('sidebarToggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(e.target) && 
+                !toggle?.contains(e.target)) {
+                sidebar.classList.remove('show');
+            }
+        });
+
+        // Auto-dismiss alerts after 5 seconds
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                if (alert.classList.contains('show')) {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }
+            });
+        }, 5000);
+
+        // Enhanced active state management
+document.addEventListener('DOMContentLoaded', function() {
+    // Get current URL path
+    const currentPath = window.location.pathname;
+    
+    // Remove active class from all nav links
+    const navLinks = document.querySelectorAll('.sidebar-menu .nav-link');
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        
+        // Add click event for immediate feedback
+        link.addEventListener('click', function(e) {
+            // Remove active from all links
+            navLinks.forEach(l => l.classList.remove('active'));
+            // Add active to clicked link
+            this.classList.add('active');
+            
+            // Add loading state
+            const originalContent = this.innerHTML;
+            const icon = this.querySelector('i').className;
+            this.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Loading...`;
+            
+            // Restore content after a brief moment (for visual feedback)
+            setTimeout(() => {
+                this.innerHTML = originalContent;
+            }, 500);
+        });
+    });
+    
+    // Set active based on current URL
+    navLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+        if (currentPath === linkPath || currentPath.startsWith(linkPath.replace(/\/$/, '') + '/')) {
+            link.classList.add('active');
+        }
+    });
+});
+
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

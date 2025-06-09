@@ -1,0 +1,351 @@
+<!-- templates/staff/team.html - Updated with centered cards -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Team - {{ company.name }}{% endblock %}
+
+{% block content %}
+<!-- Page Title -->
+<div class="page-title dark-background">
+  <div class="container position-relative">
+    <h1>Our Professional Team</h1>
+    <p>Meet the experienced professionals who make WJ Professionals your trusted partner</p>
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'core:home' %}">Home</a></li>
+        <li class="current">Our Team</li>
+      </ol>
+    </nav>
+  </div>
+</div><!-- End Page Title -->
+
+<!-- Departments Section -->
+{% if departments %}
+<section class="section light-background">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Our Departments</h2>
+      <p>Specialized teams delivering expert services</p>
+    </div>
+    
+    <div class="row gy-4">
+      {% for department in departments %}
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+        <div class="service-item item-cyan position-relative h-100">
+          <div class="icon">
+            <i class="bi bi-building"></i>
+          </div>
+          <h3>{{ department.name }}</h3>
+          <p>{{ department.description|truncatewords:10 }}</p>
+          <div class="mb-3">
+            <span class="badge bg-primary">{{ department.staff_count|default:0 }} Members</span>
+          </div>
+          <a href="{% url 'staff:department_detail' department.id %}" class="readmore stretched-link">
+            View Team <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Search and Filter Section -->
+<section class="section">
+  <div class="container">
+    <form method="get" class="row gy-3 justify-content-center">
+      <div class="col-md-8">
+        <label for="search" class="form-label">Search Team Members</label>
+        <input type="text" class="form-control" id="search" name="search" 
+               value="{{ search_query }}" placeholder="Search by name, position, or specialization...">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">&nbsp;</label>
+        <button type="submit" class="btn btn-primary w-100">
+          <i class="bi bi-search me-2"></i>Search
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Leadership Team -->
+{% if leadership %}
+<section class="team section">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Leadership Team</h2>
+      <p>Our senior partners and directors leading the firm</p>
+    </div>
+    
+    <div class="row gy-4">
+      {% for member in leadership %}
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+        <div class="team-member">
+          <div class="member-img">
+            {% if member.photo %}
+            <img src="{{ member.photo.url }}" class="img-fluid" alt="{{ member.get_full_name }}">
+            {% else %}
+            <div class="placeholder-avatar">
+              <i class="bi bi-person-circle"></i>
+            </div>
+            {% endif %}
+            <div class="social">
+              {% if member.email %}
+              <a href="mailto:{{ member.email }}"><i class="bi bi-envelope"></i></a>
+              {% endif %}
+              {% if member.phone %}
+              <a href="tel:{{ member.phone }}"><i class="bi bi-telephone"></i></a>
+              {% endif %}
+              {% if member.linkedin %}
+              <a href="{{ member.linkedin }}" target="_blank"><i class="bi bi-linkedin"></i></a>
+              {% endif %}
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>{{ member.get_full_name }}</h4>
+            <span>{{ member.get_position_display }}</span>
+            {% if member.department %}
+            <p class="text-muted">{{ member.department.name }}</p>
+            {% endif %}
+            <p>{{ member.bio|striptags|truncatewords:20 }}</p>
+            <a href="{% url 'staff:staff_detail' member.pk %}" class="btn btn-outline-primary btn-sm">
+              View Profile
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Senior Staff -->
+{% if senior_staff %}
+<section class="team section light-background">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Senior Staff</h2>
+      <p>Experienced professionals delivering excellence</p>
+    </div>
+    
+    <div class="row gy-4">
+      {% for member in senior_staff %}
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+        <div class="team-member">
+          <div class="member-img">
+            {% if member.photo %}
+            <img src="{{ member.photo.url }}" class="img-fluid" alt="{{ member.get_full_name }}">
+            {% else %}
+            <div class="placeholder-avatar">
+              <i class="bi bi-person-circle"></i>
+            </div>
+            {% endif %}
+            <div class="social">
+              {% if member.email %}
+              <a href="mailto:{{ member.email }}"><i class="bi bi-envelope"></i></a>
+              {% endif %}
+              {% if member.linkedin %}
+              <a href="{{ member.linkedin }}" target="_blank"><i class="bi bi-linkedin"></i></a>
+              {% endif %}
+            </div>
+          </div>
+          <div class="member-info">
+            <h6>{{ member.get_full_name }}</h6>
+            <span>{{ member.get_position_display }}</span>
+            {% if member.department %}
+            <p class="text-muted small">{{ member.department.name }}</p>
+            {% endif %}
+            <a href="{% url 'staff:staff_detail' member.pk %}" class="btn btn-outline-primary btn-sm">
+              View Profile
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Associates -->
+{% if associates %}
+<section class="team section">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Associates</h2>
+      <p>Our talented team members</p>
+    </div>
+    
+    <div class="row gy-4">
+      {% for member in associates %}
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+        <div class="team-member">
+          <div class="member-img">
+            {% if member.photo %}
+            <img src="{{ member.photo.url }}" class="img-fluid" alt="{{ member.get_full_name }}">
+            {% else %}
+            <div class="placeholder-avatar">
+              <i class="bi bi-person-circle"></i>
+            </div>
+            {% endif %}
+            <div class="social">
+              {% if member.email %}
+              <a href="mailto:{{ member.email }}"><i class="bi bi-envelope"></i></a>
+              {% endif %}
+              {% if member.linkedin %}
+              <a href="{{ member.linkedin }}" target="_blank"><i class="bi bi-linkedin"></i></a>
+              {% endif %}
+            </div>
+          </div>
+          <div class="member-info">
+            <h6>{{ member.get_full_name }}</h6>
+            <span>{{ member.get_position_display }}</span>
+            {% if member.department %}
+            <p class="text-muted small">{{ member.department.name }}</p>
+            {% endif %}
+            <a href="{% url 'staff:staff_detail' member.pk %}" class="btn btn-outline-primary btn-sm">
+              View Profile
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- All Team Members (if no specific categories) -->
+{% if not leadership and not senior_staff and not associates and team_members %}
+<section class="team section">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Our Team</h2>
+      <p>Meet our professional team</p>
+    </div>
+    
+    <div class="row gy-4">
+      {% for member in team_members %}
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+        <div class="team-member">
+          <div class="member-img">
+            {% if member.photo %}
+            <img src="{{ member.photo.url }}" class="img-fluid" alt="{{ member.get_full_name }}">
+            {% else %}
+            <div class="placeholder-avatar">
+              <i class="bi bi-person-circle"></i>
+            </div>
+            {% endif %}
+            <div class="social">
+              {% if member.email %}
+              <a href="mailto:{{ member.email }}"><i class="bi bi-envelope"></i></a>
+              {% endif %}
+              {% if member.linkedin %}
+              <a href="{{ member.linkedin }}" target="_blank"><i class="bi bi-linkedin"></i></a>
+              {% endif %}
+            </div>
+          </div>
+          <div class="member-info">
+            <h6>{{ member.get_full_name }}</h6>
+            <span>{{ member.get_position_display }}</span>
+            {% if member.department %}
+            <p class="text-muted small">{{ member.department.name }}</p>
+            {% endif %}
+            <a href="{% url 'staff:staff_detail' member.pk %}" class="btn btn-outline-primary btn-sm">
+              View Profile
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Team Stats -->
+<section class="stats section dark-background">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span data-purecounter-start="0" data-purecounter-end="{{ team_stats.total_members|default:0 }}" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Team Members</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span data-purecounter-start="0" data-purecounter-end="{{ team_stats.qualified_professionals|default:0 }}" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Qualified Professionals</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span data-purecounter-start="0" data-purecounter-end="{{ team_stats.years_combined_experience|default:0 }}" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Years Combined Experience</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span data-purecounter-start="0" data-purecounter-end="{{ team_stats.departments|default:0 }}" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Departments</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Join Our Team -->
+<section class="call-to-action section">
+  <div class="container">
+    <div class="row" data-aos="zoom-in" data-aos-delay="100">
+      <div class="col-xl-9 text-center text-xl-start">
+        <h3>Join Our Growing Team</h3>
+        <p>We're always looking for talented professionals to join our team. If you're passionate about accounting and helping businesses succeed, we'd love to hear from you.</p>
+      </div>
+      <div class="col-xl-3 cta-btn-container text-center">
+        <a class="cta-btn align-middle" href="{% url 'contact:contact' %}?subject=Career Opportunities">
+          <i class="bi bi-briefcase me-2"></i>View Openings
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.placeholder-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  background: var(--surface-color);
+  color: var(--default-color);
+  font-size: 4rem;
+}
+
+.team-member .member-info h6 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.team-member .member-info span {
+  font-size: 0.9rem;
+  color: var(--accent-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .placeholder-avatar {
+    height: 200px;
+    font-size: 3rem;
+  }
+}
+</style>
+{% endblock %}

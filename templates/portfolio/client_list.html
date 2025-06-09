@@ -1,0 +1,279 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\templates\portfolio\client_list.html-->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Portfolio - {{ company.name }}{% endblock %}
+
+{% block content %}
+<!-- Page Title -->
+<div class="page-title dark-background">
+  <div class="container position-relative">
+    <h1>Our Portfolio</h1>
+    <p>Showcasing our successful partnerships and client achievements</p>
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'core:home' %}">Home</a></li>
+        <li class="current">Portfolio</li>
+      </ol>
+    </nav>
+  </div>
+</div><!-- End Page Title -->
+
+<!-- Filters -->
+<section class="section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="portfolio-filters">
+          <a href="{% url 'portfolio:client_list' %}" class="btn btn-outline-primary {% if not selected_industry and not selected_type %}active{% endif %} me-2 mb-2">
+            All Clients
+          </a>
+          
+          <!-- Industry Filter -->
+          <div class="btn-group me-2 mb-2" role="group">
+            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+              {% if selected_industry %}{{ selected_industry.name }}{% else %}Industry{% endif %}
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'portfolio:client_list' %}">All Industries</a></li>
+              {% for industry in industries %}
+              <li><a class="dropdown-item" href="{% url 'portfolio:client_list' %}?industry={{ industry.slug }}">{{ industry.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          
+          <!-- Client Type Filter -->
+          <div class="btn-group me-2 mb-2" role="group">
+            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+              {% if selected_type %}{{ selected_type|title }}{% else %}Client Type{% endif %}
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'portfolio:client_list' %}">All Types</a></li>
+              <li><a class="dropdown-item" href="{% url 'portfolio:client_list' %}?type=individual">Individual</a></li>
+              <li><a class="dropdown-item" href="{% url 'portfolio:client_list' %}?type=small_business">Small Business</a></li>
+              <li><a class="dropdown-item" href="{% url 'portfolio:client_list' %}?type=medium_business">Medium Business</a></li>
+              <li><a class="dropdown-item" href="{% url 'portfolio:client_list' %}?type=large_enterprise">Large Enterprise</a></li>
+              <li><a class="dropdown-item" href="{% url 'portfolio:client_list' %}?type=non_profit">Non-Profit</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <form method="get" class="d-flex">
+          {% if selected_industry %}
+          <input type="hidden" name="industry" value="{{ selected_industry.slug }}">
+          {% endif %}
+          {% if selected_type %}
+          <input type="hidden" name="type" value="{{ selected_type }}">
+          {% endif %}
+          <input type="search" name="search" class="form-control me-2" 
+                 placeholder="Search clients..." value="{{ search_query }}">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio Grid -->
+<section class="section light-background">
+  <div class="container">
+    {% if clients %}
+    <div class="row gy-4">
+      {% for client in clients %}
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+        <div class="service-item item-cyan position-relative h-100">
+          {% if client.banner_image %}
+          <div class="portfolio-image mb-3">
+            <img src="{{ client.banner_image.url }}" class="img-fluid rounded" alt="{{ client.name }}">
+          </div>
+          {% endif %}
+          
+          <!-- Client Logo -->
+          {% if client.logo %}
+          <div class="client-logo-container mb-3 text-center">
+            <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="client-logo">
+          </div>
+          {% endif %}
+          
+          <div class="client-meta mb-3">
+            <span class="badge bg-primary">{{ client.get_client_type_display }}</span>
+            <span class="badge bg-secondary">{{ client.industry.name }}</span>
+          </div>
+          
+          <h5>{{ client.project_title|default:client.name }}</h5>
+          <p>{{ client.project_description|striptags|truncatewords:20 }}</p>
+          
+          <!-- Services Provided -->
+          {% if client.services_provided %}
+          <div class="services-tags mb-3">
+            {% for service in client.services_provided|slice:":3" %}
+            <span class="badge bg-light text-dark me-1">{{ service }}</span>
+            {% endfor %}
+            {% if client.services_provided|length > 3 %}
+            <span class="badge bg-light text-muted">+{{ client.services_provided|length|add:"-3" }} more</span>
+            {% endif %}
+          </div>
+          {% endif %}
+          
+          <!-- Project Duration -->
+          {% if client.project_start_date %}
+          <div class="project-timeline mb-3">
+            <small class="text-muted">
+              <i class="bi bi-calendar me-1"></i>
+              {{ client.project_start_date|date:"M Y" }}
+              {% if client.project_end_date %}
+              - {{ client.project_end_date|date:"M Y" }}
+              {% else %}
+              - Ongoing
+              {% endif %}
+            </small>
+          </div>
+          {% endif %}
+          
+          <div class="d-flex justify-content-between align-items-center">
+            <a href="{% url 'portfolio:client_detail' client.pk %}" class="btn btn-primary btn-sm">
+              View Case Study
+            </a>
+            {% if client.website %}
+            <a href="{{ client.website }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+              <i class="bi bi-box-arrow-up-right"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav aria-label="Portfolio pagination" class="mt-5">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if selected_industry %}industry={{ selected_industry.slug }}&{% endif %}{% if selected_type %}type={{ selected_type }}&{% endif %}{% if search_query %}search={{ search_query }}&{% endif %}page=1">First</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?{% if selected_industry %}industry={{ selected_industry.slug }}&{% endif %}{% if selected_type %}type={{ selected_type }}&{% endif %}{% if search_query %}search={{ search_query }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+        </li>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <li class="page-item active">
+          <span class="page-link">{{ num }}</span>
+        </li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if selected_industry %}industry={{ selected_industry.slug }}&{% endif %}{% if selected_type %}type={{ selected_type }}&{% endif %}{% if search_query %}search={{ search_query }}&{% endif %}page={{ num }}">{{ num }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if selected_industry %}industry={{ selected_industry.slug }}&{% endif %}{% if selected_type %}type={{ selected_type }}&{% endif %}{% if search_query %}search={{ search_query }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?{% if selected_industry %}industry={{ selected_industry.slug }}&{% endif %}{% if selected_type %}type={{ selected_type }}&{% endif %}{% if search_query %}search={{ search_query }}&{% endif %}page={{ page_obj.paginator.num_pages }}">Last</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+    
+    {% else %}
+    <!-- No Clients Found -->
+    <div class="text-center py-5">
+      <i class="bi bi-search display-1 text-muted"></i>
+      <h4>No clients found</h4>
+      <p class="text-muted">Try adjusting your search criteria or browse all clients.</p>
+      <a href="{% url 'portfolio:client_list' %}" class="btn btn-primary">View All Clients</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Portfolio Stats -->
+<section class="stats section dark-background">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="section-title text-center">
+      <h2>Our Impact in Numbers</h2>
+    </div>
+    
+    <div class="row gy-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span data-purecounter-start="0" data-purecounter-end="{{ portfolio_stats.total_clients|default:150 }}" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Happy Clients</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span data-purecounter-start="0" data-purecounter-end="{{ portfolio_stats.industries_served|default:25 }}" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Industries Served</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span data-purecounter-start="0" data-purecounter-end="{{ portfolio_stats.projects_completed|default:500 }}" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Projects Completed</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center w-100 h-100">
+          <span data-purecounter-start="0" data-purecounter-end="{{ portfolio_stats.success_rate|default:98 }}" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Success Rate (%)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="call-to-action section">
+  <div class="container">
+    <div class="row" data-aos="zoom-in" data-aos-delay="100">
+      <div class="col-xl-9 text-center text-xl-start">
+        <h3>Ready to Join Our Success Stories?</h3>
+        <p>Let us help your business achieve its financial goals and become our next success story.</p>
+      </div>
+      <div class="col-xl-3 cta-btn-container text-center">
+        <a class="cta-btn align-middle" href="{% url 'contact:contact' %}">
+          <i class="bi bi-handshake me-2"></i>Start Your Project
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.portfolio-image img {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.client-logo {
+  max-height: 50px;
+  max-width: 150px;
+  object-fit: contain;
+}
+
+.services-tags .badge {
+  font-size: 0.75rem;
+}
+
+.btn.active {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+}
+</style>
+{% endblock %}

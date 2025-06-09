@@ -1,0 +1,984 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\templates\core\service_detail.html-->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ service.title }} - {{ company.name }}{% endblock %}
+{% block meta_description %}{{ service.meta_description|default:service.short_description }}{% endblock %}
+
+{% block content %}
+<!-- Page Title -->
+<div class="page-title dark-background">
+  <div class="container position-relative">
+    <h1>{{ service.title }}</h1>
+    <p>{{ service.short_description }}</p>
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'core:home' %}">Home</a></li>
+        <li><a href="{% url 'core:services' %}">Services</a></li>
+        {% if service.category %}
+        <li><a href="{% url 'core:services' %}?category={{ service.category.slug }}">{{ service.category.name }}</a></li>
+        {% endif %}
+        <li class="current">{{ service.title }}</li>
+      </ol>
+    </nav>
+  </div>
+</div><!-- End Page Title -->
+
+<!-- Service Detail Section -->
+<section class="service-detail section">
+  <div class="container">
+    <div class="row gy-4">
+      
+      <!-- Main Content -->
+      <div class="col-lg-8">
+        
+        <!-- Service Overview -->
+        <div class="service-overview" data-aos="fade-up">
+          {% if service.featured_image %}
+          <img src="{{ service.featured_image.url }}" class="img-fluid rounded mb-4" alt="{{ service.title }}">
+          {% endif %}
+          
+          <div class="service-badges mb-3">
+            {% if service.is_featured %}
+            <span class="badge bg-warning me-2">Featured Service</span>
+            {% endif %}
+            {% if service.is_popular %}
+            <span class="badge bg-success me-2">Popular Choice</span>
+            {% endif %}
+            {% if service.category %}
+            <span class="badge bg-primary">{{ service.category.name }}</span>
+            {% endif %}
+          </div>
+          
+          <div class="service-description">
+            {{ service.detailed_description|safe }}
+          </div>
+        </div>
+        
+        <!-- Service Features -->
+        {% if service.features %}
+        <div class="service-features mt-5" data-aos="fade-up" data-aos-delay="100">
+          <h3>What's Included</h3>
+          <div class="row gy-3">
+            {% for feature in service.features %}
+            <div class="col-lg-6">
+              <div class="feature-item d-flex align-items-start">
+                <i class="bi bi-check-circle-fill text-success me-3 mt-1"></i>
+                <span>{{ feature }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Service Process -->
+        {% if service.process_steps %}
+        <div class="service-process mt-5" data-aos="fade-up" data-aos-delay="200">
+          <h3>Our Process</h3>
+          <div class="process-timeline">
+            {% for step in service.process_steps %}
+            <div class="process-step d-flex align-items-start mb-4">
+              <div class="step-number">
+                <span>{{ forloop.counter|stringformat:"02d" }}</span>
+              </div>
+              <div class="step-content ms-4">
+                <h5>{{ step.title }}</h5>
+                <p>{{ step.description }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Requirements -->
+        {% if service.requirements %}
+        <div class="service-requirements mt-5" data-aos="fade-up" data-aos-delay="300">
+          <h3>Requirements</h3>
+          <div class="requirements-list">
+            <p class="mb-3">To get started with this service, please prepare the following:</p>
+            <ul class="list-unstyled">
+              {% for requirement in service.requirements %}
+              <li class="d-flex align-items-start mb-2">
+                <i class="bi bi-arrow-right-circle text-primary me-3 mt-1"></i>
+                <span>{{ requirement }}</span>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Deliverables -->
+        {% if service.deliverables %}
+        <div class="service-deliverables mt-5" data-aos="fade-up" data-aos-delay="400">
+          <h3>What You'll Receive</h3>
+          <div class="deliverables-grid">
+            <div class="row gy-3">
+              {% for deliverable in service.deliverables %}
+              <div class="col-lg-6">
+                <div class="deliverable-item">
+                  <div class="deliverable-icon">
+                    <i class="bi bi-file-earmark-check text-success"></i>
+                  </div>
+                  <div class="deliverable-content">
+                    <h6>{{ deliverable.title }}</h6>
+                    <p class="mb-0">{{ deliverable.description }}</p>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- FAQs -->
+        {% if service.faqs %}
+        <div class="service-faqs mt-5" data-aos="fade-up" data-aos-delay="500">
+          <h3>Frequently Asked Questions</h3>
+          <div class="accordion" id="serviceFaqAccordion">
+            {% for faq in service.faqs %}
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="faq{{ forloop.counter }}">
+                <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" 
+                        type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#collapse{{ forloop.counter }}">
+                  {{ faq.question }}
+                </button>
+              </h2>
+              <div id="collapse{{ forloop.counter }}" 
+                   class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" 
+                   data-bs-parent="#serviceFaqAccordion">
+                <div class="accordion-body">
+                  {{ faq.answer|safe }}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Related Services -->
+        {% if related_services %}
+        <div class="related-services mt-5" data-aos="fade-up" data-aos-delay="600">
+          <h3>Related Services</h3>
+          <div class="row gy-4">
+            {% for related in related_services %}
+            <div class="col-lg-6">
+              <div class="related-service-card">
+                <div class="service-icon">
+                  <i class="{{ related.icon|default:'bi bi-gear' }}"></i>
+                </div>
+                <div class="service-content">
+                  <h5>
+                    <a href="{% url 'core:service_detail' related.pk %}">{{ related.title }}</a>
+                  </h5>
+                  <p>{{ related.short_description|truncatewords:15 }}</p>
+                  {% if related.starting_price %}
+                  <div class="service-price">
+                    <span class="price">{{ related.price_description }}</span>
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        
+        <!-- Service Summary Card -->
+        <div class="service-summary-card" data-aos="fade-up">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="mb-0">Service Summary</h4>
+            </div>
+            <div class="card-body">
+              
+              <!-- Pricing -->
+              {% if service.starting_price %}
+              <div class="pricing-info mb-4">
+                <div class="price-display">
+                  <span class="price-label">Starting from</span>
+                  <span class="price-amount">{{ service.price_description }}</span>
+                </div>
+                {% if service.price_note %}
+                <small class="text-muted">{{ service.price_note }}</small>
+                {% endif %}
+              </div>
+              {% endif %}
+              
+              <!-- Service Details -->
+              <div class="service-details">
+                {% if service.duration %}
+                <div class="detail-item d-flex justify-content-between mb-2">
+                  <span class="detail-label">Duration:</span>
+                  <span class="detail-value">{{ service.duration }}</span>
+                </div>
+                {% endif %}
+                
+                {% if service.category %}
+                <div class="detail-item d-flex justify-content-between mb-2">
+                  <span class="detail-label">Category:</span>
+                  <span class="detail-value">{{ service.category.name }}</span>
+                </div>
+                {% endif %}
+                
+                {% if service.complexity_level %}
+                <div class="detail-item d-flex justify-content-between mb-2">
+                  <span class="detail-label">Complexity:</span>
+                  <span class="detail-value">{{ service.get_complexity_level_display }}</span>
+                </div>
+                {% endif %}
+                
+                {% if service.turnaround_time %}
+                <div class="detail-item d-flex justify-content-between mb-2">
+                  <span class="detail-label">Turnaround:</span>
+                  <span class="detail-value">{{ service.turnaround_time }}</span>
+                </div>
+                {% endif %}
+              </div>
+              
+              <!-- Action Buttons -->
+              <div class="action-buttons mt-4">
+                <a href="{% url 'contact:contact' %}?service={{ service.title|urlencode }}" 
+                   class="btn btn-primary btn-lg w-100 mb-3">
+                  <i class="bi bi-chat-dots me-2"></i>
+                  Get Quote
+                </a>
+                
+                <a href="tel:{{ company.phone|default:'+234-803-065-5969' }}" 
+                   class="btn btn-outline-primary w-100 mb-2">
+                  <i class="bi bi-telephone me-2"></i>
+                  Call Now
+                </a>
+                
+                <button type="button" class="btn btn-outline-secondary w-100" 
+                        data-bs-toggle="modal" data-bs-target="#shareModal">
+                  <i class="bi bi-share me-2"></i>
+                  Share Service
+                </button>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        
+        <!-- Contact Info -->
+        <div class="contact-info-card mt-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Need Help?</h5>
+            </div>
+            <div class="card-body">
+              <p class="mb-3">Have questions about this service? Our experts are here to help.</p>
+              
+              <div class="contact-methods">
+                <div class="contact-method mb-3">
+                  <div class="method-icon">
+                    <i class="bi bi-telephone-fill"></i>
+                  </div>
+                  <div class="method-info">
+                    <strong>Call Us</strong>
+                    <br>
+                    <a href="tel:{{ company.phone|default:'+234-803-065-5969' }}">
+                      {{ company.phone|default:"+234-803-065-5969" }}
+                    </a>
+                  </div>
+                </div>
+                
+                <div class="contact-method mb-3">
+                  <div class="method-icon">
+                    <i class="bi bi-envelope-fill"></i>
+                  </div>
+                  <div class="method-info">
+                    <strong>Email Us</strong>
+                    <br>
+                    <a href="mailto:{{ company.email|default:'info@wjprofessionals.com' }}">
+                      {{ company.email|default:"info@wjprofessionals.com" }}
+                    </a>
+                  </div>
+                </div>
+                
+                <div class="contact-method">
+                  <div class="method-icon">
+                    <i class="bi bi-chat-square-dots-fill"></i>
+                  </div>
+                  <div class="method-info">
+                    <strong>Live Chat</strong>
+                    <br>
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="openChat()">
+                      Start Chat
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Testimonials -->
+        {% if service_testimonials %}
+        <div class="service-testimonials mt-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Client Reviews</h5>
+            </div>
+            <div class="card-body">
+              {% for testimonial in service_testimonials %}
+              <div class="testimonial-item {% if not forloop.last %}mb-4 pb-3 border-bottom{% endif %}">
+                <div class="stars mb-2">
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= testimonial.rating %}
+                    <i class="bi bi-star-fill text-warning"></i>
+                    {% else %}
+                    <i class="bi bi-star text-muted"></i>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <p class="testimonial-text mb-2">"{{ testimonial.testimonial|truncatewords:20 }}"</p>
+                <div class="testimonial-author">
+                  <strong>{{ testimonial.client_name }}</strong>
+                  {% if testimonial.company %}
+                  <br><small class="text-muted">{{ testimonial.company }}</small>
+                  {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+              
+              <div class="text-center mt-3">
+                <a href="{% url 'reviews:review_list' %}?service={{ service.title|urlencode }}" 
+                   class="btn btn-sm btn-outline-primary">
+                  View All Reviews
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Quick Stats -->
+        <div class="service-stats mt-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Service Stats</h5>
+            </div>
+            <div class="card-body">
+              <div class="stat-item d-flex justify-content-between mb-2">
+                <span>Clients Served:</span>
+                <strong>{{ service.clients_served|default:"50+" }}</strong>
+              </div>
+              <div class="stat-item d-flex justify-content-between mb-2">
+                <span>Success Rate:</span>
+                <strong>{{ service.success_rate|default:"98%" }}</strong>
+              </div>
+              <div class="stat-item d-flex justify-content-between mb-2">
+                <span>Avg. Rating:</span>
+                <strong>{{ service.average_rating|default:"4.8" }}/5.0</strong>
+              </div>
+              <div class="stat-item d-flex justify-content-between">
+                <span>Response Time:</span>
+                <strong>{{ service.response_time|default:"< 2 hours" }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</section><!-- /Service Detail Section -->
+
+<!-- Share Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="shareModalLabel">Share This Service</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Share "{{ service.title }}" with others:</p>
+        
+        <div class="share-buttons">
+          <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+             target="_blank" class="btn btn-primary me-2 mb-2">
+            <i class="bi bi-facebook"></i> Facebook
+          </a>
+          
+          <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ service.title|urlencode }}" 
+             target="_blank" class="btn btn-info me-2 mb-2">
+            <i class="bi bi-twitter"></i> Twitter
+          </a>
+          
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" 
+             target="_blank" class="btn btn-primary me-2 mb-2">
+            <i class="bi bi-linkedin"></i> LinkedIn
+          </a>
+          
+          <a href="whatsapp://send?text={{ service.title|urlencode }} - {{ request.build_absolute_uri }}" 
+             class="btn btn-success me-2 mb-2">
+            <i class="bi bi-whatsapp"></i> WhatsApp
+          </a>
+        </div>
+        
+        <div class="copy-link mt-3">
+          <label for="serviceUrl" class="form-label">Copy Link:</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="serviceUrl" value="{{ request.build_absolute_uri }}" readonly>
+            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">
+              <i class="bi bi-clipboard"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Call To Action Section -->
+<section class="cta-section section light-background">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center" data-aos="fade-up">
+        <h3>Ready to Get Started?</h3>
+        <p>Take the next step towards achieving your financial goals. Our expert team is ready to provide you with personalized service and professional guidance.</p>
+        <div class="cta-buttons">
+          <a href="{% url 'contact:contact' %}?service={{ service.title|urlencode }}" 
+             class="btn btn-primary btn-lg me-3">
+            Get Free Consultation
+          </a>
+          <a href="{% url 'core:services' %}" class="btn btn-outline-primary btn-lg">
+            View All Services
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Service detail page specific styles */
+.service-badges .badge {
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+}
+
+.feature-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.feature-item:last-child {
+  border-bottom: none;
+}
+
+.process-timeline {
+  position: relative;
+  padding-left: 30px;
+}
+
+.process-timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent-color);
+}
+
+.process-step {
+  position: relative;
+}
+
+.step-number {
+  position: absolute;
+  left: -45px;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.step-content h5 {
+  color: var(--heading-color);
+  margin-bottom: 10px;
+}
+
+.requirements-list ul li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.requirements-list ul li:last-child {
+  border-bottom: none;
+}
+
+.deliverable-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 15px;
+  background: var(--surface-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  height: 100%;
+}
+
+.deliverable-icon {
+  margin-right: 15px;
+  font-size: 24px;
+}
+
+.deliverable-content h6 {
+  margin-bottom: 5px;
+  color: var(--heading-color);
+}
+
+.related-service-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px;
+  background: var(--surface-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.related-service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+}
+
+.related-service-card .service-icon {
+  margin-right: 15px;
+  font-size: 32px;
+  color: var(--accent-color);
+}
+
+.related-service-card .service-content {
+  flex: 1;
+}
+
+.related-service-card h5 a {
+  color: var(--heading-color);
+  text-decoration: none;
+}
+
+.related-service-card h5 a:hover {
+  color: var(--accent-color);
+}
+
+.service-summary-card .card {
+  border: none;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+  border-radius: 10px;
+}
+
+.service-summary-card .card-header {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  border-bottom: none;
+  border-radius: 10px 10px 0 0 !important;
+}
+
+.price-display {
+  text-align: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.price-label {
+  display: block;
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 5px;
+}
+
+.price-amount {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.detail-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.detail-value {
+  color: var(--heading-color);
+  font-weight: 600;
+}
+
+.contact-method {
+  display: flex;
+  align-items: flex-start;
+}
+
+.method-icon {
+  margin-right: 15px;
+  font-size: 20px;
+  color: var(--accent-color);
+  margin-top: 2px;
+}
+
+.method-info strong {
+  color: var(--heading-color);
+}
+
+.method-info a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.method-info a:hover {
+  text-decoration: underline;
+}
+
+.testimonial-item .stars i {
+  font-size: 14px;
+}
+
+.testimonial-text {
+  font-style: italic;
+  color: #6c757d;
+}
+
+.testimonial-author strong {
+  color: var(--heading-color);
+}
+
+.stat-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.share-buttons .btn {
+  min-width: 120px;
+}
+
+.copy-link .input-group {
+  margin-top: 10px;
+}
+
+.cta-section {
+  background: linear-gradient(135deg, var(--accent-color) 0%, #0056b3 100%);
+  color: var(--contrast-color);
+}
+
+.cta-section h3 {
+  color: var(--contrast-color);
+  margin-bottom: 20px;
+}
+
+.cta-section p {
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 30px;
+}
+
+.cta-buttons .btn-primary {
+  background: var(--contrast-color);
+  border-color: var(--contrast-color);
+  color: var(--accent-color);
+}
+
+.cta-buttons .btn-primary:hover {
+  background: rgba(255,255,255,0.9);
+  border-color: rgba(255,255,255,0.9);
+}
+
+.cta-buttons .btn-outline-primary {
+  border-color: var(--contrast-color);
+  color: var(--contrast-color);
+}
+
+.cta-buttons .btn-outline-primary:hover {
+  background: var(--contrast-color);
+  color: var(--accent-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .process-timeline {
+    padding-left: 0;
+  }
+  
+  .process-timeline::before {
+    display: none;
+  }
+  
+  .step-number {
+    position: static;
+    margin-bottom: 15px;
+    margin-right: 15px;
+  }
+  
+  .process-step {
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .deliverable-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .deliverable-icon {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  .related-service-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .related-service-card .service-icon {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .contact-method {
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .method-icon {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .cta-buttons .btn {
+    width: 100%;
+  }
+}
+
+/* Print styles */
+@media print {
+  .service-summary-card,
+  .contact-info-card,
+  .service-testimonials,
+  .service-stats,
+  .cta-section {
+    display: none;
+  }
+  
+  .service-detail {
+    padding: 0;
+  }
+  
+  .col-lg-8 {
+    width: 100%;
+  }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Copy to clipboard functionality
+  window.copyToClipboard = function() {
+    const urlInput = document.getElementById('serviceUrl');
+    urlInput.select();
+    urlInput.setSelectionRange(0, 99999);
+    
+    try {
+      document.execCommand('copy');
+      
+      // Show success feedback
+      const button = event.target.closest('button');
+      const originalHTML = button.innerHTML;
+      button.innerHTML = '<i class="bi bi-check"></i>';
+      button.classList.add('btn-success');
+      button.classList.remove('btn-outline-secondary');
+      
+      setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.classList.remove('btn-success');
+        button.classList.add('btn-outline-secondary');
+      }, 2000);
+      
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
+  
+  // Live chat functionality
+  window.openChat = function() {
+    // Implement your live chat system here
+    // For example, if using Tawk.to:
+    // if (typeof Tawk_API !== 'undefined') {
+    //   Tawk_API.toggle();
+    // }
+    
+    // Or redirect to contact page
+    window.location.href = "{% url 'contact:contact' %}?service={{ service.title|urlencode }}&type=chat";
+  };
+  
+  // Track service interest
+  const getQuoteButtons = document.querySelectorAll('a[href*="contact"]');
+  getQuoteButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Track with analytics if available
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'service_interest', {
+          'service_name': '{{ service.title }}',
+          'action_type': 'get_quote',
+          'page_location': window.location.href
+        });
+      }
+    });
+  });
+  
+  // Track phone calls
+  const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+  phoneLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'phone_call', {
+          'service_name': '{{ service.title }}',
+          'phone_number': this.href.replace('tel:', ''),
+          'page_location': window.location.href
+        });
+      }
+    });
+  });
+  
+  // FAQ interaction tracking
+  const faqButtons = document.querySelectorAll('.accordion-button');
+  faqButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const question = this.textContent.trim();
+      
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'faq_interaction', {
+          'service_name': '{{ service.title }}',
+          'faq_question': question,
+          'page_location': window.location.href
+        });
+      }
+    });
+  });
+  
+  // Related service clicks
+  const relatedServiceLinks = document.querySelectorAll('.related-service-card a');
+  relatedServiceLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      const serviceName = this.textContent.trim();
+      
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'related_service_click', {
+          'current_service': '{{ service.title }}',
+          'clicked_service': serviceName,
+          'page_location': window.location.href
+        });
+      }
+    });
+  });
+  
+  // Share button tracking
+  const shareButtons = document.querySelectorAll('.share-buttons a');
+  shareButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const platform = this.textContent.trim();
+      
+      if (typeof gtag !== 'undefined') {
+        
+        gtag('event', 'share', {
+          'method': platform,
+          'content_type': 'service',
+          'item_id': '{{ service.title }}',
+          'page_location': window.location.href
+        });
+      }
+    });
+  });
+  
+  // Smooth scroll for anchor links
+  const anchorLinks = document.querySelectorAll('a[href^="#"]');
+  anchorLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const targetElement = document.getElementById(targetId);
+      
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+  
+  // Sticky sidebar on scroll
+  const sidebar = document.querySelector('.col-lg-4');
+  const sidebarCards = sidebar?.querySelectorAll('.card');
+  
+  if (sidebar && window.innerWidth > 992) {
+    window.addEventListener('scroll', function() {
+      const scrollTop = window.pageYOffset;
+      const sidebarTop = sidebar.offsetTop;
+      const sidebarHeight = sidebar.offsetHeight;
+      const windowHeight = window.innerHeight;
+      
+      if (scrollTop > sidebarTop - 20) {
+        sidebarCards?.forEach(card => {
+          card.style.position = 'sticky';
+          card.style.top = '20px';
+          card.style.zIndex = '10';
+        });
+      } else {
+        sidebarCards?.forEach(card => {
+          card.style.position = 'static';
+        });
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

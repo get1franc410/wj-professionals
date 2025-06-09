@@ -1,0 +1,204 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\templates\dashboard\email_dashboard.html-->
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Email Management - Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-envelope me-2"></i>Contact Messages</h2>
+                <div class="btn-group" role="group">
+                    <a href="?status=all" class="btn btn-outline-primary {% if current_status == 'all' %}active{% endif %}">
+                        All ({{ total_count }})
+                    </a>
+                    <a href="?status=unread" class="btn btn-outline-warning {% if current_status == 'unread' %}active{% endif %}">
+                        New ({{ unread_count }})
+                    </a>
+                    <a href="?status=read" class="btn btn-outline-success {% if current_status == 'read' %}active{% endif %}">
+                        Processed
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Status</th>
+                                    <th>From</th>
+                                    <th>Subject</th>
+                                    <th>Type</th>
+                                    <th>Priority</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for message in messages %}
+                                <tr class="{% if message.status == 'new' %}table-warning{% endif %}">
+                                    <td>
+                                        {% if message.status == 'new' %}
+                                            <span class="badge bg-warning">New</span>
+                                        {% elif message.status == 'in_progress' %}
+                                            <span class="badge bg-info">In Progress</span>
+                                        {% elif message.status == 'resolved' %}
+                                            <span class="badge bg-success">Resolved</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ message.get_status_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <strong>{{ message.full_name }}</strong><br>
+                                        <small class="text-muted">{{ message.email }}</small>
+                                        {% if message.company %}
+                                            <br><small class="text-info">{{ message.company }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ message.subject|truncatechars:50 }}</td>
+                                    <td>
+                                        <span class="badge bg-light text-dark">{{ message.get_inquiry_type_display }}</span>
+                                    </td>
+                                    <td>
+                                        {% if message.priority == 'urgent' %}
+                                            <span class="badge bg-danger">{{ message.get_priority_display }}</span>
+                                        {% elif message.priority == 'high' %}
+                                            <span class="badge bg-warning">{{ message.get_priority_display }}</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ message.get_priority_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ message.created_at|date:"M d, Y H:i" }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-outline-primary" onclick="viewMessage({{ message.id }})">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            {% if message.status == 'new' %}
+                                            <button class="btn btn-outline-success" onclick="markRead({{ message.id }})">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            {% endif %}
+                                            <a href="{% url 'dashboard:reply_email' message.id %}" class="btn btn-outline-warning">
+                                                <i class="fas fa-reply"></i>
+                                            </a>
+                                            <a href="{% url 'dashboard:contact_detail' message.id %}" class="btn btn-outline-info">
+                                                <i class="fas fa-info-circle"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                        <p class="text-muted">No messages found.</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            {% if messages.has_other_pages %}
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if messages.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ messages.previous_page_number }}&status={{ current_status }}">Previous</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% for num in messages.paginator.page_range %}
+                        {% if messages.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}&status={{ current_status }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if messages.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ messages.next_page_number }}&status={{ current_status }}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Message Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Message Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="messageContent">
+                <!-- Message content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function viewMessage(messageId) {
+    // Load message details via AJAX
+    fetch(`/dashboard/email/${messageId}/`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('messageContent').innerHTML = `
+                <div class="mb-3">
+                    <strong>From:</strong> ${data.name} &lt;${data.email}&gt;<br>
+                    <strong>Phone:</strong> ${data.phone || 'Not provided'}<br>
+                    <strong>Company:</strong> ${data.company || 'Not provided'}<br>
+                    <strong>Subject:</strong> ${data.subject}<br>
+                    <strong>Inquiry Type:</strong> ${data.inquiry_type}<br>
+                    <strong>Priority:</strong> ${data.priority}<br>
+                    <strong>Date:</strong> ${data.created_at}
+                </div>
+                <div class="border-top pt-3">
+                    <strong>Message:</strong><br>
+                    <div>${data.message}</div>
+                </div>
+            `;
+            new bootstrap.Modal(document.getElementById('messageModal')).show();
+        });
+}
+
+function markRead(messageId) {
+    fetch(`/dashboard/email/${messageId}/mark-read/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            location.reload();
+        }
+    });
+}
+</script>
+
+{% csrf_token %}
+{% endblock %}

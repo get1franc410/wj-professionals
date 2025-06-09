@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Thank you for contacting WJ Professionals</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .header { background: #007bff; color: white; padding: 20px; text-align: center; }
+        .content { padding: 20px; }
+        .highlight { background: #e7f3ff; padding: 15px; border-left: 4px solid #007bff; margin: 20px 0; }
+        .footer { background: #f8f9fa; padding: 15px; text-align: center; font-size: 12px; color: #666; }
+        .contact-info { background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Thank You!</h1>
+        <p>WJ Professionals</p>
+    </div>
+    
+    <div class="content">
+        <h2>Dear {{ submission.name }},</h2>
+        
+        <p>Thank you for contacting <strong>WJ Professionals</strong>. We have received your message and will respond within 24 hours.</p>
+        
+        <div class="highlight">
+            <h3>Your Message Summary:</h3>
+            <p><strong>Subject:</strong> {{ submission.subject }}</p>
+            <p><strong>Inquiry Type:</strong> {{ submission.get_inquiry_type_display }}</p>
+            <p><strong>Submitted:</strong> {{ submission.created_at|date:"F d, Y \a\t g:i A" }}</p>
+        </div>
+        
+        <h3>What happens next?</h3>
+        <ul>
+            <li>✅ Your message has been received and logged</li>
+            <li>📧 Our team will review your inquiry</li>
+            <li>📞 We'll respond within 24 hours</li>
+            <li>🤝 We'll work together to address your needs</li>
+        </ul>
+        
+        <div class="contact-info">
+            <h3>Need immediate assistance?</h3>
+            <p><strong>Phone:</strong> +234-803-065-5969</p>
+            <p><strong>Email:</strong> info@wjprofessionals.com</p>
+            <p><strong>Office Hours:</strong> Monday - Friday: 8:00 AM - 6:00 PM</p>
+        </div>
+        
+        <p>We appreciate your interest in our services and look forward to helping you achieve your financial goals.</p>
+        
+        <p>Best regards,<br>
+        <strong>The WJ Professionals Team</strong></p>
+    </div>
+    
+    <div class="footer">
+        <p>WJ Professionals - Your Trusted Accounting Partner in Nigeria</p>
+        <p>Plot 123, Ademola Adetokunbo Crescent, Wuse II, Abuja, FCT</p>
+    </div>
+</body>
+</html>

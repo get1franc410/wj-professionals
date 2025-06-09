@@ -1,0 +1,375 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\templates\portfolio\client_detail.html-->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ client.name }} - Portfolio - {{ company.name }}{% endblock %}
+
+{% block meta_description %}{{ client.project_description|striptags|truncatewords:30 }}{% endblock %}
+
+{% block content %}
+<!-- Page Title -->
+<div class="page-title dark-background">
+  <div class="container position-relative">
+    <div class="client-header d-flex align-items-center mb-3">
+      {% if client.logo %}
+      <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="client-logo-header me-3">
+      {% endif %}
+      <div>
+        <h1>{{ client.project_title|default:client.name }}</h1>
+        <p>{{ client.name }} - {{ client.get_client_type_display }}</p>
+      </div>
+    </div>
+    
+    <div class="client-meta">
+      <span class="badge bg-light text-primary me-2">{{ client.industry.name }}</span>
+      {% if client.project_start_date %}
+      <span class="badge bg-light text-primary">
+        {{ client.project_start_date|date:"Y" }}
+        {% if client.project_end_date %}
+        - {{ client.project_end_date|date:"Y" }}
+        {% endif %}
+      </span>
+      {% endif %}
+    </div>
+    
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'core:home' %}">Home</a></li>
+        <li><a href="{% url 'portfolio:client_list' %}">Portfolio</a></li>
+        <li class="current">{{ client.name }}</li>
+      </ol>
+    </nav>
+    
+    {% if client.website %}
+    <div class="mt-3">
+      <a href="{{ client.website }}" target="_blank" class="btn btn-light">
+        <i class="bi bi-box-arrow-up-right me-2"></i>Visit Website
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div><!-- End Page Title -->
+
+<!-- Case Study Content -->
+<section class="service-details section">
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+        <!-- Banner Image -->
+        {% if client.banner_image %}
+        <img src="{{ client.banner_image.url }}" alt="{{ client.name }}" class="img-fluid rounded shadow mb-5">
+        {% endif %}
+        
+        <!-- Project Overview -->
+        <div class="service-description">
+          <h2><i class="bi bi-info-circle me-2"></i>Project Overview</h2>
+          <div class="project-description">
+            {{ client.project_description|safe }}
+          </div>
+        </div>
+        
+        <!-- Challenge -->
+        {% if client.challenge %}
+        <div class="service-description">
+          <h2><i class="bi bi-exclamation-triangle me-2"></i>The Challenge</h2>
+          <div class="challenge-content">
+            {{ client.challenge|safe }}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Solution -->
+        {% if client.solution %}
+        <div class="service-description">
+          <h2><i class="bi bi-lightbulb me-2"></i>Our Solution</h2>
+          <div class="solution-content">
+            {{ client.solution|safe }}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Results -->
+        {% if client.results %}
+        <div class="service-description">
+          <h2><i class="bi bi-graph-up me-2"></i>Results & Impact</h2>
+          <div class="results-content">
+            {{ client.results|safe }}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Key Achievements -->
+        {% if client.key_achievements %}
+        <div class="service-description">
+          <h2><i class="bi bi-trophy me-2"></i>Key Achievements</h2>
+          <div class="achievements-list">
+            {% for achievement in client.key_achievements %}
+            <div class="achievement-item mb-3 p-3 bg-light rounded">
+              <i class="bi bi-check-circle text-success me-3"></i>
+              <span>{{ achievement }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Project Gallery -->
+        {% if client.gallery_images %}
+        <div class="service-description">
+          <h2><i class="bi bi-images me-2"></i>Project Gallery</h2>
+          <div class="row gallery-grid">
+            {% for image in client.gallery_images %}
+            <div class="col-md-6 mb-3">
+              <img src="{{ image.url }}" alt="Project Image" class="img-fluid rounded gallery-image" 
+                   data-bs-toggle="modal" data-bs-target="#galleryModal" 
+                   data-bs-image="{{ image.url }}">
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Client Testimonial -->
+        {% if client.testimonial %}
+        <div class="service-description">
+          <div class="testimonial-card bg-light p-4 rounded">
+            <h3><i class="bi bi-chat-quote me-2"></i>Client Testimonial</h3>
+            <blockquote class="blockquote">
+              <p class="mb-4">"{{ client.testimonial.testimonial_text }}"</p>
+              <footer class="blockquote-footer">
+                <strong>{{ client.testimonial.client_name }}</strong>
+                <cite title="Source Title">{{ client.testimonial.client_position }}, {{ client.testimonial.client_company }}</cite>
+              </footer>
+            </blockquote>
+            
+            {% if client.testimonial.rating %}
+            <div class="rating mt-3">
+              {% for i in "12345"|make_list %}
+                {% if forloop.counter <= client.testimonial.rating %}
+                <i class="bi bi-star-fill text-warning"></i>
+                {% else %}
+                <i class="bi bi-star text-warning"></i>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="services-list">
+          <!-- Project Details -->
+          <div class="service-item">
+            <h5><i class="bi bi-info-circle me-2"></i>Project Details</h5>
+            
+            <div class="detail-item mb-3">
+              <strong><i class="bi bi-building text-primary me-2"></i>Client Type:</strong>
+              <span class="text-muted">{{ client.get_client_type_display }}</span>
+            </div>
+            
+            <div class="detail-item mb-3">
+              <strong><i class="bi bi-diagram-3 text-primary me-2"></i>Industry:</strong>
+              <span class="text-muted">{{ client.industry.name }}</span>
+            </div>
+            
+            {% if client.company_size %}
+            <div class="detail-item mb-3">
+              <strong><i class="bi bi-people text-primary me-2"></i>Company Size:</strong>
+              <span class="text-muted">{{ client.company_size }}</span>
+            </div>
+            {% endif %}
+            
+            {% if client.project_start_date %}
+            <div class="detail-item mb-3">
+              <strong><i class="bi bi-calendar text-primary me-2"></i>Project Timeline:</strong>
+              <span class="text-muted">
+                {{ client.project_start_date|date:"M Y" }}
+                {% if client.project_end_date %}
+                - {{ client.project_end_date|date:"M Y" }}
+                {% else %}
+                - Ongoing
+                {% endif %}
+              </span>
+            </div>
+            {% endif %}
+            
+            {% if client.location %}
+            <div class="detail-item">
+              <strong><i class="bi bi-geo-alt text-primary me-2"></i>Location:</strong>
+              <span class="text-muted">{{ client.location }}</span>
+            </div>
+            {% endif %}
+          </div>
+          
+          <!-- Services Provided -->
+          {% if client.services_provided %}
+          <div class="service-item">
+            <h5><i class="bi bi-gear me-2"></i>Services Provided</h5>
+            {% for service in client.services_provided %}
+            <div class="service-item-detail mb-2">
+              <i class="bi bi-check text-success me-2"></i>{{ service }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          
+          <!-- Project Team -->
+          {% if client.team_members %}
+          <div class="service-item">
+            <h5><i class="bi bi-people me-2"></i>Project Team</h5>
+            {% for member in client.team_members %}
+            <div class="team-member-item p-3 border-bottom">
+              <div class="d-flex align-items-center">
+                {% if member.photo %}
+                <img src="{{ member.photo.url }}" alt="{{ member.full_name }}" class="rounded-circle me-3" width="40" height="40">
+                {% endif %}
+                <div>
+                  <h6 class="mb-0">
+                    <a href="{% url 'staff:staff_detail' member.pk %}" class="text-decoration-none">
+                      {{ member.full_name }}
+                    </a>
+                  </h6>
+                  <small class="text-muted">{{ member.get_position_display }}</small>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          
+          <!-- Contact CTA -->
+          <div class="service-item text-center">
+            <h5>Interested in Similar Results?</h5>
+            <p>Contact us to discuss how we can help your business achieve similar success.</p>
+            <a href="{% url 'contact:contact' %}?ref=portfolio&client={{ client.slug }}" class="btn btn-primary">
+              <i class="bi bi-envelope me-2"></i>Get In Touch
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Related Projects -->
+{% if related_clients %}
+<section class="section light-background">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Related Projects</h2>
+      <p>Other successful projects in {{ client.industry.name }}</p>
+    </div>
+    
+    <div class="row gy-4">
+      {% for related in related_clients %}
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+        <div class="service-item item-cyan position-relative h-100">
+          {% if related.banner_image %}
+          <div class="portfolio-image mb-3">
+            <img src="{{ related.banner_image.url }}" class="img-fluid rounded" alt="{{ related.name }}">
+          </div>
+          {% endif %}
+          
+          {% if related.logo %}
+          <div class="text-center mb-3">
+            <img src="{{ related.logo.url }}" alt="{{ related.name }}" class="client-logo">
+          </div>
+          {% endif %}
+          
+          <h6>{{ related.project_title|default:related.name }}</h6>
+          <p class="small">{{ related.project_description|striptags|truncatewords:15 }}</p>
+          
+          <a href="{% url 'portfolio:client_detail' related.pk %}" class="btn btn-outline-primary btn-sm">
+            View Case Study
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Gallery Modal -->
+<div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <img src="" alt="Gallery Image" class="img-fluid w-100" id="modalImage">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.client-logo-header {
+  max-height: 60px;
+  max-width: 200px;
+  object-fit: contain;
+}
+
+.client-logo {
+  max-height: 40px;
+  max-width: 120px;
+  object-fit: contain;
+}
+
+.achievement-item {
+  border-left: 4px solid var(--accent-color);
+}
+
+.gallery-image {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.gallery-image:hover {
+  transform: scale(1.05);
+}
+
+.testimonial-card {
+  border-left: 4px solid var(--accent-color);
+}
+
+.portfolio-image img {
+  height: 150px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.team-member-item:hover {
+  background-color: var(--surface-color);
+}
+
+.service-item-detail {
+  padding: 0.25rem 0;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Gallery modal functionality
+  const galleryModal = document.getElementById('galleryModal');
+  const modalImage = document.getElementById('modalImage');
+  
+  if (galleryModal) {
+    galleryModal.addEventListener('show.bs.modal', function(event) {
+      const button = event.relatedTarget;
+      const imageSrc = button.getAttribute('data-bs-image');
+      modalImage.src = imageSrc;
+    });
+  }
+});
+</script>
+{% endblock %}

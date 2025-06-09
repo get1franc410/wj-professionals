@@ -1,0 +1,266 @@
+<!-- C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\templates\staff\staff_detail.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ staff_member.user.get_full_name }} - {{ company.name }}{% endblock %}
+
+{% block meta_description %}{{ staff_member.bio|striptags|truncatewords:30 }}{% endblock %}
+
+{% block content %}
+<!-- Page Title -->
+<div class="page-title dark-background">
+  <div class="container position-relative">
+    <h1>{{ staff_member.user.get_full_name }}</h1>
+    <p>{{ staff_member.get_position_display }}</p>
+    {% if staff_member.department %}
+    <p>{{ staff_member.department.name }}</p>
+    {% endif %}
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'core:home' %}">Home</a></li>
+        <li><a href="{% url 'staff:team' %}">Our Team</a></li>
+        <li class="current">{{ staff_member.user.get_full_name }}</li>
+      </ol>
+    </nav>
+  </div>
+</div><!-- End Page Title -->
+
+<!-- Staff Profile Section -->
+<section class="service-details section">
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <!-- Profile Card -->
+        <div class="services-list">
+          <div class="service-item">
+            {% if staff_member.photo %}
+            <img src="{{ staff_member.photo.url }}" class="img-fluid rounded mb-3" alt="{{ staff_member.get_full_name }}">
+            {% else %}
+            <div class="placeholder-avatar mb-3">
+              <i class="bi bi-person-circle"></i>
+            </div>
+            {% endif %}
+            
+            <h4>{{ staff_member.user.get_full_name }}</h4>
+            <p class="text-primary fw-bold">{{ staff_member.get_position_display }}</p>
+            {% if staff_member.department %}
+            <p class="text-muted">{{ staff_member.department.name }}</p>
+            {% endif %}
+            
+            {% if staff_member.years_experience %}
+            <p class="text-muted">
+              <i class="bi bi-clock me-2"></i>{{ staff_member.years_experience }} years experience
+            </p>
+            {% endif %}
+          </div>
+          
+          <!-- Contact Information -->
+          <div class="service-item">
+            <h6 class="fw-bold mb-3">Contact Information</h6>
+            {% if staff_member.user.email %}
+            <div class="contact-item mb-2">
+              <i class="bi bi-envelope text-primary me-2"></i>
+              <a href="mailto:{{ staff_member.user.email }}">{{ staff_member.user.email }}</a>
+            </div>
+            {% endif %}
+            {% if staff_member.phone %}
+            <div class="contact-item mb-2">
+              <i class="bi bi-telephone text-primary me-2"></i>
+              <a href="tel:{{ staff_member.phone }}">{{ staff_member.phone }}</a>
+            </div>
+            {% endif %}
+            {% if staff_member.extension %}
+            <div class="contact-item mb-2">
+              <i class="bi bi-hash text-primary me-2"></i>
+              <span>Ext. {{ staff_member.extension }}</span>
+            </div>
+            {% endif %}
+          </div>
+          
+          <!-- Social Links -->
+          {% if staff_member.linkedin %}
+          <div class="service-item">
+            <h6 class="fw-bold mb-3">Connect</h6>
+            <div class="social-links">
+              <a href="{{ staff_member.linkedin }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-linkedin me-1"></i>LinkedIn
+              </a>
+            </div>
+          </div>
+          {% endif %}
+          
+          <!-- Quick Contact -->
+          <div class="service-item">
+            <a href="{% url 'contact:contact' %}?staff={{ staff_member.id }}" class="btn btn-primary w-100">
+              <i class="bi bi-envelope me-2"></i>Send Message
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+        <!-- About Section -->
+        {% if staff_member.bio %}
+        <div class="service-description">
+          <h3><i class="bi bi-person-circle me-2"></i>About {{ staff_member.user.first_name }}</h3>
+          <div class="bio-content">
+            {{ staff_member.bio|linebreaks }}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Qualifications -->
+        {% if staff_member.qualifications %}
+        <div class="service-description">
+          <h3><i class="bi bi-award me-2"></i>Professional Qualifications</h3>
+          <div class="qualifications-content">
+            {{ staff_member.qualifications|linebreaks }}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Specializations -->
+        {% if staff_member.specializations %}
+        <div class="service-description">
+          <h3><i class="bi bi-star me-2"></i>Areas of Expertise</h3>
+          <div class="specializations-content">
+            {{ staff_member.specializations|linebreaks }}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Contact Form -->
+        <div class="service-description">
+          <h3><i class="bi bi-envelope me-2"></i>Send a Message to {{ staff_member.user.first_name }}</h3>
+          <form method="post" action="{% url 'contact:contact' %}" class="php-email-form">
+            {% csrf_token %}
+            <input type="hidden" name="recipient" value="{{ staff_member.user.email }}">
+            <input type="hidden" name="subject" value="Message for {{ staff_member.user.get_full_name }}">
+            
+            <div class="row gy-4">
+              <div class="col-md-6">
+                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+              </div>
+              <div class="col-md-6">
+                <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+              </div>
+              <div class="col-md-12">
+                <textarea name="message" class="form-control" rows="6" 
+                          placeholder="How can {{ staff_member.user.first_name }} help you?" required></textarea>
+              </div>
+              <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-send me-2"></i>Send Message
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Department Colleagues -->
+{% if department_colleagues %}
+<section class="team section light-background">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Department Colleagues</h2>
+      <p>Meet other professionals in {{ staff_member.department.name }}</p>
+    </div>
+    
+    <div class="row gy-4">
+      {% for colleague in department_colleagues %}
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+        <div class="team-member">
+          <div class="member-img">
+            {% if colleague.profile_image %}
+            <img src="{{ colleague.profile_image.url }}" class="img-fluid" alt="{{ colleague.user.get_full_name }}">
+            {% else %}
+            <div class="placeholder-avatar">
+              <i class="bi bi-person-circle"></i>
+            </div>
+            {% endif %}
+          </div>
+          <div class="member-info">
+            <h6>{{ colleague.user.get_full_name }}</h6>
+            <span>{{ colleague.get_position_display }}</span>
+            <a href="{% url 'staff:staff_detail' colleague.pk %}" class="btn btn-outline-primary btn-sm">
+              View Profile
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Contact CTA -->
+<section class="call-to-action section">
+  <div class="container">
+    <div class="row" data-aos="zoom-in" data-aos-delay="100">
+      <div class="col-xl-9 text-center text-xl-start">
+        <h3>Need to speak with {{ staff_member.user.first_name }}?</h3>
+        <p>Get in touch to discuss your requirements and how we can help your business.</p>
+      </div>
+      <div class="col-xl-3 cta-btn-container text-center">
+        <a class="cta-btn align-middle" href="{% url 'contact:contact' %}?staff={{ staff_member.id }}">
+          <i class="bi bi-chat-dots me-2"></i>Contact {{ staff_member.user.first_name }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Back to Team -->
+<div class="container py-3">
+  <div class="row">
+    <div class="col-12 text-center">
+      <a href="{% url 'staff:team' %}" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-left me-2"></i>Back to Team
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.placeholder-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  background: var(--surface-color);
+  color: var(--default-color);
+  font-size: 4rem;
+  border-radius: 8px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+}
+
+.contact-item a:hover {
+  color: var(--accent-color) !important;
+}
+
+.bio-content,
+.qualifications-content,
+.specializations-content {
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .placeholder-avatar {
+    height: 250px;
+    font-size: 3rem;
+  }
+}
+</style>
+{% endblock %}

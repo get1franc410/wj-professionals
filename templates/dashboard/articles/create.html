@@ -1,0 +1,268 @@
+<!-- C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\templates\dashboard\articles\create.html -->
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Create Article - Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .content-textarea {
+        min-height: 400px !important;
+        resize: vertical;
+    }
+    
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+    
+    .card {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        border: 1px solid rgba(0, 0, 0, 0.125);
+    }
+    
+    .required-field::after {
+        content: " *";
+        color: #dc3545;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-plus me-2"></i>Create New Article</h2>
+                <a href="{% url 'dashboard:manage_articles' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Articles
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Article Details</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Please correct the following errors:</strong>
+                            <ul class="mb-0 mt-2">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                    <li><strong>{{ field|title }}:</strong> {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="row">
+                            <div class="col-md-8">
+                                <!-- Title Field -->
+                                <div class="mb-4">
+                                    <label for="{{ form.title.id_for_label }}" class="form-label fw-bold required-field">Title</label>
+                                    <input type="text" 
+                                           class="form-control form-control-lg" 
+                                           id="{{ form.title.id_for_label }}" 
+                                           name="{{ form.title.name }}" 
+                                           value="{{ form.title.value|default:'' }}"
+                                           placeholder="Enter article title..."
+                                           required>
+                                    <div class="form-text">A compelling title that captures the essence of your article</div>
+                                </div>
+                                
+                                <!-- Excerpt Field -->
+                                <div class="mb-4">
+                                    <label for="{{ form.excerpt.id_for_label }}" class="form-label fw-bold">Excerpt</label>
+                                    <textarea class="form-control" 
+                                              id="{{ form.excerpt.id_for_label }}" 
+                                              name="{{ form.excerpt.name }}" 
+                                              rows="3"
+                                              placeholder="Brief summary of the article (optional)...">{{ form.excerpt.value|default:'' }}</textarea>
+                                    <div class="form-text">A brief summary that will appear in article previews and search results</div>
+                                </div>
+                                
+                                <!-- Content Field - ENLARGED -->
+                                <div class="mb-4">
+                                    <label for="{{ form.content.id_for_label }}" class="form-label fw-bold required-field">Content</label>
+                                    <textarea class="form-control content-textarea" 
+                                              id="{{ form.content.id_for_label }}" 
+                                              name="{{ form.content.name }}" 
+                                              rows="20"
+                                              placeholder="Write your article content here...
+
+You can include:
+• Multiple paragraphs
+• Lists and bullet points
+• Quotes and references
+• Technical details
+• Examples and case studies
+
+Tip: Use clear headings and break up long paragraphs for better readability."
+                                              required>{{ form.content.value|default:'' }}</textarea>
+                                    <div class="form-text">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Write your full article content. You can format text and add structure to make it engaging.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <!-- Status Field -->
+                                <div class="mb-3">
+                                    <label for="{{ form.status.id_for_label }}" class="form-label fw-bold">Status</label>
+                                    <select class="form-select" id="{{ form.status.id_for_label }}" name="{{ form.status.name }}">
+                                        <option value="draft" {% if form.status.value == 'draft' %}selected{% endif %}>Draft</option>
+                                        <option value="published" {% if form.status.value == 'published' %}selected{% endif %}>Published</option>
+                                        <option value="archived" {% if form.status.value == 'archived' %}selected{% endif %}>Archived</option>
+                                    </select>
+                                    <div class="form-text">Choose the publication status</div>
+                                </div>
+                                
+                                <!-- Category Field -->
+                                <div class="mb-3">
+                                    <label for="{{ form.category.id_for_label }}" class="form-label fw-bold">Category</label>
+                                    {{ form.category }}
+                                    <div class="form-text">Select the most relevant category</div>
+                                </div>
+                                
+                                <!-- Featured Image Field -->
+                                <div class="mb-3">
+                                    <label for="{{ form.featured_image.id_for_label }}" class="form-label fw-bold">Featured Image</label>
+                                    <input type="file" 
+                                           class="form-control" 
+                                           id="{{ form.featured_image.id_for_label }}" 
+                                           name="{{ form.featured_image.name }}"
+                                           accept="image/*">
+                                    <div class="form-text">Upload a high-quality image (JPG, PNG, WebP)</div>
+                                </div>
+                                
+                                <!-- Featured Article Checkbox -->
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               id="{{ form.is_featured.id_for_label }}" 
+                                               name="{{ form.is_featured.name }}"
+                                               {% if form.is_featured.value %}checked{% endif %}>
+                                        <label class="form-check-label fw-bold" for="{{ form.is_featured.id_for_label }}">
+                                            <i class="fas fa-star text-warning me-1"></i>Featured Article
+                                        </label>
+                                    </div>
+                                    <div class="form-text">Featured articles appear prominently on the homepage</div>
+                                </div>
+                                
+                                <!-- Breaking News Checkbox -->
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               id="{{ form.is_breaking.id_for_label }}" 
+                                               name="{{ form.is_breaking.name }}"
+                                               {% if form.is_breaking.value %}checked{% endif %}>
+                                        <label class="form-check-label fw-bold" for="{{ form.is_breaking.id_for_label }}">
+                                            <i class="fas fa-bolt text-danger me-1"></i>Breaking News
+                                        </label>
+                                    </div>
+                                    <div class="form-text">Breaking news gets priority placement and notifications</div>
+                                </div>
+                                
+                                <!-- Quick Tips Card -->
+                                <div class="card bg-light mt-4">
+                                    <div class="card-header bg-info text-white">
+                                        <h6 class="mb-0"><i class="fas fa-lightbulb me-1"></i>Writing Tips</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-unstyled mb-0 small">
+                                            <li><i class="fas fa-check text-success me-1"></i> Use clear, engaging headlines</li>
+                                            <li><i class="fas fa-check text-success me-1"></i> Break up long paragraphs</li>
+                                            <li><i class="fas fa-check text-success me-1"></i> Include relevant examples</li>
+                                            <li><i class="fas fa-check text-success me-1"></i> Proofread before publishing</li>
+                                            <li><i class="fas fa-check text-success me-1"></i> Add a compelling excerpt</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                            <a href="{% url 'dashboard:manage_articles' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                            <div>
+                                <button type="submit" name="save_draft" class="btn btn-outline-primary me-2">
+                                    <i class="fas fa-save me-2"></i>Save as Draft
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-2"></i>Create Article
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-resize textarea as user types
+    const contentTextarea = document.getElementById('{{ form.content.id_for_label }}');
+    if (contentTextarea) {
+        contentTextarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.max(400, this.scrollHeight) + 'px';
+        });
+    }
+    
+    // Character counter for title
+    const titleInput = document.getElementById('{{ form.title.id_for_label }}');
+    if (titleInput) {
+        const maxLength = 200;
+        const counter = document.createElement('div');
+        counter.className = 'form-text text-end';
+        counter.innerHTML = `<span id="title-count">0</span>/${maxLength} characters`;
+        titleInput.parentNode.appendChild(counter);
+        
+        titleInput.addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('title-count').textContent = count;
+            if (count > maxLength * 0.9) {
+                counter.classList.add('text-warning');
+            } else {
+                counter.classList.remove('text-warning');
+            }
+        });
+    }
+    
+    // Word counter for content
+    const wordCounter = document.createElement('div');
+    wordCounter.className = 'form-text text-end mt-1';
+    wordCounter.innerHTML = '<i class="fas fa-file-word me-1"></i><span id="word-count">0</span> words';
+    contentTextarea.parentNode.appendChild(wordCounter);
+    
+    function updateWordCount() {
+        const text = contentTextarea.value.trim();
+        const words = text ? text.split(/\s+/).length : 0;
+        document.getElementById('word-count').textContent = words;
+    }
+    
+    contentTextarea.addEventListener('input', updateWordCount);
+    updateWordCount(); // Initial count
+});
+</script>
+{% endblock %}

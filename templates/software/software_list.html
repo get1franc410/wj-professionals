@@ -1,0 +1,407 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\templates\software\software_list.html-->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Software Solutions - {{ company.name }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold">Software Solutions</h1>
+                <p class="lead">Professional software tools to streamline your business operations</p>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'core:home' %}" class="text-white-50">Home</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Software</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Software Categories -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-6 fw-bold">Our Software Categories</h2>
+            <p class="lead text-muted">Choose from our comprehensive range of business software solutions</p>
+        </div>
+        
+        <div class="row">
+            <!-- Accounting Software -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card software-category-card h-100">
+                    <div class="card-body text-center">
+                        <div class="software-icon mb-3">
+                            <i class="fas fa-calculator fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Accounting Software</h5>
+                        <p class="card-text">Complete accounting solutions for businesses of all sizes</p>
+                        <ul class="list-unstyled text-start">
+                            <li><i class="fas fa-check text-success me-2"></i>QuickBooks Pro</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Sage 50cloud</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Xero Business</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Zoho Books</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <button class="btn btn-primary w-100" onclick="showSoftwareModal('accounting')">
+                            <i class="fas fa-shopping-cart me-2"></i>View Products
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tax Software -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card software-category-card h-100">
+                    <div class="card-body text-center">
+                        <div class="software-icon mb-3">
+                            <i class="fas fa-file-invoice-dollar fa-3x text-success"></i>
+                        </div>
+                        <h5 class="card-title">Tax Software</h5>
+                        <p class="card-text">Professional tax preparation and compliance tools</p>
+                        <ul class="list-unstyled text-start">
+                            <li><i class="fas fa-check text-success me-2"></i>TaxAct Professional</li>
+                            <li><i class="fas fa-check text-success me-2"></i>TurboTax Business</li>
+                            <li><i class="fas fa-check text-success me-2"></i>ProSeries Tax</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Drake Tax</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <button class="btn btn-success w-100" onclick="showSoftwareModal('tax')">
+                            <i class="fas fa-shopping-cart me-2"></i>View Products
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Payroll Software -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card software-category-card h-100">
+                    <div class="card-body text-center">
+                        <div class="software-icon mb-3">
+                            <i class="fas fa-users fa-3x text-warning"></i>
+                        </div>
+                        <h5 class="card-title">Payroll Software</h5>
+                        <p class="card-text">Streamline payroll processing and employee management</p>
+                        <ul class="list-unstyled text-start">
+                            <li><i class="fas fa-check text-success me-2"></i>ADP Workforce</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Paychex Flex</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Gusto Payroll</li>
+                            <li><i class="fas fa-check text-success me-2"></i>BambooHR</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <button class="btn btn-warning w-100" onclick="showSoftwareModal('payroll')">
+                            <i class="fas fa-shopping-cart me-2"></i>View Products
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Business Management -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card software-category-card h-100">
+                    <div class="card-body text-center">
+                        <div class="software-icon mb-3">
+                            <i class="fas fa-chart-line fa-3x text-info"></i>
+                        </div>
+                        <h5 class="card-title">Expense Tracker</h5>
+                        <p class="card-text">Comprehensive Budget & Expense Tracking solutions</p>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <button class="btn btn-info w-100" onclick="showSoftwareModal('business')">
+                            <i class="fas fa-shopping-cart me-2"></i>View Products
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Custom Solutions -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card software-category-card h-100">
+                    <div class="card-body text-center">
+                        <div class="software-icon mb-3">
+                            <i class="fas fa-cogs fa-3x text-secondary"></i>
+                        </div>
+                        <h5 class="card-title">Custom Solutions</h5>
+                        <p class="card-text">Tailored software solutions for specific business needs</p>
+                        <ul class="list-unstyled text-start">
+                            <li><i class="fas fa-check text-success me-2"></i>Custom Development</li>
+                            <li><i class="fas fa-check text-success me-2"></i>System Integration</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Database Solutions</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Cloud Migration</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="{% url 'contact:contact' %}?subject=Custom Software Solution" class="btn btn-secondary w-100">
+                            <i class="fas fa-envelope me-2"></i>Request Quote
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Our Software -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-6 fw-bold">Why Choose Our Software Solutions?</h2>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-certificate fa-3x text-primary"></i>
+                    </div>
+                    <h5>Licensed & Genuine</h5>
+                    <p class="text-muted">All software products are genuine and properly licensed</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-headset fa-3x text-success"></i>
+                    </div>
+                    <h5>Professional Support</h5>
+                    <p class="text-muted">Comprehensive setup and ongoing technical support</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-graduation-cap fa-3x text-warning"></i>
+                    </div>
+                    <h5>Training Included</h5>
+                    <p class="text-muted">Professional training to maximize software utilization</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="text-center">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-sync-alt fa-3x text-info"></i>
+                    </div>
+                    <h5>Regular Updates</h5>
+                    <p class="text-muted">Keep your software current with regular updates</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact CTA -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3 class="fw-bold mb-2">Need Help Choosing the Right Software?</h3>
+                <p class="mb-0">Our software experts will help you select the perfect solution for your business needs.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="{% url 'contact:contact' %}?subject=Software Consultation" class="btn btn-light btn-lg">
+                    <i class="fas fa-phone me-2"></i>Get Expert Advice
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Software Modal -->
+<div class="modal fade" id="softwareModal" tabindex="-1" aria-labelledby="softwareModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="softwareModalLabel">Software Products</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="softwareModalBody">
+                <!-- Content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="{% url 'contact:contact' %}?subject=Software Purchase" class="btn btn-primary">
+                    <i class="fas fa-envelope me-2"></i>Request Quote
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.software-category-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.software-icon {
+    margin-bottom: 1rem;
+}
+
+.feature-icon {
+    margin-bottom: 1rem;
+}
+
+.list-unstyled li {
+    padding: 0.25rem 0;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showSoftwareModal(category) {
+    const modal = new bootstrap.Modal(document.getElementById('softwareModal'));
+    const modalBody = document.getElementById('softwareModalBody');
+    const modalTitle = document.getElementById('softwareModalLabel');
+    
+    let content = '';
+    let title = '';
+    
+    switch(category) {
+        case 'accounting':
+            title = 'Accounting Software Solutions';
+            content = `
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6>QuickBooks Pro 2024</h6>
+                                <p class="small text-muted">Complete accounting solution for small to medium businesses</p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold text-primary">₦85,000</span>
+                                    <span class="badge bg-success">Popular</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6>Sage 50cloud</h6>
+                                <p class="small text-muted">Advanced accounting with cloud connectivity</p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold text-primary">₦120,000</span>
+                                    <span class="badge bg-info">Professional</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6>Xero Business</h6>
+                                <p class="small text-muted">Cloud-based accounting for modern businesses</p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold text-primary">₦65,000/year</span>
+                                    <span class="badge bg-warning">Cloud</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6>Zoho Books</h6>
+                                <p class="small text-muted">Simple online accounting software</p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold text-primary">₦45,000/year</span>
+                                    <span class="badge bg-secondary">Starter</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+            
+        case 'tax':
+            title = 'Tax Software Solutions';
+            content = `
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6>TaxAct Professional</h6>
+                                <p class="small text-muted">Professional tax preparation software</p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold text-success">₦95,000</span>
+                                    <span class="badge bg-success">Professional</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6>TurboTax Business</h6>
+                                <p class="small text-muted">Complete business tax solution</p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold text-success">₦150,000</span>
+                                    <span class="badge bg-primary">Enterprise</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+            
+        case 'payroll':
+            title = 'Payroll Software Solutions';
+            content = `
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6>ADP Workforce Now</h6>
+                                <p class="small text-muted">Complete HR and payroll solution</p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold text-warning">₦180,000/year</span>
+                                    <span class="badge bg-warning">Enterprise</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6>Gusto Payroll</h6>
+                                <p class="small text-muted">Simple payroll for small businesses</p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold text-warning">₦85,000/year</span>
+                                    <span class="badge bg-success">Popular</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+            
+        default:
+            title = 'Software Products';
+            content = '<p>Please contact us for detailed information about our software solutions.</p>';
+    }
+    
+    modalTitle.textContent = title;
+    modalBody.innerHTML = content;
+    modal.show();
+}
+</script>
+{% endblock %}

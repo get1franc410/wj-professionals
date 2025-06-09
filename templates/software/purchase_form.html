@@ -1,0 +1,327 @@
+<!-- templates/software/purchase_form.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Purchase WJ Accounting Software - WJ Professionals{% endblock %}
+
+{% block content %}
+<!-- Page Title -->
+<div class="page-title dark-background">
+  <div class="container position-relative">
+    <h1>Purchase Software</h1>
+    <p>Complete your purchase and get instant access to WJ Accounting Software</p>
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'core:home' %}">Home</a></li>
+        <li><a href="{% url 'software:accounting_software' %}">Software</a></li>
+        <li class="current">Purchase</li>
+      </ol>
+    </nav>
+  </div>
+</div><!-- End Page Title -->
+
+<!-- Purchase Form Section -->
+<section class="section">
+  <div class="container" data-aos="fade-up">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Order Summary -->
+        <div class="order-summary-card mb-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="mb-0">
+                <i class="bi bi-receipt me-2"></i>Order Summary
+              </h4>
+            </div>
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="order-details">
+                    <p class="mb-2">
+                      <strong>Product:</strong> 
+                      <span class="text-primary">WJ Accounting Software</span>
+                    </p>
+                    <p class="mb-2">
+                      <strong>License Type:</strong> 
+                      <span class="badge bg-primary">{{ selected_license }}</span>
+                    </p>
+                    <p class="mb-0">
+                      <strong>Payment Method:</strong> 
+                      <span class="text-muted">Bank Transfer / Online Payment</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-md-4 text-end">
+                  <div class="price-summary">
+                    <h3 class="price-amount">{{ selected_plan.formatted_price }}</h3>
+                    <small class="text-muted">One-time payment</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Purchase Form -->
+        <div class="purchase-form-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="mb-0">
+                <i class="bi bi-person me-2"></i>Customer Information
+              </h4>
+            </div>
+            <div class="card-body">
+              <form method="post" action="{% url 'software:process_purchase' %}">
+                {% csrf_token %}
+                <input type="hidden" name="license_type" value="{{ selected_license }}">
+                
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <label for="customer_name" class="form-label">
+                      <i class="bi bi-person me-1"></i>Full Name *
+                    </label>
+                    <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="email" class="form-label">
+                      <i class="bi bi-envelope me-1"></i>Email Address *
+                    </label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="company" class="form-label">
+                      <i class="bi bi-building me-1"></i>Company Name
+                    </label>
+                    <input type="text" class="form-control" id="company" name="company">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="phone" class="form-label">
+                      <i class="bi bi-telephone me-1"></i>Phone Number *
+                    </label>
+                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="+234 xxx xxx xxxx" required>
+                  </div>
+                  <div class="col-12">
+                    <label for="license_type_display" class="form-label">
+                      <i class="bi bi-key me-1"></i>License Type
+                    </label>
+                    <select class="form-select" id="license_type_display" name="license_type" required>
+                      <option value="SINGLE" {% if selected_license == 'SINGLE' %}selected{% endif %}>
+                        Single User - ₦150,000
+                      </option>
+                      <option value="MULTI" {% if selected_license == 'MULTI' %}selected{% endif %}>
+                        Multi User (5 seats) - ₦400,000
+                      </option>
+                      <option value="ENTERPRISE" {% if selected_license == 'ENTERPRISE' %}selected{% endif %}>
+                        Enterprise (10 seats) - ₦1,000,000
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label for="address" class="form-label">
+                      <i class="bi bi-geo-alt me-1"></i>Business Address
+                    </label>
+                    <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter your business address in Nigeria"></textarea>
+                  </div>
+                </div>
+                
+                <!-- Payment Information -->
+                <div class="payment-info mt-4">
+                  <div class="service-item item-blue position-relative">
+                    <div class="icon">
+                      <i class="bi bi-info-circle"></i>
+                    </div>
+                    <h5>What happens next?</h5>
+                    <p class="mb-3">After submitting this form, you will receive:</p>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <ul class="list-unstyled">
+                          <li class="mb-2">
+                            <i class="bi bi-check text-success me-2"></i>Bank account details for transfer
+                          </li>
+                          <li class="mb-2">
+                            <i class="bi bi-check text-success me-2"></i>Online payment link (Paystack/Flutterwave)
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-md-6">
+                        <ul class="list-unstyled">
+                          <li class="mb-2">
+                            <i class="bi bi-check text-success me-2"></i>Software download instructions
+                          </li>
+                          <li class="mb-2">
+                            <i class="bi bi-check text-success me-2"></i>License key upon payment confirmation
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Terms and Conditions -->
+                <div class="terms-section mt-4">
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="terms" required>
+                    <label class="form-check-label" for="terms">
+                      I agree to the <a href="#" target="_blank" class="text-primary">Terms of Service</a> and <a href="#" target="_blank" class="text-primary">License Agreement</a> *
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="newsletter">
+                    <label class="form-check-label" for="newsletter">
+                      Subscribe to updates about new features and accounting tips
+                    </label>
+                  </div>
+                </div>
+                
+                <!-- Submit Buttons -->
+                <div class="form-actions mt-5">
+                  <div class="d-grid gap-3">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                      <i class="bi bi-send me-2"></i>Submit Purchase Request
+                    </button>
+                    <a href="{% url 'software:accounting_software' %}" class="btn btn-outline-secondary">
+                      <i class="bi bi-arrow-left me-2"></i>Back to Software Info
+                    </a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.order-summary-card .card {
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.order-summary-card .card-header {
+  background: var(--accent-color);
+  color: white;
+  border-bottom: none;
+}
+
+.purchase-form-card .card {
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.purchase-form-card .card-header {
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.price-amount {
+  color: var(--accent-color);
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 0.5rem;
+}
+
+/* Enhanced form control visibility */
+.form-control, .form-select {
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  background-color: #ffffff;
+  color: var(--default-color);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.25rem rgba(var(--accent-color-rgb), 0.25);
+  background-color: #ffffff;
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: #6c757d;
+  opacity: 0.7;
+}
+
+/* Textarea specific styling */
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.payment-info .service-item {
+  margin: 0;
+}
+
+.terms-section {
+  padding: 1.5rem;
+  background: var(--surface-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.form-check-input {
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.form-check-input:checked {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.btn-primary {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+}
+
+.btn-primary:hover {
+  background: color-mix(in srgb, var(--accent-color), black 15%);
+  border-color: color-mix(in srgb, var(--accent-color), black 15%);
+}
+
+.btn-outline-secondary {
+  border-color: var(--border-color);
+  color: var(--default-color);
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+}
+
+.btn-outline-secondary:hover {
+  background: var(--default-color);
+  border-color: var(--default-color);
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .price-summary {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .order-details {
+    text-align: center;
+  }
+  
+  .form-control, .form-select {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+}
+</style>
+{% endblock %}

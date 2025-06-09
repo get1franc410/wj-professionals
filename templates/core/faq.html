@@ -1,0 +1,258 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\templates\core\faq.html-->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Frequently Asked Questions - {{ company.name }}{% endblock %}
+
+{% block content %}
+<!-- Page Title -->
+<div class="page-title dark-background">
+  <div class="container position-relative">
+    <h1>Frequently Asked Questions</h1>
+    <p>Find answers to common questions about our professional services</p>
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'core:home' %}">Home</a></li>
+        <li class="current">FAQ</li>
+      </ol>
+    </nav>
+  </div>
+</div><!-- End Page Title -->
+
+<!-- FAQ Section -->
+<section class="section">
+  <div class="container" data-aos="fade-up">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="faq-container">
+          {% for faq in faqs %}
+          <div class="faq-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+            <h3>
+              <span class="num">{{ forloop.counter }}.</span>
+              <span>{{ faq.question }}</span>
+            </h3>
+            <div class="faq-content">
+              <p>{{ faq.answer|safe }}</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div><!-- End Faq item-->
+          {% endfor %}
+        </div>
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="faq-sidebar" data-aos="fade-up" data-aos-delay="200">
+          <!-- Contact Card -->
+          <div class="service-item item-cyan position-relative mb-4">
+            <div class="icon">
+              <i class="bi bi-question-circle"></i>
+            </div>
+            <h4>Still Have Questions?</h4>
+            <p class="mb-3">Can't find what you're looking for? Our team is here to help you with personalized answers.</p>
+            <a href="{% url 'contact:contact' %}" class="btn btn-primary">
+              <i class="bi bi-envelope me-2"></i>Contact Us
+            </a>
+          </div>
+
+          <!-- Services Card -->
+          <div class="service-item item-orange position-relative mb-4">
+            <div class="icon">
+              <i class="bi bi-briefcase"></i>
+            </div>
+            <h4>Our Services</h4>
+            <p class="mb-3">Explore our comprehensive range of professional accounting and business services.</p>
+            <a href="{% url 'services:services' %}" class="btn btn-outline-primary">
+              <i class="bi bi-arrow-right me-2"></i>View Services
+            </a>
+          </div>
+
+          <!-- Consultation Card -->
+          <div class="service-item item-blue position-relative">
+            <div class="icon">
+              <i class="bi bi-calendar-check"></i>
+            </div>
+            <h4>Free Consultation</h4>
+            <p class="mb-3">Schedule a free consultation to discuss your specific business needs and requirements.</p>
+            <a href="{% url 'contact:contact' %}" class="btn btn-outline-primary">
+              <i class="bi bi-calendar me-2"></i>Book Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.faq-container .faq-item {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-container .faq-item:hover {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.faq-container .faq-item h3 {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  margin: 0 30px 0 0;
+  transition: 0.3s;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  color: var(--heading-color);
+}
+
+.faq-container .faq-item h3 .num {
+  color: var(--accent-color);
+  font-weight: 700;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.faq-container .faq-item h3:hover {
+  color: var(--accent-color);
+}
+
+.faq-container .faq-item .faq-content {
+  display: none;
+  padding: 20px 0 0 0;
+  border-top: 1px solid var(--border-color);
+  margin-top: 20px;
+}
+
+.faq-container .faq-item .faq-content p {
+  color: var(--default-color);
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.faq-container .faq-item .faq-toggle {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-size: 16px;
+  line-height: 0;
+  transition: 0.3s;
+  cursor: pointer;
+  color: var(--accent-color);
+}
+
+.faq-container .faq-item .faq-toggle:hover {
+  color: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
+
+.faq-container .faq-item.faq-active {
+  background: color-mix(in srgb, var(--accent-color), transparent 97%);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 80%);
+}
+
+.faq-container .faq-item.faq-active h3 {
+  color: var(--accent-color);
+}
+
+.faq-container .faq-item.faq-active .faq-content {
+  display: block;
+}
+
+.faq-container .faq-item.faq-active .faq-toggle {
+  transform: rotate(90deg);
+  color: var(--accent-color);
+}
+
+.faq-sidebar .btn {
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.faq-sidebar .btn-primary {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.faq-sidebar .btn-primary:hover {
+  background: color-mix(in srgb, var(--accent-color), black 15%);
+  border-color: color-mix(in srgb, var(--accent-color), black 15%);
+  transform: translateY(-2px);
+}
+
+.faq-sidebar .btn-outline-primary {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.faq-sidebar .btn-outline-primary:hover {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .faq-container .faq-item {
+    padding: 20px;
+  }
+  
+  .faq-container .faq-item h3 {
+    font-size: 16px;
+    margin-right: 25px;
+  }
+  
+  .faq-container .faq-item .faq-toggle {
+    top: 20px;
+    right: 20px;
+  }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // FAQ Toggle functionality
+  const faqItems = document.querySelectorAll('.faq-item');
+  
+  faqItems.forEach(item => {
+    const question = item.querySelector('h3');
+    const toggle = item.querySelector('.faq-toggle');
+    
+    question.addEventListener('click', () => {
+      const isActive = item.classList.contains('faq-active');
+      
+      // Close all other FAQ items
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('faq-active');
+        }
+      });
+      
+      // Toggle current item
+      if (isActive) {
+        item.classList.remove('faq-active');
+      } else {
+        item.classList.add('faq-active');
+      }
+    });
+    
+    toggle.addEventListener('click', () => {
+      question.click();
+    });
+  });
+});
+</script>
+{% endblock %}

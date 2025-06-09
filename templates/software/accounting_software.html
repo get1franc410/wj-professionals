@@ -1,0 +1,322 @@
+<!-- templates/software/accounting_software.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% load software_filters %}
+
+{% block title %}{{ page_title }} - WJ Professionals{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<!-- Page Title -->
+<div class="page-title dark-background">
+  <div class="container position-relative">
+    <h1>WJ Accounting Software</h1>
+    <p>Professional accounting software designed specifically for Nigerian businesses</p>
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'core:home' %}">Home</a></li>
+        <li><a href="{% url 'core:services' %}">Services</a></li>
+        <li class="current">Accounting Software</li>
+      </ol>
+    </nav>
+  </div>
+</div><!-- End Page Title -->
+
+<!-- Hero Section -->
+<section class="section">
+  <div class="container" data-aos="fade-up">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="content">
+          <h2>Streamline Your Financial Operations</h2>
+          <p>Our comprehensive accounting software solution helps Nigerian businesses manage their finances efficiently with features designed for local compliance and best practices.</p>
+          <div class="d-flex flex-column flex-sm-row gap-3 mt-4">
+            <a href="#pricing" class="btn btn-primary">
+              <i class="bi bi-cart me-2"></i>Get Started
+            </a>
+            <a href="#features" class="btn btn-outline-primary">
+              <i class="bi bi-info-circle me-2"></i>Learn More
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center">
+        <div class="hero-image">
+          <i class="bi bi-laptop" style="font-size: 8rem; color: var(--accent-color); opacity: 0.8;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="section light-background">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Powerful Features</h2>
+      <p>Everything you need to manage your business finances effectively</p>
+    </div>
+    
+    <div class="row gy-4">
+      {% for feature in software_features %}
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+        <div class="service-item item-cyan position-relative h-100">
+          <div class="icon">
+            <i class="{{ feature.icon }}"></i>
+          </div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Section -->
+<section id="pricing" class="section">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Choose Your Plan</h2>
+      <p>One-time license purchase with affordable annual service and updates</p>
+    </div>
+    
+    <div class="row gy-4 justify-content-center">
+      {% for plan in pricing_plans %}
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+        <div class="pricing-card h-100 {% if plan.popular %}popular{% endif %}">
+          {% if plan.popular %}
+          <div class="popular-badge">
+            <span class="badge bg-primary">Most Popular</span>
+          </div>
+          {% endif %}
+          
+          <div class="card-body text-center p-4">
+            <h3 class="plan-title">{{ plan.display_name }}</h3>
+            <div class="price-display mb-3">
+              <span class="price">{{ plan.price|naira_format }}</span>
+              <small class="period">{{ plan.period }}</small>
+            </div>
+            <p class="installations">{{ plan.installations }} Installation{{ plan.installations|pluralize }}</p>
+            
+            <ul class="features-list list-unstyled my-4">
+              {% for feature in plan.features %}
+              <li class="mb-2">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                {{ feature }}
+              </li>
+              {% endfor %}
+            </ul>
+            
+            <a href="{% url 'software:purchase_form' %}?license_type={{ plan.name }}" 
+               class="btn btn-primary w-100">
+              <i class="bi bi-cart me-2"></i>Purchase Now
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <!-- Service Information -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="service-item item-orange position-relative">
+          <div class="icon">
+            <i class="bi bi-gear"></i>
+          </div>
+          <h4>Annual Service & Updates</h4>
+          <p class="mb-3">Keep your software current with our affordable annual service package:</p>
+          <div class="row">
+            <div class="col-md-6">
+              <ul class="list-unstyled">
+                <li class="mb-2">
+                  <i class="bi bi-check text-success me-2"></i>Regular software updates
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-success me-2"></i>New feature releases
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-success me-2"></i>Technical support
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-unstyled">
+                <li class="mb-2">
+                  <i class="bi bi-check text-success me-2"></i>Compliance updates
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-success me-2"></i>Data backup assistance
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-success me-2"></i>Priority customer support
+                </li>
+              </ul>
+            </div>
+          </div>
+          <p class="text-muted mt-3">
+            <small>Annual service fee starts from ₦25,000 depending on your license type. First year included with purchase.</small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- System Requirements -->
+<section class="section light-background">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title" data-aos="fade-up">
+      <h2>System Requirements</h2>
+      <p>Ensure your system meets these requirements for optimal performance</p>
+    </div>
+    
+    <div class="row gy-4">
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-item item-blue position-relative h-100">
+          <div class="icon">
+            <i class="bi bi-windows"></i>
+          </div>
+          <h3>Windows Requirements</h3>
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <i class="bi bi-check text-success me-2"></i>Windows 10 or later
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check text-success me-2"></i>4GB RAM minimum
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check text-success me-2"></i>2GB free disk space
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check text-success me-2"></i>.NET Framework 4.8
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-item item-green position-relative h-100">
+          <div class="icon">
+            <i class="bi bi-globe"></i>
+          </div>
+          <h3>Network Requirements</h3>
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <i class="bi bi-check text-success me-2"></i>Internet connection for activation
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check text-success me-2"></i>Periodic online validation
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check text-success me-2"></i>Email for license delivery
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check text-success me-2"></i>Secure HTTPS connection
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="call-to-action section">
+  <div class="container">
+    <div class="row" data-aos="zoom-in" data-aos-delay="100">
+      <div class="col-xl-9 text-center text-xl-start">
+        <h3>Ready to streamline your accounting?</h3>
+        <p>Join hundreds of Nigerian businesses using WJ Accounting Software to manage their finances efficiently and stay compliant with local regulations.</p>
+      </div>
+      <div class="col-xl-3 cta-btn-container text-center">
+        <a class="cta-btn align-middle" href="#pricing">
+          <i class="bi bi-rocket me-2"></i>Get Started Today
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.pricing-card {
+  background: var(--surface-color);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-color: var(--accent-color);
+}
+
+.pricing-card.popular {
+  border-color: var(--accent-color);
+  transform: scale(1.02);
+}
+
+.popular-badge {
+  position: absolute;
+  top: 15px;
+  right: -30px;
+  transform: rotate(45deg);
+  width: 120px;
+  text-align: center;
+}
+
+.plan-title {
+  color: var(--heading-color);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.price-display .price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  display: block;
+}
+
+.price-display .period {
+  color: var(--default-color);
+  opacity: 0.7;
+}
+
+.installations {
+  color: var(--accent-color);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.features-list li {
+  text-align: left;
+  padding: 0.25rem 0;
+}
+
+.hero-image {
+  padding: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pricing-card.popular {
+    transform: none;
+    margin-top: 1rem;
+  }
+  
+  .price-display .price {
+    font-size: 2rem;
+  }
+  
+  .hero-image i {
+    font-size: 6rem !important;
+  }
+}
+</style>
+{% endblock %}

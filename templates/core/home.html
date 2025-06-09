@@ -1,0 +1,783 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\templates\core\home.html-->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ company.name }} - Professional Accounting Services in Nigeria{% endblock %}
+{% block body_class %}index-page{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section id="hero" class="hero section dark-background">
+  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="" data-aos="fade-in">
+
+  <div class="container">
+    <div class="row justify-content-center text-center" data-aos="fade-up" data-aos-delay="100">
+      <div class="col-xl-6 col-lg-8">
+        <h2>{{ company.tagline|default:"Professional Accounting Solutions with WJ Professionals" }}<span>.</span></h2>
+        <p>{{ company.description|striptags|truncatewords:15|default:"We are a team of qualified accounting professionals providing comprehensive financial services across Nigeria" }}</p>
+      </div>
+    </div>
+
+    <div class="row gy-4 mt-5 justify-content-center" data-aos="fade-up" data-aos-delay="200">
+      {% for service in featured_services|slice:":5" %}
+      <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="{% cycle '300' '400' '500' '600' '700' %}">
+        <div class="icon-box">
+          <i class="{{ service.icon|default:'bi bi-calculator' }}"></i>
+          <h3><a href="{% url 'core:service_detail' service.pk %}">{{ service.title }}</a></h3>
+        </div>
+      </div>
+      {% empty %}
+      <!-- Default service icons if no featured services -->
+      <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="icon-box">
+          <i class="bi bi-calculator"></i>
+          <h3><a href="{% url 'core:services' %}">Tax Services</a></h3>
+        </div>
+      </div>
+      <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="icon-box">
+          <i class="bi bi-search-heart"></i>
+          <h3><a href="{% url 'core:services' %}">Audit & Assurance</a></h3>
+        </div>
+      </div>
+      <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="500">
+        <div class="icon-box">
+          <i class="bi bi-graph-up"></i>
+          <h3><a href="{% url 'core:services' %}">Business Advisory</a></h3>
+        </div>
+      </div>
+      <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="600">
+        <div class="icon-box">
+          <i class="bi bi-building"></i>
+          <h3><a href="{% url 'core:services' %}">Business Registration</a></h3>
+        </div>
+      </div>
+      <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="700">
+        <div class="icon-box">
+          <i class="bi bi-laptop"></i>
+          <h3><a href="{% url 'software:accounting_software' %}">Software Solutions</a></h3>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section><!-- /Hero Section -->
+
+<!-- About Section -->
+<section id="about" class="about section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+      <div class="col-lg-6 order-1 order-lg-2">
+        <img src="{% static 'assets/img/about.jpg' %}" class="img-fluid" alt="About WJ Professionals">
+      </div>
+      <div class="col-lg-6 order-2 order-lg-1 content">
+        <h3>{{ company.name|default:"WJ Professionals" }} - Your Trusted Financial Partner</h3>
+        <p class="fst-italic">
+          {{ company.mission|striptags|default:"To provide exceptional accounting, tax, and financial advisory services that empower our clients to achieve their financial goals while ensuring full compliance with Nigerian tax laws and regulations." }}
+        </p>
+        <ul>
+          <li><i class="bi bi-check2-all"></i> <span>Over {{ company.years_of_experience|default:"10" }} years of professional experience in Nigerian accounting and taxation</span></li>
+          <li><i class="bi bi-check2-all"></i> <span>Certified professionals with extensive knowledge of FIRS regulations and compliance</span></li>
+          <li><i class="bi bi-check2-all"></i> <span>Comprehensive services from individual tax returns to complex corporate audits and business advisory</span></li>
+        </ul>
+        <p>
+          We serve over {{ company.clients_served|default:"500" }} clients across Nigeria, providing personalized accounting solutions that help businesses thrive in today's competitive environment. Our team combines traditional accounting expertise with modern technology to deliver exceptional results.
+        </p>
+        <a href="{% url 'core:about' %}" class="btn btn-primary">Learn More About Us</a>
+      </div>
+    </div>
+  </div>
+</section><!-- /About Section -->
+
+<!-- Clients Section -->
+{% if featured_clients %}
+<section id="clients" class="clients section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="swiper init-swiper">
+      <script type="application/json" class="swiper-config">
+        {
+          "loop": true,
+          "speed": 600,
+          "autoplay": {
+            "delay": 5000
+          },
+          "slidesPerView": "auto",
+          "pagination": {
+            "el": ".swiper-pagination",
+            "type": "bullets",
+            "clickable": true
+          },
+          "breakpoints": {
+            "320": {
+              "slidesPerView": 2,
+              "spaceBetween": 40
+            },
+            "480": {
+              "slidesPerView": 3,
+              "spaceBetween": 60
+            },
+            "640": {
+              "slidesPerView": 4,
+              "spaceBetween": 80
+            },
+            "992": {
+              "slidesPerView": 6,
+              "spaceBetween": 120
+            }
+          }
+        }
+      </script>
+      <div class="swiper-wrapper align-items-center">
+        {% for client in featured_clients %}
+        <div class="swiper-slide">
+          {% if client.logo %}
+          <img src="{{ client.logo.url }}" class="img-fluid" alt="{{ client.name }}">
+          {% else %}
+          <div class="client-placeholder d-flex align-items-center justify-content-center">
+            <span class="fw-bold text-muted">{{ client.name|truncatewords:2 }}</span>
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section><!-- /Clients Section -->
+{% endif %}
+
+<!-- Services Section -->
+<section id="services" class="services section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Services</h2>
+    <p>Our Professional Services</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row gy-4">
+      {% for service in featured_services|slice:":6" %}
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{% cycle '100' '200' '300' '400' '500' '600' %}">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="{{ service.icon|default:'bi bi-activity' }}"></i>
+          </div>
+          <a href="{% url 'core:service_detail' service.pk %}" class="stretched-link">
+            <h3>{{ service.title }}</h3>
+          </a>
+          <p>{{ service.short_description|truncatewords:20 }}</p>
+          {% if service.starting_price %}
+          <div class="service-price">
+            <span class="price">{{ service.price_description }}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div><!-- End Service Item -->
+      {% empty %}
+      <!-- Default services if none exist -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="bi bi-calculator"></i>
+          </div>
+          <a href="{% url 'core:services' %}" class="stretched-link">
+            <h3>Tax Preparation & Planning</h3>
+          </a>
+          <p>Comprehensive tax services including preparation, planning, and compliance for individuals and businesses.</p>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="bi bi-search-heart"></i>
+          </div>
+          <a href="{% url 'core:services' %}" class="stretched-link">
+            <h3>Audit & Assurance</h3>
+          </a>
+          <p>Independent audit services to ensure financial transparency and regulatory compliance for your business.</p>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="bi bi-graph-up"></i>
+          </div>
+          <a href="{% url 'core:services' %}" class="stretched-link">
+            <h3>Business Advisory</h3>
+          </a>
+          <p>Strategic financial advice and consulting to help your business grow and optimize performance.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="700">
+      <a href="{% url 'core:services' %}" class="btn btn-primary btn-lg">View All Services</a>
+    </div>
+  </div>
+</section><!-- /Services Section -->
+
+<!-- Stats Section -->
+<section id="stats" class="stats section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4 align-items-center justify-content-between">
+      <div class="col-lg-5">
+        <img src="{% static 'assets/img/stats-img.jpg' %}" alt="" class="img-fluid">
+      </div>
+
+      <div class="col-lg-6">
+        <h3 class="fw-bold fs-2 mb-3">{{ company.name|default:"WJ Professionals" }} by the Numbers</h3>
+        <p>
+          Our track record speaks for itself. With years of dedicated service to the Nigerian business community, 
+          we have built a reputation for excellence and reliability in accounting and financial services.
+        </p>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <div class="stats-item d-flex">
+              <i class="bi bi-emoji-smile flex-shrink-0"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{ company.clients_served|default:'500' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <p><strong>Happy Clients</strong> <span>served nationwide</span></p>
+              </div>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-6">
+            <div class="stats-item d-flex">
+              <i class="bi bi-journal-richtext flex-shrink-0"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{ company.projects_completed|default:'1200' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <p><strong>Projects</strong> <span>completed successfully</span></p>
+              </div>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-6">
+            <div class="stats-item d-flex">
+              <i class="bi bi-headset flex-shrink-0"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{ company.years_of_experience|default:'10' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <p><strong>Years Experience</strong> <span>in Nigerian market</span></p>
+              </div>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-6">
+            <div class="stats-item d-flex">
+              <i class="bi bi-people flex-shrink-0"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{ team_members.count|default:'15' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <p><strong>Team Members</strong> <span>certified professionals</span></p>
+              </div>
+            </div>
+          </div><!-- End Stats Item -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /Stats Section -->
+
+<!-- Call To Action Section -->
+<section id="call-to-action" class="call-to-action section dark-background">
+  <img src="{% static 'assets/img/cta-bg.jpg' %}" alt="">
+
+  <div class="container">
+    <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+      <div class="col-xl-10">
+        <div class="text-center">
+          <h3>Ready to Transform Your Business Finances?</h3>
+          <p>Let our team of certified accounting professionals help you navigate the complexities of Nigerian tax laws, 
+          improve your financial processes, and drive your business growth. Contact us today for a free consultation.</p>
+          <a class="cta-btn" href="{% url 'contact:contact' %}">Get Free Consultation</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /Call To Action Section -->
+
+<!-- Portfolio Section -->
+{% if featured_clients %}
+<section id="portfolio" class="portfolio section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Portfolio</h2>
+    <p>Our Client Success Stories</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+      <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+        <li data-filter="*" class="filter-active">All</li>
+        <li data-filter=".filter-corporate">Corporate</li>
+        <li data-filter=".filter-sme">SME</li>
+        <li data-filter=".filter-individual">Individual</li>
+      </ul><!-- End Portfolio Filters -->
+
+      <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+        {% for client in featured_clients|slice:":9" %}
+        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ client.client_type|default:'corporate' }}">
+          {% if client.project_image %}
+          <img src="{{ client.project_image.url }}" class="img-fluid" alt="{{ client.name }}">
+          {% else %}
+          <div class="portfolio-placeholder d-flex align-items-center justify-content-center">
+            <div class="text-center">
+              <i class="bi bi-building display-1 text-muted"></i>
+              <h5 class="mt-2">{{ client.name }}</h5>
+            </div>
+          </div>
+          {% endif %}
+          <div class="portfolio-info">
+            <h4>{{ client.name }}</h4>
+            <p>{{ client.project_title|default:"Professional Services" }}</p>
+            <a href="{% if client.project_image %}{{ client.project_image.url }}{% else %}#{% endif %}" 
+               title="{{ client.name }}" data-gallery="portfolio-gallery-{{ client.client_type }}" 
+               class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+            <a href="{% url 'portfolio:client_detail' client.pk %}" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+          </div>
+        </div><!-- End Portfolio Item -->
+        {% endfor %}
+      </div><!-- End Portfolio Container -->
+    </div>
+
+    <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="300">
+      <a href="{% url 'portfolio:client_list' %}" class="btn btn-primary btn-lg">View Full Portfolio</a>
+    </div>
+  </div>
+</section><!-- /Portfolio Section -->
+{% endif %}
+
+<!-- Testimonials Section -->
+{% if testimonials or featured_reviews %}
+<section id="testimonials" class="testimonials section dark-background">
+  <img src="{% static 'assets/img/testimonials-bg.jpg' %}" class="testimonials-bg" alt="">
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="swiper init-swiper">
+      <script type="application/json" class="swiper-config">
+        {
+          "loop": true,
+          "speed": 600,
+          "autoplay": {
+            "delay": 5000
+          },
+          "slidesPerView": "auto",
+          "pagination": {
+            "el": ".swiper-pagination",
+            "type": "bullets",
+            "clickable": true
+          }
+        }
+      </script>
+      <div class="swiper-wrapper">
+        {% for testimonial in testimonials %}
+        <div class="swiper-slide">
+          <div class="testimonial-item">
+            {% if testimonial.client_photo %}
+            <img src="{{ testimonial.client_photo.url }}" class="testimonial-img" alt="{{ testimonial.client_name }}">
+            {% else %}
+            <div class="testimonial-img d-flex align-items-center justify-content-center bg-light">
+              <i class="bi bi-person-circle display-4 text-muted"></i>
+            </div>
+            {% endif %}
+            <h3>{{ testimonial.client_name }}</h3>
+            <h4>{{ testimonial.position }} - {{ testimonial.company }}</h4>
+            <div class="stars">
+              {% for i in "12345" %}
+                {% if forloop.counter <= testimonial.rating %}
+                <i class="bi bi-star-fill"></i>
+                {% else %}
+                <i class="bi bi-star"></i>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <p>
+              <i class="bi bi-quote quote-icon-left"></i>
+              <span>{{ testimonial.testimonial|truncatewords:30 }}</span>
+              <i class="bi bi-quote quote-icon-right"></i>
+            </p>
+          </div>
+        </div><!-- End testimonial item -->
+        {% endfor %}
+
+        {% for review in featured_reviews %}
+        <div class="swiper-slide">
+          <div class="testimonial-item">
+            <div class="testimonial-img d-flex align-items-center justify-content-center bg-light">
+              <i class="bi bi-person-circle display-4 text-muted"></i>
+            </div>
+            <h3>{{ review.client_name }}</h3>
+            <h4>{{ review.service_type|default:"Valued Client" }}</h4>
+            <div class="stars">
+              {% for i in "12345" %}
+                {% if forloop.counter <= review.rating %}
+                <i class="bi bi-star-fill"></i>
+                {% else %}
+                <i class="bi bi-star"></i>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <p>
+              <i class="bi bi-quote quote-icon-left"></i>
+              <span>{{ review.review_text|truncatewords:30 }}</span>
+              <i class="bi bi-quote quote-icon-right"></i>
+            </p>
+          </div>
+        </div><!-- End testimonial item -->
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+
+    <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="200">
+      <a href="{% url 'reviews:review_list' %}" class="btn btn-light btn-lg">Read All Reviews</a>
+      <a href="{% url 'reviews:add_review' %}" class="btn btn-outline-light btn-lg ms-2">Leave a Review</a>
+    </div>
+  </div>
+</section><!-- /Testimonials Section -->
+{% endif %}
+
+<!-- Team Section -->
+<section id="team" class="team section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Team</h2>
+    <p>Our Professional Team</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row gy-4">
+      {% for member in team_members|slice:":4" %}
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="{% cycle '100' '200' '300' '400' %}">
+        <div class="team-member">
+          <div class="member-img">
+            {% if member.photo %}
+            <img src="{{ member.photo.url }}" class="img-fluid" alt="{{ member.user.get_full_name }}">
+            {% else %}
+            <div class="member-placeholder d-flex align-items-center justify-content-center">
+              <i class="bi bi-person-circle display-1 text-muted"></i>
+            </div>
+            {% endif %}
+            <div class="social">
+              {% if member.twitter %}<a href="{{ member.twitter }}"><i class="bi bi-twitter-x"></i></a>{% endif %}
+              {% if member.facebook %}<a href="{{ member.facebook }}"><i class="bi bi-facebook"></i></a>{% endif %}
+              {% if member.instagram %}<a href="{{ member.instagram }}"><i class="bi bi-instagram"></i></a>{% endif %}
+              {% if member.linkedin %}<a href="{{ member.linkedin }}"><i class="bi bi-linkedin"></i></a>{% endif %}
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>{{ member.user.get_full_name }}</h4>
+            <span>{{ member.get_position_display|default:member.position }}</span>
+          </div>
+        </div>
+      </div><!-- End Team Member -->
+      {% empty %}
+      <!-- Default team member if none exist -->
+      <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+        <div class="team-member">
+          <div class="member-img">
+            <div class="member-placeholder d-flex align-items-center justify-content-center">
+              <i class="bi bi-person-circle display-1 text-muted"></i>
+            </div>
+            <div class="social">
+              <a href="#"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="member-info">
+            <h4>Professional Team</h4>
+            <span>Certified Accountants</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="500">
+      <a href="{% url 'staff:team' %}" class="btn btn-primary btn-lg">Meet Our Full Team</a>
+    </div>
+  </div>
+</section><!-- /Team Section -->
+
+<!-- Recent News Section -->
+{% if recent_news %}
+<section id="news" class="news section light-background">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Latest News</h2>
+    <p>Stay Updated with Financial Insights</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row gy-4">
+      {% for article in recent_news %}
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{% cycle '100' '200' '300' %}">
+        <div class="news-item">
+          {% if article.featured_image %}
+          <img src="{{ article.featured_image.url }}" class="img-fluid" alt="{{ article.title }}">
+          {% else %}
+          <div class="news-placeholder d-flex align-items-center justify-content-center">
+            <i class="bi bi-newspaper display-1 text-muted"></i>
+          </div>
+          {% endif %}
+          <div class="news-content p-4">
+            <div class="news-meta mb-2">
+              <span class="badge bg-primary">{{ article.category.name }}</span>
+              <small class="text-muted ms-2">{{ article.publish_date|date:"M d, Y" }}</small>
+            </div>
+            <h4><a href="{% url 'news:article_detail' article.slug %}">{{ article.title }}</a></h4>
+            <p>{{ article.excerpt|truncatewords:15 }}</p>
+            <a href="{% url 'news:article_detail' article.slug %}" class="btn btn-outline-primary btn-sm">Read More</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="400">
+      <a href="{% url 'news:article_list' %}" class="btn btn-primary btn-lg">View All News</a>
+    </div>
+  </div>
+</section><!-- /Recent News Section -->
+{% endif %}
+
+<!-- Contact Section -->
+<section id="contact" class="contact section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Contact</h2>
+    <p>Get In Touch With Us</p>
+  </div><!-- End Section Title -->
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+      <div class="col-lg-4">
+        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+          <i class="bi bi-geo-alt flex-shrink-0"></i>
+          <div>
+            <h3>Address</h3>
+            <p>{{ company.address|default:"Plot 123, Ademola Adetokunbo Crescent, Wuse II, Abuja, FCT" }}</p>
+          </div>
+        </div><!-- End Info Item -->
+
+        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+          <i class="bi bi-telephone flex-shrink-0"></i>
+          <div>
+            <h3>Call Us</h3>
+            <p>{{ company.phone|default:"+234-803-065-5969" }}</p>
+          </div>
+        </div><!-- End Info Item -->
+
+        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="500">
+          <i class="bi bi-envelope flex-shrink-0"></i>
+          <div>
+            <h3>Email Us</h3>
+            <p>{{ company.email|default:"info@wjprofessionals.com" }}</p>
+          </div>
+        </div><!-- End Info Item -->
+      </div>
+
+      <div class="col-lg-8">
+        <form action="{% url 'contact:contact' %}" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+          {% csrf_token %}
+          <div class="row gy-4">
+            <div class="col-md-6">
+              <input type="text" name="first_name" class="form-control" placeholder="Your First Name" required="">
+            </div>
+
+            <div class="col-md-6">
+              <input type="text" name="last_name" class="form-control" placeholder="Your Last Name" required="">
+            </div>
+
+            <div class="col-md-6">
+              <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+            </div>
+
+            <div class="col-md-6">
+              <input type="tel" class="form-control" name="phone" placeholder="Your Phone Number">
+            </div>
+
+            <div class="col-md-12">
+              <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+            </div>
+
+            <div class="col-md-12">
+              <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+            </div>
+
+            <div class="col-md-12 text-center">
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your message has been sent. Thank you!</div>
+
+              <button type="submit">Send Message</button>
+            </div>
+          </div>
+        </form>
+      </div><!-- End Contact Form -->
+    </div>
+
+    <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="600">
+      <a href="{% url 'contact:contact' %}" class="btn btn-outline-primary btn-lg">Visit Our Contact Page</a>
+    </div>
+  </div>
+</section><!-- /Contact Section -->
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Custom styles for home page */
+.client-placeholder,
+.member-placeholder,
+.news-placeholder,
+.portfolio-placeholder {
+  height: 120px;
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+}
+
+.news-item {
+  background: var(--surface-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.news-item:hover {
+  transform: translateY(-5px);
+}
+
+.news-placeholder {
+  height: 200px;
+}
+
+.service-price {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.testimonial-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  overflow: hidden;
+}
+
+.stats-item i {
+  color: var(--accent-color);
+  font-size: 44px;
+  margin-right: 15px;
+}
+
+.portfolio-placeholder {
+  height: 250px;
+}
+
+/* Rating stars */
+.stars i {
+  color: #ffc107;
+  margin: 0 1px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero h2 {
+    font-size: 32px;
+  }
+  
+  .hero p {
+    font-size: 18px;
+  }
+  
+  .stats-item {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .stats-item i {
+    margin-right: 0;
+    margin-bottom: 10px;
+    display: block;
+  }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Enhanced contact form submission
+  const contactForm = document.querySelector('.php-email-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const loadingDiv = this.querySelector('.loading');
+      const errorDiv = this.querySelector('.error-message');
+      const successDiv = this.querySelector('.sent-message');
+      const submitBtn = this.querySelector('button[type="submit"]');
+      
+      // Show loading
+      loadingDiv.style.display = 'block';
+      errorDiv.style.display = 'none';
+      successDiv.style.display = 'none';
+      submitBtn.disabled = true;
+      
+      fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        loadingDiv.style.display = 'none';
+        submitBtn.disabled = false;
+        
+        if (data.success) {
+          successDiv.style.display = 'block';
+          this.reset();
+        } else {
+          errorDiv.style.display = 'block';
+          errorDiv.textContent = data.message || 'An error occurred. Please try again.';
+        }
+      })
+      .catch(error => {
+        loadingDiv.style.display = 'none';
+        submitBtn.disabled = false;
+        errorDiv.style.display = 'block';
+        errorDiv.textContent = 'An error occurred. Please try again.';
+      });
+    });
+  }
+
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

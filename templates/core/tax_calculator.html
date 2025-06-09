@@ -1,0 +1,391 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\templates\core\tax_calculator.html-->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tax Calculators - {{ company.name }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold">Tax Calculators</h1>
+                <p class="lead">Calculate your taxes with our professional tools</p>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'core:home' %}" class="text-white-50">Home</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Tax Calculators</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tax Calculators -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Personal Income Tax Calculator -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user me-2"></i>Personal Income Tax Calculator
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Calculate your personal income tax based on current Nigerian tax rates.</p>
+                        
+                        <form id="personalTaxForm">
+                            <div class="mb-3">
+                                <label for="annualIncome" class="form-label">Annual Income (₦)</label>
+                                <input type="number" class="form-control" id="annualIncome" placeholder="Enter your annual income">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="reliefs" class="form-label">Total Reliefs (₦)</label>
+                                <input type="number" class="form-control" id="reliefs" placeholder="Enter total reliefs" value="200000">
+                                <small class="form-text text-muted">Minimum relief is ₦200,000 or 20% of income</small>
+                            </div>
+                            
+                            <button type="button" class="btn btn-primary" onclick="calculatePersonalTax()">
+                                <i class="fas fa-calculator me-2"></i>Calculate Tax
+                            </button>
+                        </form>
+                        
+                        <div id="personalTaxResult" class="mt-4" style="display: none;">
+                            <div class="alert alert-info">
+                                <h6>Tax Calculation Result:</h6>
+                                <p class="mb-1"><strong>Taxable Income:</strong> ₦<span id="taxableIncome"></span></p>
+                                <p class="mb-1"><strong>Income Tax:</strong> ₦<span id="incomeTax"></span></p>
+                                <p class="mb-0"><strong>Net Income:</strong> ₦<span id="netIncome"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Company Income Tax Calculator -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-building me-2"></i>Company Income Tax Calculator
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Calculate corporate income tax for your business.</p>
+                        
+                        <form id="companyTaxForm">
+                            <div class="mb-3">
+                                <label for="companyType" class="form-label">Company Type</label>
+                                <select class="form-select" id="companyType">
+                                    <option value="large">Large Company (30%)</option>
+                                    <option value="medium">Medium Company (20%)</option>
+                                    <option value="small">Small Company (0%)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="totalProfit" class="form-label">Total Profit (₦)</label>
+                                <input type="number" class="form-control" id="totalProfit" placeholder="Enter total profit">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="allowableDeductions" class="form-label">Allowable Deductions (₦)</label>
+                                <input type="number" class="form-control" id="allowableDeductions" placeholder="Enter allowable deductions">
+                            </div>
+                            
+                            <button type="button" class="btn btn-success" onclick="calculateCompanyTax()">
+                                <i class="fas fa-calculator me-2"></i>Calculate Tax
+                            </button>
+                        </form>
+                        
+                        <div id="companyTaxResult" class="mt-4" style="display: none;">
+                            <div class="alert alert-success">
+                                <h6>Tax Calculation Result:</h6>
+                                <p class="mb-1"><strong>Assessable Profit:</strong> ₦<span id="assessableProfit"></span></p>
+                                <p class="mb-1"><strong>Tax Rate:</strong> <span id="taxRate"></span>%</p>
+                                <p class="mb-1"><strong>Company Income Tax:</strong> ₦<span id="companyTax"></span></p>
+                                <p class="mb-0"><strong>Profit After Tax:</strong> ₦<span id="profitAfterTax"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- VAT Calculator -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="fas fa-percentage me-2"></i>VAT Calculator
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Calculate Value Added Tax (VAT) at 7.5% rate.</p>
+                        
+                        <form id="vatForm">
+                            <div class="mb-3">
+                                <label for="vatType" class="form-label">Calculation Type</label>
+                                <select class="form-select" id="vatType">
+                                    <option value="exclusive">Add VAT to Amount</option>
+                                    <option value="inclusive">Extract VAT from Amount</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="vatAmount" class="form-label">Amount (₦)</label>
+                                <input type="number" class="form-control" id="vatAmount" placeholder="Enter amount">
+                            </div>
+                            
+                            <button type="button" class="btn btn-warning" onclick="calculateVAT()">
+                                <i class="fas fa-calculator me-2"></i>Calculate VAT
+                            </button>
+                        </form>
+                        
+                        <div id="vatResult" class="mt-4" style="display: none;">
+                            <div class="alert alert-warning">
+                                <h6>VAT Calculation Result:</h6>
+                                <p class="mb-1"><strong>Original Amount:</strong> ₦<span id="originalAmount"></span></p>
+                                <p class="mb-1"><strong>VAT (7.5%):</strong> ₦<span id="vatValue"></span></p>
+                                <p class="mb-0"><strong>Total Amount:</strong> ₦<span id="totalWithVat"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Withholding Tax Calculator -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-hand-holding-usd me-2"></i>Withholding Tax Calculator
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Calculate withholding tax based on transaction type.</p>
+                        
+                        <form id="whtForm">
+                            <div class="mb-3">
+                                <label for="whtType" class="form-label">Transaction Type</label>
+                                <select class="form-select" id="whtType">
+                                    <option value="5">Professional Services (5%)</option>
+                                    <option value="10">Rent (10%)</option>
+                                    <option value="5">Technical Services (5%)</option>
+                                    <option value="2.5">Interest (2.5%)</option>
+                                    <option value="10">Dividend (10%)</option>
+                                    <option value="5">Royalty (5%)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="whtAmount" class="form-label">Transaction Amount (₦)</label>
+                                <input type="number" class="form-control" id="whtAmount" placeholder="Enter transaction amount">
+                            </div>
+                            
+                            <button type="button" class="btn btn-info" onclick="calculateWHT()">
+                                <i class="fas fa-calculator me-2"></i>Calculate WHT
+                            </button>
+                        </form>
+                        
+                        <div id="whtResult" class="mt-4" style="display: none;">
+                            <div class="alert alert-info">
+                                <h6>WHT Calculation Result:</h6>
+                                <p class="mb-1"><strong>Transaction Amount:</strong> ₦<span id="transactionAmount"></span></p>
+                                <p class="mb-1"><strong>WHT Rate:</strong> <span id="whtRate"></span>%</p>
+                                <p class="mb-1"><strong>Withholding Tax:</strong> ₦<span id="whtValue"></span></p>
+                                <p class="mb-0"><strong>Net Amount Payable:</strong> ₦<span id="netPayable"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Disclaimer -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Important Disclaimer</h6>
+                    <p class="mb-0">These calculators provide estimates based on current Nigerian tax rates and should be used for guidance only. For accurate tax computation and compliance, please consult with our professional team. Tax rates and regulations may change, and individual circumstances may affect actual tax liability.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact CTA -->
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <h4>Need Professional Tax Assistance?</h4>
+                <p class="text-muted">Our certified tax professionals are here to help you with accurate tax planning and compliance.</p>
+                <a href="{% url 'contact:contact' %}?subject=Tax Consultation" class="btn btn-primary btn-lg">
+                    <i class="fas fa-phone me-2"></i>Contact Our Tax Experts
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.alert h6 {
+    margin-bottom: 0.5rem;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Personal Income Tax Calculator
+function calculatePersonalTax() {
+    const income = parseFloat(document.getElementById('annualIncome').value) || 0;
+    const reliefs = parseFloat(document.getElementById('reliefs').value) || 0;
+    
+    if (income <= 0) {
+        alert('Please enter a valid annual income');
+        return;
+    }
+    
+    // Calculate minimum relief (20% of income or ₦200,000, whichever is higher)
+    const minRelief = Math.max(income * 0.2, 200000);
+    const actualRelief = Math.max(reliefs, minRelief);
+    
+    const taxableIncome = Math.max(income - actualRelief, 0);
+    
+    // Nigerian Personal Income Tax rates (2024)
+    let tax = 0;
+    if (taxableIncome > 0) {
+        if (taxableIncome <= 300000) {
+            tax = taxableIncome * 0.07;
+        } else if (taxableIncome <= 600000) {
+            tax = 21000 + (taxableIncome - 300000) * 0.11;
+        } else if (taxableIncome <= 1100000) {
+            tax = 54000 + (taxableIncome - 600000) * 0.15;
+        } else if (taxableIncome <= 1600000) {
+            tax = 129000 + (taxableIncome - 1100000) * 0.19;
+        } else if (taxableIncome <= 3200000) {
+            tax = 224000 + (taxableIncome - 1600000) * 0.21;
+        } else {
+            tax = 560000 + (taxableIncome - 3200000) * 0.24;
+        }
+    }
+    
+    const netIncome = income - tax;
+    
+    // Display results
+    document.getElementById('taxableIncome').textContent = taxableIncome.toLocaleString();
+    document.getElementById('incomeTax').textContent = tax.toLocaleString();
+    document.getElementById('netIncome').textContent = netIncome.toLocaleString();
+    document.getElementById('personalTaxResult').style.display = 'block';
+}
+
+// Company Income Tax Calculator
+function calculateCompanyTax() {
+    const companyType = document.getElementById('companyType').value;
+    const profit = parseFloat(document.getElementById('totalProfit').value) || 0;
+    const deductions = parseFloat(document.getElementById('allowableDeductions').value) || 0;
+    
+    if (profit <= 0) {
+        alert('Please enter a valid profit amount');
+        return;
+    }
+    
+    const assessableProfit = Math.max(profit - deductions, 0);
+    
+    let taxRate = 0;
+    switch(companyType) {
+        case 'large': taxRate = 30; break;
+        case 'medium': taxRate = 20; break;
+        case 'small': taxRate = 0; break;
+    }
+    
+    const tax = assessableProfit * (taxRate / 100);
+    const profitAfterTax = assessableProfit - tax;
+    
+    // Display results
+    document.getElementById('assessableProfit').textContent = assessableProfit.toLocaleString();
+    document.getElementById('taxRate').textContent = taxRate;
+    document.getElementById('companyTax').textContent = tax.toLocaleString();
+    document.getElementById('profitAfterTax').textContent = profitAfterTax.toLocaleString();
+    document.getElementById('companyTaxResult').style.display = 'block';
+}
+
+// VAT Calculator
+function calculateVAT() {
+    const vatType = document.getElementById('vatType').value;
+    const amount = parseFloat(document.getElementById('vatAmount').value) || 0;
+    
+    if (amount <= 0) {
+        alert('Please enter a valid amount');
+        return;
+    }
+    
+    let originalAmount, vatValue, totalAmount;
+    
+    if (vatType === 'exclusive') {
+        // Add VAT to amount
+        originalAmount = amount;
+        vatValue = amount * 0.075;
+        totalAmount = amount + vatValue;
+    } else {
+        // Extract VAT from amount
+        totalAmount = amount;
+        originalAmount = amount / 1.075;
+        vatValue = amount - originalAmount;
+    }
+    
+    // Display results
+    document.getElementById('originalAmount').textContent = originalAmount.toLocaleString();
+    document.getElementById('vatValue').textContent = vatValue.toLocaleString();
+    document.getElementById('totalWithVat').textContent = totalAmount.toLocaleString();
+    document.getElementById('vatResult').style.display = 'block';
+}
+
+// Withholding Tax Calculator
+function calculateWHT() {
+    const whtRate = parseFloat(document.getElementById('whtType').value);
+    const amount = parseFloat(document.getElementById('whtAmount').value) || 0;
+    
+    if (amount <= 0) {
+        alert('Please enter a valid transaction amount');
+        return;
+    }
+    
+    const whtValue = amount * (whtRate / 100);
+    const netPayable = amount - whtValue;
+    
+    // Display results
+    document.getElementById('transactionAmount').textContent = amount.toLocaleString();
+    document.getElementById('whtRate').textContent = whtRate;
+    document.getElementById('whtValue').textContent = whtValue.toLocaleString();
+    document.getElementById('netPayable').textContent = netPayable.toLocaleString();
+    document.getElementById('whtResult').style.display = 'block';
+}
+
+// Format numbers as currency
+Number.prototype.toLocaleString = function() {
+    return this.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+</script>
+{% endblock %}

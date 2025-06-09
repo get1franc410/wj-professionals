@@ -1,0 +1,62 @@
+/* NAVBAR OVERLAP FIX */
+/* Ensure main content doesn't hide under fixed navbar */
+body {
+  padding-top: 0; /* Reset any existing padding */
+}
+
+.main {
+  margin-top: 90px; /* Adjust based on your actual navbar height */
+}
+
+/* For sections that should start right after navbar */
+.page-title,
+.hero,
+.hero-section,
+.hero-software,
+.page-header {
+  margin-top: -90px;
+  padding-top: 120px; /* navbar height + desired spacing */
+}
+
+/* Mobile responsive */
+@media (max-width: 992px) {
+  .main {
+    margin-top: 80px;
+  }
+  
+  .page-title,
+  .hero,
+  .hero-section,
+  .hero-software,
+  .page-header {
+    margin-top: -80px;
+    padding-top: 110px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    margin-top: 70px;
+  }
+  
+  .page-title,
+  .hero,
+  .hero-section,
+  .hero-software,
+  .page-header {
+    margin-top: -70px;
+    padding-top: 100px;
+  }
+}
+
+/* Ensure smooth scrolling for anchor links */
+html {
+  scroll-padding-top: 90px;
+}
+
+/* Fix for any sections with background that might show gaps */
+.page-title,
+.hero-software,
+.page-header {
+  background-clip: padding-box;
+}

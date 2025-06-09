@@ -1,0 +1,708 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\templates\contact\contact.html-->
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Contact Us - {{ company.name }}{% endblock %}
+
+{% block content %}
+<!-- Page Title -->
+<div class="page-title dark-background">
+  <div class="container position-relative">
+    <h1>Contact Us</h1>
+    <p>Get in touch with our professional team</p>
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{% url 'core:home' %}">Home</a></li>
+        <li class="current">Contact</li>
+      </ol>
+    </nav>
+  </div>
+</div><!-- End Page Title -->
+
+<!-- Contact Section -->
+<section id="contact" class="contact section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    
+    <div class="row gy-4">
+      
+      <!-- Contact Information -->
+      <div class="col-lg-6">
+        <div class="info-wrap">
+          <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+            <i class="bi bi-geo-alt flex-shrink-0"></i>
+            <div>
+              <h3>Address</h3>
+              <p>{{ company.address|default:"Lagos, Nigeria" }}</p>
+            </div>
+          </div><!-- End Info Item -->
+
+          <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+            <i class="bi bi-telephone flex-shrink-0"></i>
+            <div>
+              <h3>Call Us</h3>
+              <p><a href="tel:{{ company.phone|default:'+234-803-065-5969' }}">{{ company.phone|default:"+234-803-065-5969" }}</a></p>
+            </div>
+          </div><!-- End Info Item -->
+
+          <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+            <i class="bi bi-envelope flex-shrink-0"></i>
+            <div>
+              <h3>Email Us</h3>
+              <p><a href="mailto:{{ company.email|default:'info@wjprofessionals.com' }}">{{ company.email|default:"info@wjprofessionals.com" }}</a></p>
+            </div>
+          </div><!-- End Info Item -->
+
+          <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="500">
+            <i class="bi bi-clock flex-shrink-0"></i>
+            <div>
+              <h3>Business Hours</h3>
+              <p>{{ company.business_hours|default:"Mon-Fri: 8AM-6PM<br>Sat: 9AM-4PM<br>Sun: Closed"|safe }}</p>
+            </div>
+          </div><!-- End Info Item -->
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="col-lg-6">
+        <form method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+          {% csrf_token %}
+          
+          {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+          {% endif %}
+          
+          <div class="row gy-4">
+            <div class="col-md-6">
+              {{ form.name|add_class:"form-control"|attr:"placeholder:Your Name" }}
+              {% if form.name.errors %}
+                <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              {{ form.email|add_class:"form-control"|attr:"placeholder:Your Email" }}
+              {% if form.email.errors %}
+                <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              {{ form.phone|add_class:"form-control"|attr:"placeholder:Your Phone" }}
+              {% if form.phone.errors %}
+                <div class="text-danger small mt-1">{{ form.phone.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              {{ form.subject|add_class:"form-control"|attr:"placeholder:Subject" }}
+              {% if form.subject.errors %}
+                <div class="text-danger small mt-1">{{ form.subject.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-12">
+              {{ form.service|add_class:"form-select" }}
+              {% if form.service.errors %}
+                <div class="text-danger small mt-1">{{ form.service.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-12">
+              {{ form.message|add_class:"form-control"|attr:"placeholder:Your Message"|attr:"rows:6" }}
+              {% if form.message.errors %}
+                <div class="text-danger small mt-1">{{ form.message.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-12 text-center">
+              <div class="loading d-none">Loading</div>
+              <div class="error-message d-none"></div>
+              <div class="sent-message d-none">Your message has been sent. Thank you!</div>
+
+              <button type="submit" class="btn btn-primary">Send Message</button>
+            </div>
+          </div>
+        </form>
+      </div><!-- End Contact Form -->
+
+    </div>
+  </div>
+</section><!-- /Contact Section -->
+
+<!-- Map Section -->
+{% if company.map_embed_code %}
+<section class="map-section">
+  <div class="container-fluid p-0">
+    <div class="map-container" data-aos="fade-up">
+      {{ company.map_embed_code|safe }}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Additional Contact Methods -->
+<section class="contact-methods section light-background">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Other Ways to Reach Us</h2>
+      <p>Choose your preferred method of communication</p>
+    </div>
+
+    <div class="row gy-4">
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="contact-method-card text-center">
+          <div class="method-icon">
+            <i class="bi bi-whatsapp"></i>
+          </div>
+          <h4>WhatsApp</h4>
+          <p>Quick responses via WhatsApp</p>
+          <a href="https://wa.me/{{ company.whatsapp|default:'2348030655969' }}?text=Hello, I need assistance with accounting services" 
+             class="btn btn-success" target="_blank">
+            <i class="bi bi-whatsapp me-2"></i>Chat Now
+          </a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="contact-method-card text-center">
+          <div class="method-icon">
+            <i class="bi bi-chat-dots"></i>
+          </div>
+          <h4>Live Chat</h4>
+          <p>Instant support online</p>
+          <button class="btn btn-info" onclick="openLiveChat()">
+            <i class="bi bi-chat-square-dots me-2"></i>Start Chat
+          </button>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="contact-method-card text-center">
+          <div class="method-icon">
+            <i class="bi bi-headset"></i>
+          </div>
+          <h4>Support Center</h4>
+          <p>Browse FAQs and guides</p>
+          <a href="{% url 'core:faq' %}" class="btn btn-outline-primary">
+            <i class="bi bi-question-circle me-2"></i>Get Help
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="contact-faq section">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Frequently Asked Questions</h2>
+      <p>Quick answers to common questions</p>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="accordion" id="contactFaqAccordion" data-aos="fade-up" data-aos-delay="100">
+          
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="contactFaq1">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#contactCollapse1">
+                How quickly do you respond to inquiries?
+              </button>
+            </h2>
+            <div id="contactCollapse1" class="accordion-collapse collapse show" data-bs-parent="#contactFaqAccordion">
+              <div class="accordion-body">
+                We typically respond to all inquiries within 2-4 hours during business hours (Mon-Fri, 8AM-6PM). 
+                For urgent matters, please call us directly or use our WhatsApp service for faster response.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="contactFaq2">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#contactCollapse2">
+                Do you offer free consultations?
+              </button>
+            </h2>
+            <div id="contactCollapse2" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+              <div class="accordion-body">
+                Yes, we offer free initial consultations for new clients. This allows us to understand your needs 
+                and provide tailored recommendations for your business or personal financial requirements.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="contactFaq3">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#contactCollapse3">
+                Can I visit your office without an appointment?
+              </button>
+            </h2>
+            <div id="contactCollapse3" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+              <div class="accordion-body">
+                While we welcome walk-in clients, we highly recommend booking an appointment to ensure our 
+                professionals are available to give you their full attention and provide the best service possible.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="contactFaq4">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#contactCollapse4">
+                Do you provide services remotely?
+              </button>
+            </h2>
+            <div id="contactCollapse4" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+              <div class="accordion-body">
+                Yes, we offer remote services for most of our accounting, tax preparation, and consulting services. 
+                We use secure digital platforms to ensure your data privacy and service quality.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Contact page specific styles */
+.info-wrap {
+  background: var(--surface-color);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+  height: 100%;
+}
+
+.info-item {
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #eee;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.info-item i {
+  font-size: 24px;
+  color: var(--accent-color);
+  margin-right: 20px;
+  margin-top: 5px;
+}
+
+.info-item h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--heading-color);
+}
+
+.info-item p {
+  margin: 0;
+  color: var(--default-color);
+}
+
+.info-item a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.info-item a:hover {
+  text-decoration: underline;
+}
+
+.php-email-form {
+  background: var(--surface-color);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+  height: 100%;
+}
+
+.php-email-form .form-control,
+.php-email-form .form-select {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.php-email-form .form-control:focus,
+.php-email-form .form-select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.2rem rgba(var(--accent-color-rgb), 0.25);
+}
+
+.php-email-form textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.php-email-form .loading,
+.php-email-form .error-message,
+.php-email-form .sent-message {
+  display: none;
+  background: #fff;
+  text-align: center;
+  padding: 15px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.php-email-form .loading {
+  background: #f8f9fa;
+  color: var(--accent-color);
+  border: 1px solid #dee2e6;
+}
+
+.php-email-form .error-message {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.php-email-form .sent-message {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.map-container {
+  height: 400px;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.contact-method-card {
+  background: var(--surface-color);
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.contact-method-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.method-icon {
+  margin-bottom: 20px;
+}
+
+.method-icon i {
+  font-size: 48px;
+  color: var(--accent-color);
+}
+
+.contact-method-card h4 {
+  margin-bottom: 15px;
+  color: var(--heading-color);
+}
+
+.contact-method-card p {
+  color: var(--default-color);
+  margin-bottom: 25px;
+}
+
+.contact-method-card .btn {
+  min-width: 120px;
+}
+
+/* WhatsApp specific styling */
+.contact-method-card .btn-success {
+  background-color: #25d366;
+  border-color: #25d366;
+}
+
+.contact-method-card .btn-success:hover {
+  background-color: #128c7e;
+  border-color: #128c7e;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .info-wrap,
+  .php-email-form {
+    padding: 30px 20px;
+  }
+  
+  .contact-method-card {
+    padding: 30px 20px;
+    margin-bottom: 20px;
+  }
+  
+  .map-container {
+    height: 300px;
+  }
+}
+
+/* Form validation styles */
+.form-control.is-invalid,
+.form-select.is-invalid {
+  border-color: #dc3545;
+}
+
+.form-control.is-valid,
+.form-select.is-valid {
+  border-color: #28a745;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
+}
+
+.valid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #28a745;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Form submission handling
+  const contactForm = document.querySelector('.php-email-form');
+  const loadingDiv = contactForm.querySelector('.loading');
+  const errorDiv = contactForm.querySelector('.error-message');
+  const successDiv = contactForm.querySelector('.sent-message');
+  const submitBtn = contactForm.querySelector('button[type="submit"]');
+  
+  // Live chat function
+  window.openLiveChat = function() {
+    // Implement your live chat system here
+    // For example, if using Tawk.to, Intercom, etc.
+    alert('Live chat will be available soon. Please use WhatsApp or email for immediate assistance.');
+  };
+  
+  // Form validation
+  const validateForm = function() {
+    let isValid = true;
+    const requiredFields = contactForm.querySelectorAll('[required]');
+    
+    requiredFields.forEach(field => {
+      const value = field.value.trim();
+      const errorElement = field.parentNode.querySelector('.text-danger');
+      
+      if (!value) {
+        field.classList.add('is-invalid');
+        if (errorElement) {
+          errorElement.textContent = 'This field is required.';
+        }
+        isValid = false;
+      } else {
+        field.classList.remove('is-invalid');
+        field.classList.add('is-valid');
+        if (errorElement) {
+          errorElement.textContent = '';
+        }
+      }
+    });
+    
+    // Email validation
+    const emailField = contactForm.querySelector('input[type="email"]');
+    if (emailField && emailField.value) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailField.value)) {
+        emailField.classList.add('is-invalid');
+        const errorElement = emailField.parentNode.querySelector('.text-danger');
+        if (errorElement) {
+          errorElement.textContent = 'Please enter a valid email address.';
+        }
+        isValid = false;
+      }
+    }
+    
+    // Phone validation
+    const phoneField = contactForm.querySelector('input[type="tel"]');
+    if (phoneField && phoneField.value) {
+      const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
+      if (!phoneRegex.test(phoneField.value)) {
+        phoneField.classList.add('is-invalid');
+        const errorElement = phoneField.parentNode.querySelector('.text-danger');
+        if (errorElement) {
+          errorElement.textContent = 'Please enter a valid phone number.';
+        }
+        isValid = false;
+      }
+    }
+    
+    return isValid;
+  };
+  
+  // Real-time validation
+  const formInputs = contactForm.querySelectorAll('input, select, textarea');
+  formInputs.forEach(input => {
+    input.addEventListener('blur', function() {
+      if (this.hasAttribute('required') && !this.value.trim()) {
+        this.classList.add('is-invalid');
+      } else if (this.value.trim()) {
+        this.classList.remove('is-invalid');
+        this.classList.add('is-valid');
+      }
+    });
+    
+    input.addEventListener('input', function() {
+      if (this.classList.contains('is-invalid') && this.value.trim()) {
+        this.classList.remove('is-invalid');
+        this.classList.add('is-valid');
+      }
+    });
+  });
+  
+  // Form submission
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    // Show loading state
+    loadingDiv.classList.remove('d-none');
+    errorDiv.classList.add('d-none');
+    successDiv.classList.add('d-none');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Sending...';
+    
+    // Submit form data
+    const formData = new FormData(contactForm);
+    
+    fetch(contactForm.action || window.location.href, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      loadingDiv.classList.add('d-none');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Send Message';
+      
+      if (data.success) {
+        successDiv.classList.remove('d-none');
+        contactForm.reset();
+        
+        // Remove validation classes
+        formInputs.forEach(input => {
+          input.classList.remove('is-valid', 'is-invalid');
+        });
+        
+        // Track successful form submission
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'form_submit', {
+            'form_name': 'contact_form',
+            'page_location': window.location.href
+          });
+        }
+        
+        // Scroll to success message
+        successDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+      } else {
+        errorDiv.textContent = data.message || 'An error occurred. Please try again.';
+        errorDiv.classList.remove('d-none');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      loadingDiv.classList.add('d-none');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Send Message';
+      errorDiv.textContent = 'Network error. Please check your connection and try again.';
+      errorDiv.classList.remove('d-none');
+    });
+  });
+  
+  // Track contact method clicks
+  const contactMethodBtns = document.querySelectorAll('.contact-method-card .btn');
+  contactMethodBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const methodName = this.closest('.contact-method-card').querySelector('h4').textContent;
+      
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'contact_method_click', {
+          'method': methodName,
+          'page_location': window.location.href
+        });
+      }
+    });
+  });
+  
+  // Auto-fill form if URL parameters exist
+  const urlParams = new URLSearchParams(window.location.search);
+  const serviceParam = urlParams.get('service');
+  const typeParam = urlParams.get('type');
+  
+  if (serviceParam) {
+    const serviceSelect = contactForm.querySelector('select[name="service"]');
+    if (serviceSelect) {
+      // Try to find matching option
+      const options = serviceSelect.querySelectorAll('option');
+      options.forEach(option => {
+        if (option.textContent.toLowerCase().includes(serviceParam.toLowerCase())) {
+          option.selected = true;
+        }
+      });
+    }
+  }
+  
+  if (typeParam === 'chat') {
+    const subjectField = contactForm.querySelector('input[name="subject"]');
+    if (subjectField) {
+      subjectField.value = 'Live Chat Request';
+    }
+  }
+  
+  // FAQ interaction tracking
+  const faqButtons = document.querySelectorAll('.accordion-button');
+  faqButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const question = this.textContent.trim();
+      
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'faq_interaction', {
+          'faq_question': question,
+          'page_location': window.location.href
+        });
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,75 @@
+<!--C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\templates\dashboard\documents\list.html-->
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Manage Documents - Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-file-alt me-2"></i>Manage Documents</h2>
+                <a href="{% url 'dashboard:upload_document' %}" class="btn btn-primary">
+                    <i class="fas fa-upload me-2"></i>Upload Document
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Access Level</th>
+                                    <th>Downloads</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for document in page_obj %}
+                                <tr>
+                                    <td>{{ document.title }}</td>
+                                    <td>{{ document.category.name|default:"No Category" }}</td>
+                                    <td>
+                                        <span class="badge bg-{% if document.access_level == 'public' %}success{% elif document.access_level == 'members' %}warning{% else %}danger{% endif %}">
+                                            {{ document.get_access_level_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ document.download_count|default:0 }}</td>
+                                    <td>{{ document.created_at|date:"M d, Y" }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ document.file.url }}" target="_blank" class="btn btn-outline-primary">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">
+                                        <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                                        <p class="text-muted">No documents found.</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

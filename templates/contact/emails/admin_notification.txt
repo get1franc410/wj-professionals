@@ -1,0 +1,29 @@
+New Contact Form Submission - WJ Professionals
+
+Contact Details:
+================
+Name: {{ submission.name }}
+Email: {{ submission.email }}
+Phone: {{ submission.phone|default:"Not provided" }}
+Subject: {{ submission.subject }}
+Inquiry Type: {{ submission.get_inquiry_type_display }}
+Submitted: {{ submission.created_at|date:"F d, Y \a\t g:i A" }}
+
+Message:
+========
+{{ submission.message }}
+
+{% if submission.attachment_1 or submission.attachment_2 or submission.attachment_3 %}
+Attachments:
+============
+{% if submission.attachment_1 %}• {{ submission.attachment_1.name }}{% endif %}
+{% if submission.attachment_2 %}• {{ submission.attachment_2.name }}{% endif %}
+{% if submission.attachment_3 %}• {{ submission.attachment_3.name }}{% endif %}
+{% endif %}
+
+Action Required: Please respond to this inquiry within 24 hours.
+
+Admin URL: {{ admin_url }}
+
+---
+This email was automatically generated from the WJ Professionals website.
