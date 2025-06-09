@@ -24,18 +24,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default='your-fallback-secret-key')
 DEBUG = config('DEBUG', default=True, cast=bool)
+
 ALLOWED_HOSTS = [
     'wj-professionals-production.up.railway.app',
     'wjprofessionals.com',
-    'localhost',
+    'localhost', 
     '127.0.0.1',
     '*'  # For testing - remove this in production
 ]
 
+# Add Railway support (add this after ALLOWED_HOSTS)
+import os
 RAILWAY_STATIC_URL = os.environ.get('RAILWAY_STATIC_URL')
 if RAILWAY_STATIC_URL:
-    ALLOWED_HOSTS.append(RAILWAY_STATIC_URL)
-# SECURITY WARNING: keep the secret key used in production secret!
+    ALLOWED_HOSTS.append(RAILWAY_STATIC_URL)# SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
