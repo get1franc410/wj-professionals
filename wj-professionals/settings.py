@@ -11,7 +11,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-
+import dj_database_url
 import os
 from pathlib import Path
 from decouple import config
@@ -24,7 +24,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default='your-fallback-secret-key')
 DEBUG = config('DEBUG', default=True, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = [
+    'wj-professionals-production.up.railway.app',
+    'wjprofessionals.com',
+    'localhost',
+    '127.0.0.1',
+    '*'  # For testing - remove this in production
+]
+
+RAILWAY_STATIC_URL = os.environ.get('RAILWAY_STATIC_URL')
+if RAILWAY_STATIC_URL:
+    ALLOWED_HOSTS.append(RAILWAY_STATIC_URL)
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-me')
 
@@ -190,10 +200,7 @@ CKEDITOR_5_CONFIGS = {
 WSGI_APPLICATION = 'wj_professionals.wsgi.application'
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
 
 # Password validation
