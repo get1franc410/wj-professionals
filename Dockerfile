@@ -1,5 +1,3 @@
-﻿# Create optimized Dockerfile
-@"
 FROM python:3.11-slim
 
 WORKDIR /app
@@ -28,6 +26,5 @@ ENV DJANGO_SETTINGS_MODULE=wj-professionals.settings
 # Expose port
 EXPOSE 8000
 
-# Start command with migrations and static files
+# Start command
 CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --noinput --clear && gunicorn wj_professionals.wsgi:application --bind 0.0.0.0:8000"]
-"@ | Out-File -FilePath Dockerfile -Encoding utf8 -NoNewline

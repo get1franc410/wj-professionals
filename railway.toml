@@ -1,10 +1,5 @@
-﻿# Create proper railway.toml
-@"
 [build]
 builder = "dockerfile"
 
 [deploy]
 startCommand = "python manage.py migrate --noinput && python manage.py collectstatic --noinput --clear && gunicorn wj_professionals.wsgi:application --bind 0.0.0.0:$PORT"
-restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 10
-"@ | Out-File -FilePath railway.toml -Encoding utf8
