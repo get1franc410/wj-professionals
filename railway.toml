@@ -1,6 +1,5 @@
 ﻿[build]
 builder = "dockerfile"
-dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "gunicorn wj_professionals.wsgi:application --bind 0.0.0.0:8000"
+startCommand = "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn wj_professionals.wsgi:application --bind 0.0.0.0:8000"
