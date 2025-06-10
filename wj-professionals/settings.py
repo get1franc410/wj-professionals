@@ -201,9 +201,21 @@ CKEDITOR_5_CONFIGS = {
 
 WSGI_APPLICATION = 'wj_professionals.wsgi.application'
 # Database
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-}
+# Database Configuration
+if 'DATABASE_URL' in os.environ:
+    # Railway/Production database
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
+else:
+    # Local development database (fallback)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
