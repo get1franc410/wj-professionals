@@ -102,11 +102,11 @@ def send_contact_notification(submission):
 
 def send_contact_confirmation(submission):
     """Send confirmation email to the user"""
-    subject = f"Thank you for contacting WJ Professionals - {submission.subject}"
+    subject = f"Thank you for contacting Wole Joshua & Co. - {submission.subject}"
     
     context = {
         'submission': submission,
-        'company_name': 'WJ Professionals',
+        'company_name': 'Wole Joshua & Co.',
     }
     
     html_message = render_to_string('contact/emails/user_confirmation.html', context)

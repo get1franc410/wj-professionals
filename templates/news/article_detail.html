@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ article.title }} - {{ company.name|default:"WJ Professionals" }}{% endblock %}
+{% block title %}{{ article.title }} - {{ company.name|default:"Wole Joshua & Co." }}{% endblock %}
 
 {% block meta_description %}{{ article.excerpt|default:article.content|striptags|truncatewords:30 }}{% endblock %}
 
@@ -116,7 +116,7 @@
               <div class="col-md-9">
                 <h5 class="fw-bold">{{ article.author.get_full_name|default:article.author.username }}</h5>
                 <p class="text-primary">Author</p>
-                <p class="text-muted">Professional writer and contributor at WJ Professionals, sharing insights on tax and business matters.</p>
+                <p class="text-muted">Professional writer and contributor at Wole Joshua & Co., sharing insights on tax and business matters.</p>
               </div>
             </div>
           </div>

@@ -36,7 +36,7 @@ NEWS_ARTICLES_DATA = [
             <li>Consider the impact on cash flow and budgeting</li>
         </ol>
         
-        <p>At WJ Professionals, we're here to help you navigate these changes. Contact us for personalized advice 
+        <p>At Wole Joshua & Co., we're here to help you navigate these changes. Contact us for personalized advice 
         on how these VAT changes affect your specific business situation.</p>
         ''',
         'status': 'published',
@@ -66,7 +66,7 @@ NEWS_ARTICLES_DATA = [
         <p>Modern accounting practices incorporate various technologies including cloud computing, machine learning 
         for data analysis, mobile applications for on-the-go access, and integrated business management systems.</p>
         
-        <p>At WJ Professionals, we've embraced these technologies to provide our clients with cutting-edge financial 
+        <p>At Wole Joshua & Co., we've embraced these technologies to provide our clients with cutting-edge financial 
         services that are both efficient and secure.</p>
         ''',
         'status': 'published',
@@ -105,7 +105,7 @@ NEWS_ARTICLES_DATA = [
         <p>The Nigerian government offers various tax incentives for small businesses, including reduced tax rates 
         for companies with turnover below certain thresholds.</p>
         
-        <p>For personalized tax planning advice, consult with our experienced tax professionals at WJ Professionals.</p>
+        <p>For personalized tax planning advice, consult with our experienced tax professionals at Wole Joshua & Co..</p>
         ''',
         'status': 'published',
         'is_featured': True,
@@ -119,7 +119,7 @@ TESTIMONIALS_DATA = [
         'client_name': 'Adebola Adeyemi',
         'company': 'Adeyemi Trading Company',
         'position': 'Managing Director',
-        'content': '''WJ Professionals has been instrumental in helping us navigate the complex Nigerian tax landscape. 
+        'content': '''Wole Joshua & Co. has been instrumental in helping us navigate the complex Nigerian tax landscape. 
         Their expertise in tax planning saved us over ₦2 million in the first year alone. The team is professional, 
         responsive, and truly understands our business needs.''',
         'rating': 5,
@@ -130,7 +130,7 @@ TESTIMONIALS_DATA = [
         'client_name': 'Mrs. Kemi Okafor',
         'company': 'Okafor Enterprises Ltd',
         'position': 'CEO',
-        'content': '''The audit services provided by WJ Professionals were thorough and professional. They identified 
+        'content': '''The audit services provided by Wole Joshua & Co. were thorough and professional. They identified 
         several areas for improvement in our financial controls and helped us implement better systems. I highly 
         recommend their services to any business looking for quality audit work.''',
         'rating': 5,
@@ -141,7 +141,7 @@ TESTIMONIALS_DATA = [
         'client_name': 'Mr. Ibrahim Sani',
         'company': 'Sani Construction Ltd',
         'position': 'Financial Controller',
-        'content': '''WJ Professionals handled our company registration and ongoing compliance requirements seamlessly. 
+        'content': '''Wole Joshua & Co. handled our company registration and ongoing compliance requirements seamlessly. 
         They made the entire process stress-free and ensured we met all regulatory deadlines. Their business advisory 
         services have also been invaluable as we expand our operations.''',
         'rating': 5,
@@ -152,7 +152,7 @@ TESTIMONIALS_DATA = [
         'client_name': 'Dr. Funmi Adebayo',
         'company': 'Adebayo Medical Centre',
         'position': 'Medical Director',
-        'content': '''As a busy medical practitioner, I needed reliable accounting support for my practice. WJ Professionals 
+        'content': '''As a busy medical practitioner, I needed reliable accounting support for my practice. Wole Joshua & Co. 
         has been managing our books for over three years now, and their attention to detail and timely reporting has 
         been exceptional. They truly understand the healthcare industry.''',
         'rating': 5,
@@ -163,7 +163,7 @@ TESTIMONIALS_DATA = [
         'client_name': 'Mr. Chukwuma Obi',
         'company': 'Obi Tech Solutions',
         'position': 'Founder & CEO',
-        'content': '''The financial advisory services from WJ Professionals helped us secure funding for our expansion. 
+        'content': '''The financial advisory services from Wole Joshua & Co. helped us secure funding for our expansion. 
         Their business plan development and financial projections were instrumental in convincing investors. They are 
         true partners in our business growth.''',
         'rating': 5,
@@ -186,7 +186,7 @@ FAQ_DATA = [
         </ul>
         Our team can help you prepare all required documents and guide you through the entire process.''',
         'category': 'business',
-        'is_featured': True
+        # 'is_featured': True
     },
     {
         'question': 'How often should I file my tax returns in Nigeria?',
@@ -200,7 +200,7 @@ FAQ_DATA = [
         </ul>
         We help ensure you meet all filing deadlines and remain compliant with FIRS requirements.''',
         'category': 'tax',
-        'is_featured': True
+        # 'is_featured': True
     },
     {
         'question': 'What is the difference between bookkeeping and accounting?',
@@ -224,7 +224,7 @@ FAQ_DATA = [
         
         We provide both services to give you complete financial management support.''',
         'category': 'accounting',
-        'is_featured': True
+        # 'is_featured': True
     },
     {
         'question': 'Do I need an audit for my small business?',
@@ -248,6 +248,6 @@ FAQ_DATA = [
         
         Even if not mandatory, an audit can provide valuable insights into your business operations and financial health.''',
         'category': 'audit',
-        'is_featured': True
+        # 'is_featured': True
     }
 ]

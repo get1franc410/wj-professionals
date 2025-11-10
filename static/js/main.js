@@ -1,5 +1,5 @@
 /**
- * WJ Professionals Main JavaScript
+ * Wole Joshua & Co. Main JavaScript
  * ================================
  * Main functionality and interactions for the website
  */

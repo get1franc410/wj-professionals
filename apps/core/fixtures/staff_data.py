@@ -15,7 +15,7 @@ STAFF_DATA = [
         'department': 'management',
         'photo_path': 'images/ceo_portrait.jpg',  # Add this line for the CEO photo
         'bio': '''
-        <p>Oluwole Joshua is the Managing Partner and founder of WJ Professionals. With over 15 years 
+        <p>Oluwole Joshua is the Managing Partner and founder of Wole Joshua & Co.. With over 15 years 
         of experience in accounting and taxation, he leads the firm's strategic direction and client 
         relationships.</p>
         
@@ -23,7 +23,7 @@ STAFF_DATA = [
         an MBA in Finance from the University of Lagos. He specializes in corporate taxation, audit, 
         and financial advisory services.</p>
         
-        <p>Before founding WJ Professionals, Oluwole worked with PwC Nigeria for 8 years, where he 
+        <p>Before founding Wole Joshua & Co., Oluwole worked with PwC Nigeria for 8 years, where he 
         served various multinational clients and gained extensive experience in international taxation 
         and audit.</p>
         ''',
@@ -32,6 +32,11 @@ STAFF_DATA = [
             'MBA Finance - University of Lagos',
             'B.Sc Accounting - Ahmadu Bello University',
             'Certified Tax Practitioner - CITN'
+        ],
+        'certifications': [
+            'Certified Public Accountant (CPA)',
+            'Chartered Financial Analyst (CFA)',
+            'Project Management Professional (PMP)'
         ],
         'specializations': [
             'Corporate Taxation',
@@ -71,6 +76,10 @@ STAFF_DATA = [
             'B.Sc Accounting - University of Ife',
             'Certified Fraud Examiner - ACFE'
         ],
+        'certifications': [
+            'Certified Public Accountant (CPA)',
+            'Chartered Financial Analyst (CFA)',
+        ],
         'specializations': [
             'Statutory Audits',
             'Due Diligence',
@@ -109,6 +118,9 @@ STAFF_DATA = [
             'M.Sc Taxation - University of Lagos',
             'B.Sc Economics - University of Abuja'
         ],
+        'certifications': [
+            'Chartered Financial Analyst (CFA)',
+        ],
         'specializations': [
             'Corporate Tax Planning',
             'VAT Advisory',
@@ -145,6 +157,10 @@ STAFF_DATA = [
             'B.Sc Accounting - University of Nigeria, Nsukka',
             'Certified QuickBooks ProAdvisor',
             'Advanced Excel Certification'
+        ],
+        'certifications': [
+            'Certified Public Accountant (CPA)',
+            'Chartered Financial Analyst (CFA)',
         ],
         'specializations': [
             'Financial Reporting',
@@ -183,6 +199,9 @@ STAFF_DATA = [
             'Certificate in Corporate Governance',
             'CAC Certified Agent'
         ],
+        'certifications': [
+            'Certified Public Accountant (CPA)',
+        ],
         'specializations': [
             'Business Registration',
             'Corporate Compliance',
@@ -219,6 +238,10 @@ STAFF_DATA = [
             'B.Sc Accounting - Covenant University',
             'Certificate in Internal Auditing',
             'Risk Management Certification'
+        ],
+        'certifications': [
+            'Certified Public Accountant (CPA)',
+            'Chartered Financial Analyst (CFA)',
         ],
         'specializations': [
             'Financial Audits',
@@ -257,6 +280,9 @@ STAFF_DATA = [
             'Certificate in Tax Practice',
             'Payroll Management Certification'
         ],
+        'certifications': [
+            'Chartered Financial Analyst (CFA)',
+        ],
         'specializations': [
             'Personal Income Tax',
             'Small Business Taxation',
@@ -275,7 +301,7 @@ STAFF_DATA = [
         'phone': '+234-809-123-4574',
         'position': 'associate',
         'department': 'accounting',
-        'photo_path': 'images/staff_8.jpg',  # Placeholder for now
+        'photo_path': 'images/staff_8.jpg', 
         'bio': '''
         <p>Ibrahim Musa is an Accounting Associate who supports our bookkeeping and financial 
         reporting services. He works closely with clients to maintain accurate financial records 
@@ -293,6 +319,10 @@ STAFF_DATA = [
             'HND Accountancy - Federal Polytechnic Bauchi',
             'Certificate in Computerized Accounting',
             'Sage Accounting Certification'
+        ],
+        'certifications': [
+            'Certified Public Accountant (CPA)',
+            'Chartered Financial Analyst (CFA)',
         ],
         'specializations': [
             'Bookkeeping',

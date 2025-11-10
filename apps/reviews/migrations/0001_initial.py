@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('response_text', models.TextField()),
-                ('responder_name', models.CharField(default='WJ Professionals Team', max_length=100)),
+                ('responder_name', models.CharField(default='Wole Joshua & Co. Team', max_length=100)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('review', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='response', to='reviews.review')),
             ],

@@ -1,8 +1,8 @@
-Thank you for contacting WJ Professionals!
+Thank you for contacting Wole Joshua & Co.!
 
 Dear {{ submission.name }},
 
-Thank you for contacting WJ Professionals. We have received your message and will respond within 24 hours.
+Thank you for contacting Wole Joshua & Co.. We have received your message and will respond within 24 hours.
 
 Your Message Summary:
 ====================
@@ -26,8 +26,8 @@ Office Hours: Monday - Friday: 8:00 AM - 6:00 PM
 We appreciate your interest in our services and look forward to helping you achieve your financial goals.
 
 Best regards,
-The WJ Professionals Team
+The Wole Joshua & Co. Team
 
 ---
-WJ Professionals - Your Trusted Accounting Partner in Nigeria
+Wole Joshua & Co. - Your Trusted Accounting Partner in Nigeria
 Plot 123, Ademola Adetokunbo Crescent, Wuse II, Abuja, FCT

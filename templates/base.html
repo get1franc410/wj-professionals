@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>{% block title %}{{ company.name }} - Professional Accounting Services{% endblock %}</title>
-  <meta name="description" content="{% block meta_description %}{{ company.meta_description|default:'WJ Professionals - Your Trusted Accounting Partner in Nigeria' }}{% endblock %}">
+  <meta name="description" content="{% block meta_description %}{{ company.meta_description|default:'Wole Joshua & Co. - Your Trusted Accounting Partner in Nigeria' }}{% endblock %}">
   <meta name="keywords" content="{% block meta_keywords %}{{ company.meta_keywords|default:'accounting, tax services, audit, Nigeria, FIRS, business consulting' }}{% endblock %}">
 
   <!-- Favicons -->
@@ -29,6 +29,7 @@
   <!-- Main CSS File -->
   <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
   <link href="{% static 'assets/css/custom.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/css/logo-glow.css' %}" rel="stylesheet">
 
   {% block extra_css %}{% endblock %}
 </head>
@@ -39,7 +40,7 @@
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
       <a href="{% url 'core:home' %}" class="logo d-flex align-items-center me-auto me-lg-0">
-        <h1 class="sitename">{{ company.name|default:"WJ Professionals" }}</h1>
+        <h1 class="sitename">Wole Joshua & Co</h1>
         <span>.</span>
       </a>
 
@@ -65,8 +66,8 @@
               <li class="dropdown">
                 <a href="#"><span>Software Solutions</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
-                  <li><a href="{% url 'software:accounting_software' %}">
-                    <i class="bi bi-laptop me-2"></i>WJ Accounting Software
+                  <li><a href="https://www.accounticoceans.com" target="_blank" rel="noopener noreferrer">
+                      <i class="bi bi-laptop me-2"></i>Accountic Oceans
                   </a></li>
                   <li><a href="#" onclick="showComingSoon('Payroll Management System')">
                     <i class="bi bi-people me-2"></i>Payroll Management System
@@ -121,13 +122,13 @@
         <div class="row gy-4">
           <div class="col-lg-4 col-md-6 footer-about">
             <a href="{% url 'core:home' %}" class="logo d-flex align-items-center">
-              <span class="sitename">{{ company.name|default:"WJ Professionals" }}</span>
+              <span class="sitename">{{ company.name|default:"Wole Joshua & Co." }}</span>
             </a>
             <div class="footer-contact pt-3">
-              <p>{{ company.address|default:"Plot 123, Ademola Adetokunbo Crescent" }}</p>
+              <p>{{ company.address|default:"Real Tower Centre, Ekukinam Street, Utako-Abuja, FCT Nigeria" }}</p>
               <p>{{ company.city|default:"Abuja" }}, {{ company.state|default:"FCT" }}</p>
               <p class="mt-3"><strong>Phone:</strong> <span>{{ company.phone|default:"+234-803-065-5969" }}</span></p>
-              <p><strong>Email:</strong> <span>{{ company.email|default:"info@wjprofessionals.com" }}</span></p>
+              <p><strong>Email:</strong> <span>{{ company.email|default:"info@wolejoshuaandco.com" }}</span></p>
             </div>
             <div class="social-links d-flex mt-4">
               {% if company.twitter %}<a href="{{ company.twitter }}"><i class="bi bi-twitter-x"></i></a>{% endif %}
@@ -180,7 +181,7 @@
 
     <div class="copyright">
         <div class="container text-center">
-            <p>© <span>Copyright</span> <strong class="px-1 sitename">{{ company.name|default:"WJ Professionals" }}</strong> <span>All Rights Reserved</span><a href="{% url 'dashboard:login' %}" class="text-decoration-none" style="color: inherit; opacity: 0.1;" title="Admin Access">.</a></p>
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">{{ company.name|default:"Wole Joshua & Co." }}</strong> <span>All Rights Reserved</span><a href="{% url 'dashboard:login' %}" class="text-decoration-none" style="color: inherit; opacity: 0.1;" title="Admin Access">.</a></p>
             <div class="credits">
             Designed with <i class="bi bi-heart-fill text-danger"></i> for Professional Excellence
             </div>

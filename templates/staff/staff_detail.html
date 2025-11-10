@@ -114,17 +114,50 @@
         <div class="service-description">
           <h3><i class="bi bi-award me-2"></i>Professional Qualifications</h3>
           <div class="qualifications-content">
-            {{ staff_member.qualifications|linebreaks }}
+            <ul class="list-unstyled">
+              {% for qualification in staff_member.qualifications %}
+              <li class="mb-2">
+                <i class="bi bi-check-circle text-primary me-2"></i>
+                <strong>{{ qualification }}</strong>
+              </li>
+              {% endfor %}
+            </ul>
           </div>
         </div>
         {% endif %}
-        
-        <!-- Specializations -->
+
+        <!-- ✅ FIXED: Certifications (JSONField) -->
+        {% if staff_member.certifications %}
+        <div class="service-description">
+          <h3><i class="bi bi-patch-check me-2"></i>Professional Certifications</h3>
+          <div class="certifications-content">
+            <ul class="list-unstyled">
+              {% for certification in staff_member.certifications %}
+              <li class="mb-2">
+                <i class="bi bi-award-fill text-success me-2"></i>
+                <strong>{{ certification }}</strong>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- ✅ FIXED: Specializations (JSONField) -->
         {% if staff_member.specializations %}
         <div class="service-description">
           <h3><i class="bi bi-star me-2"></i>Areas of Expertise</h3>
           <div class="specializations-content">
-            {{ staff_member.specializations|linebreaks }}
+            <div class="row">
+              {% for specialization in staff_member.specializations %}
+              <div class="col-md-6 mb-2">
+                <div class="specialization-item">
+                  <i class="bi bi-arrow-right text-primary me-2"></i>
+                  <span>{{ specialization }}</span>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
           </div>
         </div>
         {% endif %}

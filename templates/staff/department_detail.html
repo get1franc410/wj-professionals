@@ -54,9 +54,29 @@
             <span>{{ member.get_position_display }}</span>
             
             {% if member.bio %}
-            <p>{{ member.bio|striptags|truncatewords:15 }}</p>
+            <p>{{ member.bio|striptags|truncatewords:12 }}</p>
             {% endif %}
-            
+
+            <!-- ✅ NEW: Show key qualifications -->
+            {% if member.qualifications %}
+            <div class="member-key-quals mb-2">
+              <small class="text-primary"><strong>Key Qualification:</strong></small>
+              <small class="d-block text-muted">{{ member.qualifications.0 }}</small>
+            </div>
+            {% endif %}
+
+            <!-- ✅ NEW: Show specializations -->
+            {% if member.specializations %}
+            <div class="member-specializations mb-2">
+              <small class="text-primary"><strong>Specializes in:</strong></small>
+              <small class="d-block text-muted">
+                {% for specialization in member.specializations|slice:":2" %}
+                  {{ specialization }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </small>
+            </div>
+            {% endif %}
+
             <a href="{% url 'staff:staff_detail' member.pk %}" class="btn btn-outline-primary">
               View Full Profile
             </a>

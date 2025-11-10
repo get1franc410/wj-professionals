@@ -15,9 +15,6 @@ from apps.staff.models import Staff
 from apps.reviews.models import Review  
 from django.db.models import Avg, Count
 
-
-
-
 def home_view(request):
     """Home page view with all necessary data"""
     company = Company.objects.first()
@@ -59,7 +56,7 @@ def home_view(request):
             'url': 'https://www.firs.gov.ng/company-tax-calculator/'
         }
     ]
-    
+    team_members = Staff.objects.filter(is_public=True, is_featured=True, is_active=True).select_related('user', 'department')    
     context = {
         'company': company,
         'featured_services': Service.objects.filter(is_featured=True, is_active=True)[:6],
@@ -67,7 +64,7 @@ def home_view(request):
         'recent_news': NewsArticle.objects.filter(status='published', publish_date__lte=timezone.now()).order_by('-publish_date')[:3],
         'featured_clients': Client.objects.filter(is_featured=True, is_public=True)[:6] if 'apps.portfolio' in settings.INSTALLED_APPS else [],
         'testimonials': Testimonial.objects.filter(is_featured=True, is_approved=True)[:3],
-        'team_members': Staff.objects.filter(is_public=True, is_featured=True)[:4],
+        'team_members': team_members,
         'tax_calculators': tax_calculators,
         'review_stats': review_stats,
         'featured_reviews': featured_reviews,
@@ -93,9 +90,9 @@ def about_view(request):
         {'name': 'Direct Feedback', 'rating': 4.7, 'count': max(0, (review_stats['total_reviews'] or 17) - 10)},
     ]
     
-    # ✅ FIXED: Enhanced achievements list
+    # Enhanced achievements list
     achievements = [
-        {'year': '2010', 'title': 'Company Founded', 'description': 'WJ Professionals was established with a vision to provide world-class accounting services.'},
+        {'year': '2010', 'title': 'Company Founded', 'description': 'Wole Joshua & Co. was established with a vision to provide world-class accounting services.'},
         {'year': '2013', 'title': '100+ Clients', 'description': 'Reached milestone of 100 satisfied clients'},
         {'year': '2015', 'title': 'Major Expansion', 'description': 'Expanded services to include tax advisory and business consulting.'},
         {'year': '2017', 'title': 'Lagos Office', 'description': 'Opened branch office in Lagos'},
@@ -104,18 +101,23 @@ def about_view(request):
         {'year': '2023', 'title': '500+ Clients', 'description': 'Expanded to serve over 500 clients nationwide'},
         {'year': '2024', 'title': 'Industry Recognition', 'description': 'Recognized as one of the leading accounting firm in Nigeria.'},
     ]
-    
+    all_staff = Staff.objects.filter(is_public=True, is_active=True).select_related('user', 'department')
+    leadership_positions = ['managing_partner', 'senior_partner', 'partner']
+    leadership = all_staff.filter(position__in=leadership_positions)
+    regular_team = all_staff.exclude(position__in=leadership_positions)
     context = {
         'company': company,
-        'team_members': Staff.objects.filter(is_public=True, is_active=True),
+        'team_members': all_staff,  
+        'leadership': leadership, 
+        'regular_team': regular_team,
         'achievements': achievements,
         'stats': {
             'years_experience': company.years_of_experience if company else 0,
             'clients_served': company.clients_served if company else 500,
             'projects_completed': company.projects_completed if company else 1200,
-            'team_members': Staff.objects.filter(is_active=True).count(),
+            'team_members': all_staff.count(),
         },
-        # ✅ FIXED: Pass review data separately in context
+        # Pass review data separately in context
         'review_stats': review_stats,
         'overall_rating': review_stats['avg_rating'] or 4.7,
         'total_reviews': review_stats['total_reviews'] or 48,

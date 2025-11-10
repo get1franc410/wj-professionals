@@ -100,6 +100,35 @@ class Staff(models.Model):
     def get_absolute_url(self):
         return reverse('staff:staff_detail', kwargs={'pk': self.pk})
     
+    def get_photo_url(self):
+        """Get photo URL - check both media and static locations"""
+        if self.photo and hasattr(self.photo, 'url'):
+            try:
+                # Try to access the file to see if it exists
+                _ = self.photo.url
+                return self.photo.url
+            except:
+                pass
+        
+        # Fallback to static images based on naming convention
+        if hasattr(self, 'user') and self.user:
+            # Try CEO photo first
+            if self.position == 'managing_partner':
+                return '/static/images/ceo_portrait.jpg'
+            
+            # Try numbered staff photos
+            staff_id = getattr(self, 'id', 0)
+            if staff_id and staff_id <= 8:  # We have staff_2.jpg to staff_8.jpg
+                return f'/static/images/staff_{staff_id + 1}.jpg'
+        
+        # Default placeholder
+        return '/static/images/placeholder-avatar.jpg'
+
+    @property
+    def photo_url(self):
+        """Property for easy template access"""
+        return self.get_photo_url()
+    
     @property
     def full_name(self):
         return self.user.get_full_name()

@@ -1,0 +1,33 @@
+/* ===================================
+   LOGO GLOW EFFECTS ONLY
+   ================================== */
+
+.logo .sitename {
+    text-shadow: 
+        0 0 5px #ffd700,
+        0 0 10px #ffd700,
+        0 0 15px #ffd700,
+        0 0 20px rgba(255, 215, 0, 0.8),
+        2px 2px 4px rgba(255, 215, 0, 0.3) !important;
+    
+    filter: drop-shadow(0 0 8px #ffd700) !important;
+    transition: all 0.3s ease !important;
+}
+
+.logo:hover .sitename {
+    text-shadow: 
+        0 0 8px #ffd700,
+        0 0 15px #ffd700,
+        0 0 25px #ffd700,
+        0 0 35px rgba(255, 215, 0, 0.9),
+        3px 3px 6px rgba(255, 215, 0, 0.4) !important;
+    
+    filter: drop-shadow(0 0 12px #ffd700) !important;
+    transform: scale(1.02) !important;
+}
+
+.logo span {
+    color: #ffd700 !important;
+    text-shadow: 0 0 10px #ffd700 !important;
+    filter: drop-shadow(0 0 6px #ffd700) !important;
+}

@@ -472,3 +472,52 @@ img[src*="about-office.jpg"]:after {
     font-size: 2rem;
     font-weight: bold;
 }
+
+
+/* Staff JSONField Display Styles */
+.member-qualifications,
+.member-specializations,
+.member-certifications {
+  margin-top: 8px;
+}
+
+.member-qualifications ul,
+.member-specializations ul,
+.member-certifications ul {
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+.member-qualifications li,
+.member-specializations li,
+.member-certifications li {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.specialization-item {
+  padding: 5px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.specialization-item:last-child {
+  border-bottom: none;
+}
+
+.member-key-quals small,
+.member-specializations small {
+  line-height: 1.3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .member-qualifications,
+  .member-specializations {
+    margin-top: 6px;
+  }
+  
+  .member-qualifications li,
+  .member-specializations li {
+    font-size: 0.8rem;
+  }
+}

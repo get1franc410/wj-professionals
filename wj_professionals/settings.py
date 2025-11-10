@@ -11,7 +11,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-import dj_database_url
+# import dj_database_url
 import os
 from pathlib import Path
 from decouple import config
@@ -202,14 +202,8 @@ CKEDITOR_5_CONFIGS = {
 WSGI_APPLICATION = 'wj_professionals.wsgi.application'
 # Database
 # Database Configuration
-if 'DATABASE_URL' in os.environ:
-    # Railway/Production database
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-    }
-else:
-    # Local development database (fallback)
-    DATABASES = {
+
+DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',

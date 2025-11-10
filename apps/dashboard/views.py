@@ -152,7 +152,7 @@ def reply_email(request, message_id):
         {reply_content}
         
         Best regards,
-        WJ Professionals Team
+        Wole Joshua & Co. Team
         
         ---
         Original Message:

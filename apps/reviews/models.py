@@ -82,7 +82,7 @@ class ReviewResponse(models.Model):
     """Admin responses to reviews"""
     review = models.OneToOneField(Review, on_delete=models.CASCADE, related_name='response')
     response_text = models.TextField()
-    responder_name = models.CharField(max_length=100, default="WJ Professionals Team")
+    responder_name = models.CharField(max_length=100, default="Wole Joshua & Co. Team")
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

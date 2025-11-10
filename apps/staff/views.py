@@ -44,12 +44,12 @@ class TeamListView(ListView):
             position__in=['senior_manager', 'manager'],
             is_public=True,
             is_active=True
-        )
+        ).order_by('order', 'user__first_name')
         context['associates'] = Staff.objects.filter(
             position__in=['senior_associate', 'associate', 'junior_associate'],
             is_public=True,
             is_active=True
-        )
+        ).order_by('order', 'user__first_name')
         context['team_stats'] = {
             'total_members': Staff.objects.filter(is_active=True, is_public=True).count(),
             'qualified_professionals': Staff.objects.filter(

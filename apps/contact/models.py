@@ -111,7 +111,7 @@ class ContactSubmission(models.Model):
         
         subject = f'New Contact Message: {self.subject}'
         message = f"""
-        New contact message received on WJ Professionals website:
+        New contact message received on Wole Joshua & Co. website:
         
         From: {self.full_name}
         Email: {self.email}

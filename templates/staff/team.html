@@ -10,7 +10,7 @@
 <div class="page-title dark-background">
   <div class="container position-relative">
     <h1>Our Professional Team</h1>
-    <p>Meet the experienced professionals who make WJ Professionals your trusted partner</p>
+    <p>Meet the experienced professionals who make Wole Joshua & Co. your trusted partner</p>
     <nav class="breadcrumbs">
       <ol>
         <li><a href="{% url 'core:home' %}">Home</a></li>
@@ -110,7 +110,33 @@
             {% if member.department %}
             <p class="text-muted">{{ member.department.name }}</p>
             {% endif %}
-            <p>{{ member.bio|striptags|truncatewords:20 }}</p>
+            <p>{{ member.bio|striptags|truncatewords:15 }}</p>
+            {% if member.qualifications %}
+            <div class="member-qualifications mb-2">
+              <small class="text-muted d-block"><strong>Qualifications:</strong></small>
+              <small class="text-muted">
+                {% for qualification in member.qualifications|slice:":1" %}
+                  {{ qualification }}
+                {% endfor %}
+                {% if member.qualifications|length > 1 %}
+                  <span class="badge bg-light text-dark ms-1">+{{ member.qualifications|length|add:"-1" }}</span>
+                {% endif %}
+              </small>
+            </div>
+            {% endif %}
+
+            {% if member.specializations %}
+            <div class="member-specializations mb-2">
+              <small class="text-muted d-block"><strong>Specializes in:</strong></small>
+              <small class="text-muted">
+                {% for specialization in member.specializations|slice:":2" %}
+                  {{ specialization }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                {% if member.specializations|length > 2 %}...{% endif %}
+              </small>
+            </div>
+            {% endif %}
+
             <a href="{% url 'staff:staff_detail' member.pk %}" class="btn btn-outline-primary btn-sm">
               View Profile
             </a>

@@ -83,6 +83,47 @@ class Command(BaseCommand):
         Company.objects.all().delete()
         self.stdout.write('Cleared Company data')
 
+    def create_or_update_object(self, model_class, lookup_field, lookup_value, data, update_fields=None):
+        """
+        Helper method to create or update objects with proper logging
+        """
+        try:
+            # Try to get existing object
+            lookup_kwargs = {lookup_field: lookup_value}
+            obj = model_class.objects.get(**lookup_kwargs)
+            
+            # Update existing object if update_fields specified
+            if update_fields:
+                updated_fields = []
+                for field in update_fields:
+                    if field in data and hasattr(obj, field):
+                        old_value = getattr(obj, field)
+                        new_value = data[field]
+                        if old_value != new_value:
+                            setattr(obj, field, new_value)
+                            updated_fields.append(field)
+                
+                if updated_fields:
+                    obj.save()
+                    return obj, False  
+            
+            return obj, False  
+            
+        except model_class.DoesNotExist:
+            # Create new object
+            obj = model_class.objects.create(**data)
+            return obj, True  # Created
+
+    def log_creation_stats(self, item_type, created_count, updated_count):
+        """
+        Helper method to log creation statistics
+        """
+        total = created_count + updated_count
+        if total > 0:
+            self.stdout.write(f'📊 {item_type} - Created: {created_count}, Updated: {updated_count}')
+        else:
+            self.stdout.write(f'ℹ️  No {item_type} to process')
+
     def load_company_data(self):
         """Load company information from centralized company_data.py"""
         self.stdout.write('🏢 Loading company data from centralized source...')
@@ -535,54 +576,52 @@ class Command(BaseCommand):
                         'date_joined': date_joined,
                         'linkedin': staff_data.get('linkedin', ''),
                         'twitter': staff_data.get('twitter', ''),
-                        'qualifications': '\n'.join(staff_data['qualifications']),
-                        'specializations': '\n'.join(staff_data['specializations'])
+                        'qualifications': staff_data['qualifications'],  
+                        'specializations': staff_data['specializations'], 
+                        'certifications': staff_data.get('certifications', []),
                     }
                 )
                 
                 # 🆕 NEW: Handle photo if specified
                 if 'photo_path' in staff_data and staff_data['photo_path']:
-                    # Try multiple possible paths for the photo
-                    possible_paths = [
-                        # Direct path from static root
-                        os.path.join(settings.STATIC_ROOT or '', staff_data['photo_path']) if settings.STATIC_ROOT else None,
-                        # Path from BASE_DIR/static
-                        os.path.join(settings.BASE_DIR, 'static', staff_data['photo_path']),
-                        # Path from current directory
-                        os.path.join(settings.BASE_DIR, staff_data['photo_path']),
-                        # Direct path (in case it's absolute)
-                        staff_data['photo_path']
-                    ]
+                    # Build the full path to the photo
+                    photo_filename = os.path.basename(staff_data['photo_path'])  # Get just the filename
+                    full_photo_path = os.path.join(settings.BASE_DIR, 'static', 'images', photo_filename)
                     
-                    photo_loaded = False
-                    for photo_path in possible_paths:
-                        if photo_path and os.path.exists(photo_path):
-                            try:
-                                with open(photo_path, 'rb') as f:
-                                    # Only update photo if staff doesn't have one or if it's different
-                                    filename = os.path.basename(photo_path)
-                                    if not staff.photo or staff.photo.name != f'staff/photos/{filename}':
-                                        staff.photo.save(
-                                            filename,
-                                            File(f),
-                                            save=True
-                                        )
-                                        self.stdout.write(f'  📸 Added photo for: {staff.user.get_full_name()}')
-                                    else:
-                                        self.stdout.write(f'  📸 Photo already exists for: {staff.user.get_full_name()}')
-                                    photo_loaded = True
-                                    break
-                            except Exception as e:
-                                self.stdout.write(f'  ⚠️  Error loading photo for {staff.user.get_full_name()}: {e}')
+                    self.stdout.write(f'  🔍 Looking for photo: {photo_filename}')
+                    self.stdout.write(f'  📂 Full path: {full_photo_path}')
+                    self.stdout.write(f'  📁 File exists: {os.path.exists(full_photo_path)}')
                     
-                    if not photo_loaded:
-                        self.stdout.write(f'  ⚠️  Photo not found for {staff.user.get_full_name()}: {staff_data["photo_path"]}')
-                        # List the paths that were tried
-                        self.stdout.write(f'      Tried paths:')
-                        for path in possible_paths:
-                            if path:
-                                exists = "✅" if os.path.exists(path) else "❌"
-                                self.stdout.write(f'        {exists} {path}')
+                    if os.path.exists(full_photo_path):
+                        try:
+                            # Always update the photo to ensure consistency
+                            with open(full_photo_path, 'rb') as f:
+                                # Clear existing photo first
+                                if staff.photo:
+                                    staff.photo.delete(save=False)
+                                
+                                # Save new photo
+                                staff.photo.save(
+                                    photo_filename,
+                                    File(f),
+                                    save=True
+                                )
+                                self.stdout.write(f'  ✅ Successfully loaded photo for: {staff.user.get_full_name()}')
+                                self.stdout.write(f'     📸 Saved as: {staff.photo.name}')
+                                self.stdout.write(f'     🔗 URL: {staff.photo.url}')
+                                
+                        except Exception as e:
+                            self.stdout.write(f'  ❌ Error loading photo for {staff.user.get_full_name()}: {e}')
+                            import traceback
+                            self.stdout.write(f'  📋 Full error: {traceback.format_exc()}')
+                    else:
+                        self.stdout.write(f'  ❌ Photo file not found: {full_photo_path}')
+                        # List what files are actually in the images directory
+                        images_dir = os.path.join(settings.BASE_DIR, 'static', 'images')
+                        if os.path.exists(images_dir):
+                            actual_files = [f for f in os.listdir(images_dir) if f.endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+                            self.stdout.write(f'  📁 Available image files: {actual_files}')
+
                 
                 # 🔧 FIX: Update existing staff if data is different
                 if not staff_created_flag:
@@ -615,13 +654,15 @@ class Command(BaseCommand):
                         staff_needs_update = True
                     
                     # Check qualifications and specializations
-                    new_qualifications = '\n'.join(staff_data['qualifications'])
-                    new_specializations = '\n'.join(staff_data['specializations'])
-                    if staff.qualifications != new_qualifications:
-                        staff.qualifications = new_qualifications
+                    if staff.qualifications != staff_data['qualifications']:
+                        staff.qualifications = staff_data['qualifications']
                         staff_needs_update = True
-                    if staff.specializations != new_specializations:
-                        staff.specializations = new_specializations
+                    if staff.specializations != staff_data['specializations']:
+                        staff.specializations = staff_data['specializations']
+                        staff_needs_update = True
+                    # Add certifications support
+                    if hasattr(staff, 'certifications') and staff.certifications != staff_data.get('certifications', []):
+                        staff.certifications = staff_data.get('certifications', [])
                         staff_needs_update = True
                     
                     if staff_needs_update:
@@ -667,7 +708,7 @@ class Command(BaseCommand):
             {'name': 'Business News', 'slug': 'business-news', 'description': 'Business developments, market insights, and industry trends', 'color': '#28a745', 'icon': 'fas fa-chart-line'},
             {'name': 'Regulatory Changes', 'slug': 'regulatory-changes', 'description': 'Updates on regulatory changes affecting businesses and individuals', 'color': '#dc3545', 'icon': 'fas fa-gavel'},
             {'name': 'Industry Insights', 'slug': 'industry-insights', 'description': 'Expert insights and analysis on accounting and finance industry', 'color': '#6f42c1', 'icon': 'fas fa-lightbulb'},
-            {'name': 'Company News', 'slug': 'company-news', 'description': 'Updates and announcements from WJ Professionals', 'color': '#fd7e14', 'icon': 'fas fa-building'},
+            {'name': 'Company News', 'slug': 'company-news', 'description': 'Updates and announcements from Wole Joshua & Co.', 'color': '#fd7e14', 'icon': 'fas fa-building'},
         ]
         
         created_count = updated_count = 0

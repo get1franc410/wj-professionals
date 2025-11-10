@@ -26,13 +26,13 @@
         <img src="{% static 'assets/img/about.jpg' %}" class="img-fluid" alt="About {{ company.name }}">
       </div>
       <div class="col-lg-6 order-2 order-lg-1 content">
-        <h3>{{ company.name|default:"WJ Professionals" }}</h3>
+        <h3>{{ company.name|default:"Wole Joshua & Co." }}</h3>
         <p class="fst-italic">
           {{ company.tagline|default:"Your Trusted Accounting Partner in Nigeria" }}
         </p>
         
         <div class="about-content">
-          {{ company.about_us|safe|default:"<p>WJ Professionals is a leading accounting and financial services firm based in Nigeria, providing comprehensive solutions to individuals, small businesses, and corporations across the country. With over a decade of experience, we have established ourselves as a trusted partner for all your financial needs.</p>" }}
+          {{ company.about_us|safe|default:"<p>Wole Joshua & Co. is a leading accounting and financial services firm based in Nigeria, providing comprehensive solutions to individuals, small businesses, and corporations across the country. With over a decade of experience, we have established ourselves as a trusted partner for all your financial needs.</p>" }}
         </div>
 
         <ul>
@@ -111,7 +111,7 @@
             <div class="stats-item d-flex">
               <i class="bi bi-emoji-smile flex-shrink-0"></i>
               <div>
-                <span data-purecounter-start="0" data-purecounter-end="{{ company.clients_served|default:'500' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <span data-purecounter-start="0" data-purecounter-end="{{ stats.clients_served }}" data-purecounter-duration="1" class="purecounter"></span>
                 <p><strong>Happy Clients</strong> <span>served nationwide</span></p>
               </div>
             </div>
@@ -121,7 +121,7 @@
             <div class="stats-item d-flex">
               <i class="bi bi-journal-richtext flex-shrink-0"></i>
               <div>
-                <span data-purecounter-start="0" data-purecounter-end="{{ company.projects_completed|default:'1200' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <span data-purecounter-start="0" data-purecounter-end="{{ stats.projects_completed }}" data-purecounter-duration="1" class="purecounter"></span>
                 <p><strong>Projects</strong> <span>completed successfully</span></p>
               </div>
             </div>
@@ -131,7 +131,7 @@
             <div class="stats-item d-flex">
               <i class="bi bi-headset flex-shrink-0"></i>
               <div>
-                <span data-purecounter-start="0" data-purecounter-end="{{ company.years_of_experience|default:'10' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <span data-purecounter-start="0" data-purecounter-end="{{ stats.years_experience }}" data-purecounter-duration="1" class="purecounter"></span>
                 <p><strong>Years Experience</strong> <span>in Nigerian market</span></p>
               </div>
             </div>
@@ -141,7 +141,7 @@
             <div class="stats-item d-flex">
               <i class="bi bi-people flex-shrink-0"></i>
               <div>
-                <span data-purecounter-start="0" data-purecounter-end="{{ team_stats.total_members|default:'15' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <span data-purecounter-start="0" data-purecounter-end="{{ stats.team_members }}" data-purecounter-duration="1" class="purecounter"></span>
                 <p><strong>Team Members</strong> <span>certified professionals</span></p>
               </div>
             </div>
@@ -188,6 +188,19 @@
               <h4>{{ member.user.get_full_name }}</h4>
               <span>{{ member.get_position_display|default:member.position }}</span>
               <p class="mt-2">{{ member.bio|striptags|truncatewords:20 }}</p>
+              {% if member.qualifications %}
+              <div class="member-qualifications mt-2">
+                <small class="text-muted d-block"><strong>Key Qualifications:</strong></small>
+                <ul class="list-unstyled small">
+                  {% for qualification in member.qualifications|slice:":2" %}
+                  <li><i class="bi bi-check2 text-primary me-1"></i>{{ qualification }}</li>
+                  {% endfor %}
+                  {% if member.qualifications|length > 2 %}
+                  <li class="text-muted">...and {{ member.qualifications|length|add:"-2" }} more</li>
+                  {% endif %}
+                </ul>
+              </div>
+              {% endif %}
             </div>
           </div>
         </div><!-- End Team Member -->
@@ -283,7 +296,7 @@
           </div>
           <div class="achievement-content">
             <h4>Company Founded</h4>
-            <p>WJ Professionals was established with a vision to provide world-class accounting services.</p>
+            <p>Wole Joshua & Co. was established with a vision to provide world-class accounting services.</p>
           </div>
         </div>
       </div>
@@ -476,7 +489,7 @@
       <div class="col-xl-10">
         <div class="text-center">
           <h3>Ready to Work With Us?</h3>
-          <p>Join hundreds of satisfied clients who trust WJ Professionals for their accounting and financial needs. 
+          <p>Join hundreds of satisfied clients who trust Wole Joshua & Co. for their accounting and financial needs. 
           Let us help you achieve your business goals with our expert guidance and personalized service.</p>
           <a class="cta-btn" href="{% url 'contact:contact' %}">Get Started Today</a>
         </div>
@@ -491,10 +504,74 @@
 <style>
 /* About page specific styles */
 .member-placeholder {
-  height: 250px;
+  height: 280px; /* Consistent height for all placeholders */
   background: #f8f9fa;
   border: 2px dashed #dee2e6;
   border-radius: 8px;
+}
+
+/* 🔧 ADD THESE NEW STYLES FOR CONSISTENT TEAM MEMBER PHOTOS */
+.team-member .member-img {
+  height: 280px; /* Fixed height for all team member containers */
+  overflow: hidden;
+  position: relative;
+  border-radius: 8px;
+}
+
+.team-member .member-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  object-position: center top; 
+}
+
+/* Leadership team gets slightly larger containers */
+.leadership-section .team-member .member-img {
+  height: 320px; 
+}
+
+.leadership-section .member-placeholder {
+  height: 320px; 
+}
+
+/* Ensure consistent card heights */
+.team-member {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.member-info {
+  flex-grow: 1;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Social icons positioning */
+.social {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.team-member:hover .social {
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .team-member .member-img,
+  .member-placeholder {
+    height: 250px; 
+  }
+  
+  .leadership-section .team-member .member-img,
+  .leadership-section .member-placeholder {
+    height: 280px; 
+  }
 }
 
 .info-box {

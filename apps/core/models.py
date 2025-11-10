@@ -2,7 +2,7 @@
 """
 Core Models
 ===========
-Core models for the WJ Professionals website
+Core models for the Wole Joshua & Co. website
 """
 
 from django.db import models
@@ -120,6 +120,15 @@ class Company(models.Model):
         return stats['total_reviews'] or 0
     
     @property
+    def staff_count(self):
+        """Get the current count of active staff members"""
+        try:
+            from apps.staff.models import Staff
+            return Staff.objects.filter(is_active=True).count()
+        except:
+            return 15
+    
+    @property
     def featured_reviews(self):
         """Get featured reviews"""
         try:
@@ -139,7 +148,7 @@ class Company(models.Model):
         if not company:
             # Create default company if none exists
             company = cls.objects.create(
-                name='WJ Professionals',
+                name='Wole Joshua & Co.',
                 tagline='Your Trusted Accounting Partner in Nigeria',
                 email='info@wjprofessionals.com',
                 phone='+234-803-065-5969',

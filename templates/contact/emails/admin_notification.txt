@@ -1,4 +1,4 @@
-New Contact Form Submission - WJ Professionals
+New Contact Form Submission - Wole Joshua & Co.
 
 Contact Details:
 ================
@@ -26,4 +26,4 @@ Action Required: Please respond to this inquiry within 24 hours.
 Admin URL: {{ admin_url }}
 
 ---
-This email was automatically generated from the WJ Professionals website.
+This email was automatically generated from the Wole Joshua & Co. website.

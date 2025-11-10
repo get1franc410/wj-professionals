@@ -41,7 +41,14 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+    import os
+    print(f"🔍 DEBUG: MEDIA_URL = {settings.MEDIA_URL}")
+    print(f"🔍 DEBUG: MEDIA_ROOT = {settings.MEDIA_ROOT}")
+    print(f"🔍 DEBUG: Media root exists = {os.path.exists(settings.MEDIA_ROOT)}")
+
 # Admin site customization
-admin.site.site_header = "WJ Professionals Admin"
-admin.site.site_title = "WJ Professionals"
-admin.site.index_title = "Welcome to WJ Professionals Administration"
+admin.site.site_header = "Wole Joshua & Co. Admin"
+admin.site.site_title = "Wole Joshua & Co."
+admin.site.index_title = "Welcome to Wole Joshua & Co. Administration"
+
+

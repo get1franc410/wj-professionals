@@ -10,7 +10,7 @@
             <!-- Header -->
             <div class="text-center mb-5">
                 <h1 class="display-6 fw-bold">Leave a Review</h1>
-                <p class="lead text-muted">Share your experience with WJ Professionals</p>
+                <p class="lead text-muted">Share your experience with Wole Joshua & Co.</p>
             </div>
             
             <!-- Review Form -->
@@ -80,19 +80,19 @@
                             <div class="star-rating-container">
                                 <div class="star-rating" id="starRating">
                                     <span class="star" data-rating="1">
-                                        <i class="fas fa-star"></i>
+                                        <i class="bi bi-star-fill"></i>
                                     </span>
                                     <span class="star" data-rating="2">
-                                        <i class="fas fa-star"></i>
+                                        <i class="bi bi-star-fill"></i>
                                     </span>
                                     <span class="star" data-rating="3">
-                                        <i class="fas fa-star"></i>
+                                        <i class="bi bi-star-fill"></i>
                                     </span>
                                     <span class="star" data-rating="4">
-                                        <i class="fas fa-star"></i>
+                                        <i class="bi bi-star-fill"></i>
                                     </span>
                                     <span class="star" data-rating="5">
-                                        <i class="fas fa-star"></i>
+                                        <i class="bi bi-star-fill"></i>
                                     </span>
                                 </div>
                                 <div class="rating-text mt-2">
@@ -190,6 +190,11 @@
     transform: scale(1.1);
 }
 
+/* Use Bootstrap Icons instead of Font Awesome */
+.star i {
+    font-size: inherit;
+}
+
 .rating-text {
     font-size: 1.1rem;
     font-weight: 500;
@@ -233,21 +238,6 @@
 .alert-info {
     border-left: 4px solid #17a2b8;
     border-radius: 8px;
-}
-
-/* Form validation styles */
-.is-invalid {
-    border-color: #dc3545;
-}
-
-.valid-feedback {
-    display: block;
-    color: #28a745;
-}
-
-.invalid-feedback {
-    display: block;
-    color: #dc3545;
 }
 
 /* Responsive adjustments */

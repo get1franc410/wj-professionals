@@ -13,7 +13,7 @@
   <div class="container">
     <div class="row justify-content-center text-center" data-aos="fade-up" data-aos-delay="100">
       <div class="col-xl-6 col-lg-8">
-        <h2>{{ company.tagline|default:"Professional Accounting Solutions with WJ Professionals" }}<span>.</span></h2>
+        <h2>{{ company.tagline|default:"Professional Accounting Solutions with Wole Joshua & Co." }}<span>.</span></h2>
         <p>{{ company.description|striptags|truncatewords:15|default:"We are a team of qualified accounting professionals providing comprehensive financial services across Nigeria" }}</p>
       </div>
     </div>
@@ -68,10 +68,10 @@
   <div class="container" data-aos="fade-up" data-aos-delay="100">
     <div class="row gy-4">
       <div class="col-lg-6 order-1 order-lg-2">
-        <img src="{% static 'assets/img/about.jpg' %}" class="img-fluid" alt="About WJ Professionals">
+        <img src="{% static 'assets/img/about.jpg' %}" class="img-fluid" alt="About Wole Joshua & Co.">
       </div>
       <div class="col-lg-6 order-2 order-lg-1 content">
-        <h3>{{ company.name|default:"WJ Professionals" }} - Your Trusted Financial Partner</h3>
+        <h3>{{ company.name|default:"Wole Joshua & Co." }} - Your Trusted Financial Partner</h3>
         <p class="fst-italic">
           {{ company.mission|striptags|default:"To provide exceptional accounting, tax, and financial advisory services that empower our clients to achieve their financial goals while ensuring full compliance with Nigerian tax laws and regulations." }}
         </p>
@@ -228,7 +228,7 @@
       </div>
 
       <div class="col-lg-6">
-        <h3 class="fw-bold fs-2 mb-3">{{ company.name|default:"WJ Professionals" }} by the Numbers</h3>
+        <h3 class="fw-bold fs-2 mb-3">{{ company.name|default:"Wole Joshua & Co." }} by the Numbers</h3>
         <p>
           Our track record speaks for itself. With years of dedicated service to the Nigerian business community, 
           we have built a reputation for excellence and reliability in accounting and financial services.
@@ -269,7 +269,7 @@
             <div class="stats-item d-flex">
               <i class="bi bi-people flex-shrink-0"></i>
               <div>
-                <span data-purecounter-start="0" data-purecounter-end="{{ team_members.count|default:'15' }}" data-purecounter-duration="1" class="purecounter"></span>
+                <span data-purecounter-start="0" data-purecounter-end="{{ company.staff_count|default:'15' }}" data-purecounter-duration="1" class="purecounter"></span>
                 <p><strong>Team Members</strong> <span>certified professionals</span></p>
               </div>
             </div>
@@ -470,6 +470,18 @@
           <div class="member-info">
             <h4>{{ member.user.get_full_name }}</h4>
             <span>{{ member.get_position_display|default:member.position }}</span>
+            
+            <!-- ✅ NEW: Show key specializations for home page -->
+            {% if member.specializations %}
+            <div class="member-specializations mt-1">
+              <small class="text-muted">
+                {% for specialization in member.specializations|slice:":2" %}
+                  {{ specialization }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                {% if member.specializations|length > 2 %}...{% endif %}
+              </small>
+            </div>
+            {% endif %}
           </div>
         </div>
       </div><!-- End Team Member -->

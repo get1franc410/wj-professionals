@@ -19,7 +19,7 @@ SERVICES_DATA = [
         <div class="service-content">
             <div class="service-intro mb-4">
                 <h4 class="text-primary mb-3">Corporate Tax Excellence</h4>
-                <p class="lead">At WJ Professionals, we understand that effective tax planning is crucial for your business success. Our corporate tax services combine strategic planning with meticulous compliance to help your organization thrive in Nigeria's complex tax environment.</p>
+                <p class="lead">At Wole Joshua & Co., we understand that effective tax planning is crucial for your business success. Our corporate tax services combine strategic planning with meticulous compliance to help your organization thrive in Nigeria's complex tax environment.</p>
             </div>
             
             <div class="row mb-5">
@@ -93,7 +93,7 @@ SERVICES_DATA = [
         'duration': '2-6 weeks (depending on scope)',
         'is_featured': True,
         'is_popular': True,
-        'meta_description': 'Professional corporate tax planning and compliance services in Nigeria. Minimize tax liability while ensuring FIRS compliance with WJ Professionals.',
+        'meta_description': 'Professional corporate tax planning and compliance services in Nigeria. Minimize tax liability while ensuring FIRS compliance with Wole Joshua & Co..',
         'benefits': [
             'Reduce overall tax burden through strategic planning',
             'Ensure 100% compliance with Nigerian tax laws',
