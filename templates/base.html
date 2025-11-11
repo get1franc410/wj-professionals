@@ -40,8 +40,11 @@
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
       <a href="{% url 'core:home' %}" class="logo d-flex align-items-center me-auto me-lg-0">
-        <h1 class="sitename">Wole Joshua & Co</h1>
-        <span>.</span>
+        <div class="logo-text">
+          <h1 class="sitename">Wole Joshua & Co<span>.</span></h1>
+          <small class="chartered-text">(Chartered Accountants)</small>
+        </div>
+        
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -122,7 +125,10 @@
         <div class="row gy-4">
           <div class="col-lg-4 col-md-6 footer-about">
             <a href="{% url 'core:home' %}" class="logo d-flex align-items-center">
-              <span class="sitename">{{ company.name|default:"Wole Joshua & Co." }}</span>
+              <div class="logo-text">
+                <span class="sitename">{{ company.name|default:"Wole Joshua & Co." }}</span>
+                <small class="chartered-text">(Chartered Accountants)</small>
+              </div>
             </a>
             <div class="footer-contact pt-3">
               <p>{{ company.address|default:"Real Tower Centre, Ekukinam Street, Utako-Abuja, FCT Nigeria" }}</p>
