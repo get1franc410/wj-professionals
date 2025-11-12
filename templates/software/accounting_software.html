@@ -10,7 +10,7 @@
 <!-- Page Title -->
 <div class="page-title dark-background">
   <div class="container position-relative">
-    <h1>WJ Accounting Software</h1>
+    <h1>Accounting Software / Business Hub</h1>
     <p>Professional accounting software designed specifically for Nigerian businesses</p>
     <nav class="breadcrumbs">
       <ol>
@@ -21,6 +21,26 @@
     </nav>
   </div>
 </div><!-- End Page Title -->
+
+<section class="section pt-0">
+  <div class="container" data-aos="fade-up">
+    <div class="alert alert-info d-flex align-items-start gap-3" role="alert">
+      <div>
+        <i class="bi bi-megaphone-fill"></i>
+      </div>
+      <div>
+        <h5 class="mb-1">Now on a dedicated platform: Accountic Oceans</h5>
+        <p class="mb-2">
+          We’ve launched our accounting platform as a standalone Business Hub — engineered for accuracy, IFRS compliance, inventory and production, assets & depreciation, and instant reporting. Explore the full product experience here:
+          <a href="https://www.accounticoceans.com" target="_blank" rel="noopener">www.accounticoceans.com</a>
+        </p>
+        <a class="btn btn-primary btn-sm" href="https://www.accounticoceans.com" target="_blank" rel="noopener">
+          <i class="bi bi-box-arrow-up-right me-1"></i> Visit Accountic Oceans
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- Hero Section -->
 <section class="section">
@@ -44,6 +64,35 @@
         <div class="hero-image">
           <i class="bi bi-laptop" style="font-size: 8rem; color: var(--accent-color); opacity: 0.8;"></i>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section light-background">
+  <div class="container" data-aos="fade-up">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <h2>About Accountic Oceans</h2>
+        <p class="mb-3">
+          Go beyond basic bookkeeping. Accountic Oceans is a professional-grade accounting system designed for accuracy, compliance, and efficiency — helping you manage complex finances and make data‑driven decisions with ease.
+        </p>
+        <ul class="list-unstyled">
+          <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Full double-entry with customizable Chart of Accounts</li>
+          <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>IFRS-aligned financial reporting</li>
+          <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Integrated inventory and COGS automation</li>
+          <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Production module with formulas and unit costing</li>
+          <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Asset management with automated depreciation</li>
+          <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Instant Trial Balance, Income Statement, and more</li>
+        </ul>
+        <p class="mt-3">
+          Explore the full Business Hub at
+          <a href="https://www.accounticoceans.com" target="_blank" rel="noopener">www.accounticoceans.com</a>,
+          or contact us below for a tailored quote and access.
+        </p>
+      </div>
+      <div class="col-lg-5 text-center">
+        <i class="bi bi-graph-up-arrow" style="font-size: 6rem; color: var(--accent-color); opacity: 0.9;"></i>
       </div>
     </div>
   </div>
@@ -73,149 +122,13 @@
   </div>
 </section>
 
-<!-- Pricing Section -->
-<section id="pricing" class="section">
-  <div class="container" data-aos="fade-up">
-    <div class="section-title" data-aos="fade-up">
-      <h2>Choose Your Plan</h2>
-      <p>One-time license purchase with affordable annual service and updates</p>
-    </div>
-    
-    <div class="row gy-4 justify-content-center">
-      {% for plan in pricing_plans %}
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
-        <div class="pricing-card h-100 {% if plan.popular %}popular{% endif %}">
-          {% if plan.popular %}
-          <div class="popular-badge">
-            <span class="badge bg-primary">Most Popular</span>
-          </div>
-          {% endif %}
-          
-          <div class="card-body text-center p-4">
-            <h3 class="plan-title">{{ plan.display_name }}</h3>
-            <div class="price-display mb-3">
-              <span class="price">{{ plan.price|naira_format }}</span>
-              <small class="period">{{ plan.period }}</small>
-            </div>
-            <p class="installations">{{ plan.installations }} Installation{{ plan.installations|pluralize }}</p>
-            
-            <ul class="features-list list-unstyled my-4">
-              {% for feature in plan.features %}
-              <li class="mb-2">
-                <i class="bi bi-check-circle text-success me-2"></i>
-                {{ feature }}
-              </li>
-              {% endfor %}
-            </ul>
-            
-            <a href="{% url 'software:purchase_form' %}?license_type={{ plan.name }}" 
-               class="btn btn-primary w-100">
-              <i class="bi bi-cart me-2"></i>Purchase Now
-            </a>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-    
-    <!-- Service Information -->
-    <div class="row mt-5">
-      <div class="col-12">
-        <div class="service-item item-orange position-relative">
-          <div class="icon">
-            <i class="bi bi-gear"></i>
-          </div>
-          <h4>Annual Service & Updates</h4>
-          <p class="mb-3">Keep your software current with our affordable annual service package:</p>
-          <div class="row">
-            <div class="col-md-6">
-              <ul class="list-unstyled">
-                <li class="mb-2">
-                  <i class="bi bi-check text-success me-2"></i>Regular software updates
-                </li>
-                <li class="mb-2">
-                  <i class="bi bi-check text-success me-2"></i>New feature releases
-                </li>
-                <li class="mb-2">
-                  <i class="bi bi-check text-success me-2"></i>Technical support
-                </li>
-              </ul>
-            </div>
-            <div class="col-md-6">
-              <ul class="list-unstyled">
-                <li class="mb-2">
-                  <i class="bi bi-check text-success me-2"></i>Compliance updates
-                </li>
-                <li class="mb-2">
-                  <i class="bi bi-check text-success me-2"></i>Data backup assistance
-                </li>
-                <li class="mb-2">
-                  <i class="bi bi-check text-success me-2"></i>Priority customer support
-                </li>
-              </ul>
-            </div>
-          </div>
-          <p class="text-muted mt-3">
-            <small>Annual service fee starts from ₦25,000 depending on your license type. First year included with purchase.</small>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- System Requirements -->
-<section class="section light-background">
-  <div class="container" data-aos="fade-up">
-    <div class="section-title" data-aos="fade-up">
-      <h2>System Requirements</h2>
-      <p>Ensure your system meets these requirements for optimal performance</p>
-    </div>
-    
-    <div class="row gy-4">
-      <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="service-item item-blue position-relative h-100">
-          <div class="icon">
-            <i class="bi bi-windows"></i>
-          </div>
-          <h3>Windows Requirements</h3>
-          <ul class="list-unstyled">
-            <li class="mb-2">
-              <i class="bi bi-check text-success me-2"></i>Windows 10 or later
-            </li>
-            <li class="mb-2">
-              <i class="bi bi-check text-success me-2"></i>4GB RAM minimum
-            </li>
-            <li class="mb-2">
-              <i class="bi bi-check text-success me-2"></i>2GB free disk space
-            </li>
-            <li class="mb-2">
-              <i class="bi bi-check text-success me-2"></i>.NET Framework 4.8
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
-        <div class="service-item item-green position-relative h-100">
-          <div class="icon">
-            <i class="bi bi-globe"></i>
-          </div>
-          <h3>Network Requirements</h3>
-          <ul class="list-unstyled">
-            <li class="mb-2">
-              <i class="bi bi-check text-success me-2"></i>Internet connection for activation
-            </li>
-            <li class="mb-2">
-              <i class="bi bi-check text-success me-2"></i>Periodic online validation
-            </li>
-            <li class="mb-2">
-              <i class="bi bi-check text-success me-2"></i>Email for license delivery
-            </li>
-            <li class="mb-2">
-              <i class="bi bi-check text-success me-2"></i>Secure HTTPS connection
-            </li>
-          </ul>
-        </div>
+<section class="section pt-0">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col text-center">
+        <a href="{% url 'contact:contact' %}?subject=Accountic%20Oceans%20Access%20%2F%20Quote" class="btn btn-outline-primary">
+          <i class="bi bi-envelope me-2"></i>Request Access or Quote
+        </a>
       </div>
     </div>
   </div>
@@ -227,10 +140,10 @@
     <div class="row" data-aos="zoom-in" data-aos-delay="100">
       <div class="col-xl-9 text-center text-xl-start">
         <h3>Ready to streamline your accounting?</h3>
-        <p>Join hundreds of Nigerian businesses using WJ Accounting Software to manage their finances efficiently and stay compliant with local regulations.</p>
+        <p>Join hundreds of Nigerian businesses using Accountic Oceans Software to manage their finances efficiently and stay compliant with local regulations.</p>
       </div>
       <div class="col-xl-3 cta-btn-container text-center">
-        <a class="cta-btn align-middle" href="#pricing">
+        <a class="cta-btn align-middle" href="https://www.accounticoceans.com" target="_blank" rel="noopener">
           <i class="bi bi-rocket me-2"></i>Get Started Today
         </a>
       </div>
@@ -318,5 +231,7 @@
     font-size: 6rem !important;
   }
 }
+.alert-info h5 { font-weight: 700; }
+.alert-info .bi { color: var(--accent-color); font-size: 1.25rem; }
 </style>
 {% endblock %}

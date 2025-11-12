@@ -1,0 +1,11 @@
+Hi {{ subscriber.first_name|default:"there" }},
+
+Please confirm your subscription to Wole Joshua & Co. news:
+{{ confirm_url }}
+
+If you did not request this, you can ignore this email.
+
+To stop receiving emails at any time, use this link:
+{{ unsubscribe_url }}
+
+— Wole Joshua & Co.

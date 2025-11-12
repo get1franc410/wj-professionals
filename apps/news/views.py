@@ -1,13 +1,84 @@
 # C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\apps\news\views.py
-from django.shortcuts import render, get_object_or_404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from django.db.models import Q, F
+from django.urls import reverse
+import secrets
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
 from django.http import JsonResponse
 from django.contrib import messages
 from django.utils import timezone
 from .models import NewsArticle, NewsCategory, NewsletterSubscriber
 from apps.news.forms import NewsletterSubscriptionForm
+
+def send_newsletter_confirmation(subscriber):
+    # generate token if missing
+    if not subscriber.confirmation_token:
+        subscriber.confirmation_token = secrets.token_urlsafe(24)
+        subscriber.save(update_fields=['confirmation_token'])
+    confirm_url = f"{settings.SITE_URL}{reverse('news:newsletter_confirm', args=[subscriber.confirmation_token])}"
+    unsubscribe_url = f"{settings.SITE_URL}{reverse('news:newsletter_unsubscribe', args=[subscriber.confirmation_token])}"
+
+    context = {
+        'confirm_url': confirm_url,
+        'unsubscribe_url': unsubscribe_url,
+        'subscriber': subscriber,
+        'company': 'Wole Joshua & Co.',
+    }
+    subject = "Confirm your subscription - Wole Joshua & Co."
+    plain = render_to_string('news/emails/newsletter_confirm.txt', context)
+    html = render_to_string('news/emails/newsletter_confirm.html', context)
+    send_mail(subject, plain, settings.EMAIL_HOST_USER, [subscriber.email], html_message=html, fail_silently=False)
+
+def newsletter_subscribe(request):
+    """Newsletter subscription"""
+    if request.method == 'POST':
+        form = NewsletterSubscriptionForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email'].lower()
+            first_name = form.cleaned_data.get('first_name', '')
+            subscriber, created = NewsletterSubscriber.objects.get_or_create(
+                email=email,
+                defaults={'first_name': first_name}
+            )
+            # Always (re)send confirmation if not confirmed
+            if not subscriber.confirmed:
+                # assign token and send confirmation
+                send_newsletter_confirmation(subscriber)
+                messages.success(request, "Check your email to confirm your subscription.")
+            else:
+                messages.info(request, "You are already subscribed.")
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'success': True, 'created': created})
+        else:
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'success': False, 'errors': form.errors})
+    return redirect('news:article_list')
+
+
+from django.urls import reverse
+
+def newsletter_confirm(request, token):
+    try:
+        s = NewsletterSubscriber.objects.get(confirmation_token=token, is_active=True)
+        s.confirmed = True
+        s.save(update_fields=['confirmed'])
+        messages.success(request, "Subscription confirmed. You will receive updates from us.")
+    except NewsletterSubscriber.DoesNotExist:
+        messages.error(request, "Invalid or expired confirmation link.")
+    return redirect('news:article_list')
+
+
+def newsletter_unsubscribe(request, token):
+    try:
+        s = NewsletterSubscriber.objects.get(confirmation_token=token, is_active=True)
+        s.unsubscribe()  # uses model method already present
+        messages.success(request, "You have been unsubscribed.")
+    except NewsletterSubscriber.DoesNotExist:
+        messages.error(request, "Invalid unsubscribe link.")
+    return redirect('news:article_list')
 
 class NewsListView(ListView):
     model = NewsArticle

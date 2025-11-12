@@ -1,9 +1,3 @@
-# 🔄 REPLACE the entire SERVICES_DATA list in services_data.py with this:
-# C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\apps\core\fixtures\services_data.py
-
-# 🔄 REPLACE the entire SERVICES_DATA list in services_data.py with this:
-# C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\apps\core\fixtures\services_data.py
-
 # C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\apps\core\fixtures\services_data.py
 
 SERVICES_DATA = [

@@ -308,10 +308,10 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin/logout/">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Logout
-                    </a>
+                <a class="nav-link" href="{% url 'dashboard:logout' %}">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
                 </li>
             </ul>
         </div>
@@ -346,7 +346,7 @@
                                 <i class="fas fa-cog me-2"></i>Admin Panel
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/admin/logout/">
+                            <li><a class="dropdown-item" href="{% url 'dashboard:logout' %}">
                                 <i class="fas fa-sign-out-alt me-2"></i>Logout
                             </a></li>
                         </ul>

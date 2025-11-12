@@ -1,3 +1,4 @@
+# C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\wj_professionals\wsgi.py
 """
 WSGI config for wj_professionals project.
 

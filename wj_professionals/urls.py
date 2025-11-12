@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from django.views.generic import RedirectView
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -33,6 +34,7 @@ urlpatterns = [
     path('dashboard/', include('apps.dashboard.urls')),
     path('software/', include('apps.software.urls')),
     path('reviews/', include('apps.reviews.urls')),
+    path('accounts/profile/', RedirectView.as_view(url='/dashboard/', permanent=False)),
 
 ]
 

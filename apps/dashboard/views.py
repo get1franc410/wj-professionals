@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.db.models import Count, Q
+from django.conf import settings
 from django.utils import timezone
 from datetime import datetime, timedelta
 from django.http import JsonResponse
@@ -15,6 +16,7 @@ from apps.portfolio.models import Client
 from apps.contact.models import ContactSubmission, ContactResponse
 from apps.staff.models import Staff
 from .forms import ArticleForm, DocumentUploadForm
+from apps.core.models import Service
 
 def is_staff_or_admin(user):
     return user.is_staff or user.is_superuser
@@ -65,13 +67,34 @@ def dashboard_home(request):
     
     context = {
         'stats': stats,
-        'total_messages': ContactSubmission.objects.count(),
-        'unread_messages': ContactSubmission.objects.filter(status='new').count(),
+        'total_contacts': stats.get('total_contacts', 0),
+        'new_contacts': stats.get('new_contacts_week', 0),
+        'total_news': stats.get('published_articles', 0),
+        'total_services': Service.objects.filter(is_active=True).count() if 'apps.core' in settings.INSTALLED_APPS else 0,
         'recent_contacts': recent_contacts,
-        'recent_articles': recent_articles,
+        'recent_news': recent_articles,
         'recent_documents': recent_documents,
         'chart_data': list(reversed(chart_data)),
+        'contacts_this_month': ContactSubmission.objects.filter(created_at__month=today.month).count(),
+        'contacts_last_month': ContactSubmission.objects.filter(
+            created_at__month=(today.month - 1) if today.month > 1 else 12
+        ).count(),
+        'contact_growth': 0.0,  # temporary; we’ll immediately overwrite below
     }
+
+    # SAFE growth calculation (paste this right after the context above)
+    this_m = context['contacts_this_month']
+    last_m = context['contacts_last_month']
+
+    if last_m > 0:
+        growth = ((this_m - last_m) / last_m) * 100.0
+    elif this_m > 0:
+        growth = 100.0
+    else:
+        growth = 0.0
+
+    context['contact_growth'] = round(growth, 1)
+
     return render(request, 'dashboard/home.html', context)
 
 @login_required

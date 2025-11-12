@@ -865,3 +865,190 @@ a:hover {
     
     filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.3)) !important;
 }
+
+
+
+/* ===================================
+   RIGHT-ALIGNED LOGO WITH SINGLE SPANNING LINE
+   ================================== */
+
+/* Logo container with right alignment */
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* ✅ RIGHT ALIGN */
+    line-height: 1;
+    position: relative;
+    padding-right: 20px; /* Space for the line */
+    min-height: 50px; /* Ensure consistent height */
+}
+
+/* Single decorative line spanning both texts */
+.logo-text::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(
+        to bottom,
+        transparent 5%,
+        #ffd700 10%,
+        #ffd700 90%,
+        transparent 95%
+    );
+    border-radius: 2px;
+    box-shadow: 
+        0 0 5px rgba(255, 215, 0, 0.5),
+        0 0 10px rgba(255, 215, 0, 0.3);
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+/* Enhanced line on hover */
+.logo:hover .logo-text::after {
+    width: 4px;
+    background: linear-gradient(
+        to bottom,
+        transparent 5%,
+        #ffd700 8%,
+        #ffd700 92%,
+        transparent 95%
+    );
+    box-shadow: 
+        0 0 8px rgba(255, 215, 0, 0.7),
+        0 0 15px rgba(255, 215, 0, 0.5);
+    opacity: 1;
+}
+
+/* Main company name - right aligned */
+.logo .sitename {
+    text-align: right; /* ✅ RIGHT ALIGN TEXT */
+    text-shadow: 
+        0 0 5px #ffd700,
+        0 0 10px #ffd700,
+        0 0 15px #ffd700,
+        0 0 20px rgba(255, 215, 0, 0.8),
+        2px 2px 4px rgba(255, 215, 0, 0.3) !important;
+    
+    filter: drop-shadow(0 0 8px #ffd700) !important;
+    transition: all 0.3s ease !important;
+    margin-bottom: 2px !important; /* Small gap between texts */
+    font-size: 1.8rem !important;
+    width: 100%;
+    line-height: 1.1;
+}
+
+/* Chartered Accountants subtitle - right aligned */
+.chartered-text {
+    font-size: 0.7rem !important;
+    color: #ffd700 !important;
+    font-weight: 400 !important;
+    margin-top: 0 !important;
+    text-align: right; /* ✅ RIGHT ALIGN TEXT */
+    width: 100%;
+    text-shadow: 
+        0 0 3px #ffd700,
+        0 0 6px rgba(255, 215, 0, 0.6) !important;
+    filter: drop-shadow(0 0 4px #ffd700) !important;
+    opacity: 0.9;
+    font-style: italic;
+    line-height: 1.2;
+}
+
+/* Hover effects */
+.logo:hover .sitename {
+    text-shadow: 
+        0 0 8px #ffd700,
+        0 0 15px #ffd700,
+        0 0 25px #ffd700,
+        0 0 35px rgba(255, 215, 0, 0.9),
+        3px 3px 6px rgba(255, 215, 0, 0.4) !important;
+    
+    filter: drop-shadow(0 0 12px #ffd700) !important;
+    transform: scale(1.02) !important;
+}
+
+.logo:hover .chartered-text {
+    text-shadow: 
+        0 0 5px #ffd700,
+        0 0 10px rgba(255, 215, 0, 0.8) !important;
+    filter: drop-shadow(0 0 6px #ffd700) !important;
+    opacity: 1;
+}
+
+/* The dot after logo */
+.logo span {
+    color: #ffd700 !important;
+    text-shadow: 0 0 10px #ffd700 !important;
+    filter: drop-shadow(0 0 6px #ffd700) !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .logo-text {
+        padding-right: 15px;
+        min-height: 40px;
+    }
+    
+    .logo-text::after {
+        width: 2px;
+    }
+    
+    .logo .sitename {
+        font-size: 1.4rem !important;
+    }
+    
+    .chartered-text {
+        font-size: 0.6rem !important;
+    }
+}
+
+/* Footer specific styling - right aligned with spanning line */
+.footer .logo-text {
+    align-items: flex-end; /* ✅ RIGHT ALIGN IN FOOTER */
+    padding-right: 20px;
+    min-height: 45px;
+}
+
+.footer .logo-text::after {
+    background: linear-gradient(
+        to bottom,
+        transparent 5%,
+        rgba(255, 215, 0, 0.6) 10%,
+        rgba(255, 215, 0, 0.6) 90%,
+        transparent 95%
+    );
+    width: 3px;
+}
+
+.footer .logo .sitename {
+    color: #fff !important;
+    text-align: right !important;
+    text-shadow: 
+        0 0 5px #ffd700,
+        0 0 10px #ffd700,
+        0 0 15px rgba(255, 215, 0, 0.8) !important;
+    filter: drop-shadow(0 0 8px #ffd700) !important;
+    margin-bottom: 2px !important;
+    font-size: 1.5rem !important;
+}
+
+.footer .chartered-text {
+    color: #ffd700 !important;
+    text-align: right !important;
+    text-shadow: 
+        0 0 3px #ffd700,
+        0 0 6px rgba(255, 215, 0, 0.6) !important;
+}
+
+/* Ensure proper spacing in header */
+.header .logo-text {
+    min-height: 50px;
+}
+
+/* Ensure proper spacing in footer */
+.footer .logo-text {
+    min-height: 45px;
+}

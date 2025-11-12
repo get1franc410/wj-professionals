@@ -24,9 +24,9 @@
 <!-- Department Team -->
 <section class="team section">
   <div class="container">
-    {% if department_staff %}
+    {% if staff_members %}
     <div class="row gy-4">
-      {% for member in department_staff %}
+      {% for member in staff_members %}
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
         <div class="team-member">
           <div class="member-img">

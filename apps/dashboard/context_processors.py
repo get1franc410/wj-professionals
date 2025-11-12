@@ -1,3 +1,4 @@
+# C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\apps\dashboard\context_processors.py
 from apps.contact.models import ContactSubmission
 
 def dashboard_context(request):

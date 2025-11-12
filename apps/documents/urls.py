@@ -1,3 +1,4 @@
+# C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\apps\documents\urls.py
 from django.urls import path
 from . import views
 

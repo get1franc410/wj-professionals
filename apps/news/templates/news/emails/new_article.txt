@@ -1,0 +1,7 @@
+Hi {{ subscriber.first_name|default:"there" }},
+
+A new article is live: {{ article.title }}
+Read here: {{ article_url }}
+
+If you no longer want updates, unsubscribe:
+{{ unsubscribe_url }}

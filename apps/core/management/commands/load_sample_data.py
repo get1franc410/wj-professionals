@@ -1116,78 +1116,45 @@ class Command(BaseCommand):
                 self.style.WARNING('⚠️  Note: Sample documents contain dummy files. Replace with real documents as needed.')
             )
 
-# Update your existing handle method
-def handle(self, *args, **options):
-    if options['clear']:
+    # Update your clear_data method to include documents
+    def clear_data(self):
+        """Clear existing data"""
         self.stdout.write('Clearing existing data...')
-        self.clear_data()
-
-    self.stdout.write('Loading sample data...')
-    
-    # Load data in order
-    self.load_company_data()
-    self.load_service_categories()
-    self.load_services()
-    self.load_staff()
-    self.load_news_categories()
-    self.load_news_articles()
-    self.load_testimonials()
-    self.load_faqs()
-    
-    # ADD THESE TWO LINES:
-    self.load_document_categories()
-    self.load_sample_documents()
-    
-    self.stdout.write(
-        self.style.SUCCESS('Successfully loaded sample data!')
-    )
-    # Add document counts
-    try:
-        from apps.documents.models import DocumentCategory, Document
-        self.stdout.write(f'   • Document Categories: {DocumentCategory.objects.count()}')
-        self.stdout.write(f'   • Documents: {Document.objects.count()}')
-    except ImportError:
-        self.stdout.write('   • Documents app not available')
-
-# Update your clear_data method to include documents
-def clear_data(self):
-    """Clear existing data"""
-    self.stdout.write('Clearing existing data...')
-    
-    # Clear documents first (if available)
-    try:
-        from apps.documents.models import Document, DocumentCategory
-        Document.objects.all().delete()
-        self.stdout.write('Cleared Document data')
-        DocumentCategory.objects.all().delete()
-        self.stdout.write('Cleared DocumentCategory data')
-    except ImportError:
-        self.stdout.write('Documents app not available for clearing')
-    
-    # Clear in reverse dependency order (your existing code)
-    FAQ.objects.all().delete()
-    self.stdout.write('Cleared FAQ data')
-    
-    Testimonial.objects.all().delete()
-    self.stdout.write('Cleared Testimonial data')
-    
-    NewsArticle.objects.all().delete()
-    self.stdout.write('Cleared NewsArticle data')
-    
-    NewsCategory.objects.all().delete()
-    self.stdout.write('Cleared NewsCategory data')
-    
-    Staff.objects.all().delete()
-    self.stdout.write('Cleared Staff data')
-    
-    Department.objects.all().delete()
-    self.stdout.write('Cleared Department data')
-    
-    Service.objects.all().delete()
-    self.stdout.write('Cleared Service data')
-    
-    ServiceCategory.objects.all().delete()
-    self.stdout.write('Cleared ServiceCategory data')
-    
-    Company.objects.all().delete()
-    self.stdout.write('Cleared Company data')
+        
+        # Clear documents first (if available)
+        try:
+            from apps.documents.models import Document, DocumentCategory
+            Document.objects.all().delete()
+            self.stdout.write('Cleared Document data')
+            DocumentCategory.objects.all().delete()
+            self.stdout.write('Cleared DocumentCategory data')
+        except ImportError:
+            self.stdout.write('Documents app not available for clearing')
+        
+        # Clear in reverse dependency order (your existing code)
+        FAQ.objects.all().delete()
+        self.stdout.write('Cleared FAQ data')
+        
+        Testimonial.objects.all().delete()
+        self.stdout.write('Cleared Testimonial data')
+        
+        NewsArticle.objects.all().delete()
+        self.stdout.write('Cleared NewsArticle data')
+        
+        NewsCategory.objects.all().delete()
+        self.stdout.write('Cleared NewsCategory data')
+        
+        Staff.objects.all().delete()
+        self.stdout.write('Cleared Staff data')
+        
+        Department.objects.all().delete()
+        self.stdout.write('Cleared Department data')
+        
+        Service.objects.all().delete()
+        self.stdout.write('Cleared Service data')
+        
+        ServiceCategory.objects.all().delete()
+        self.stdout.write('Cleared ServiceCategory data')
+        
+        Company.objects.all().delete()
+        self.stdout.write('Cleared Company data')

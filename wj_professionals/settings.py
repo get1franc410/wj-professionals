@@ -1,4 +1,4 @@
-# C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\wj_professionals\settings.py
+﻿# C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web\wj_professionals\wj_professionals\settings.py
 """
 Django settings for wj_professionals project.
 
@@ -85,10 +85,12 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'wj_professionals.middleware.VisitorLogMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+VISITOR_LOOKUP_ENABLED = False
 ROOT_URLCONF = 'wj_professionals.urls'
 
 TEMPLATES = [
@@ -291,3 +293,4 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
 SITE_URL = 'http://127.0.0.1:8000'
+

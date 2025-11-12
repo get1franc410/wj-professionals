@@ -201,6 +201,7 @@ class Service(models.Model):
     
     short_description = models.TextField(max_length=300)
     description = CKEditor5Field('Description', config_name='default')
+    icon = models.CharField(max_length=50, default="fas fa-cog", help_text="FontAwesome icon class")
     
     # Pricing
     starting_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -377,3 +378,16 @@ class ContactSubmission(models.Model):
     
     def __str__(self):
         return f"Contact from {self.name} - {self.subject}"
+
+class Visitor(models.Model):
+    ip = models.GenericIPAddressField(null=True, blank=True)
+    user = models.ForeignKey('auth.User', null=True, blank=True, on_delete=models.SET_NULL)
+    path = models.CharField(max_length=500)
+    user_agent = models.TextField(blank=True)
+    referer = models.TextField(blank=True)
+    country = models.CharField(max_length=100, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']

@@ -1,3 +1,4 @@
+# C:\Users\Adeyanju Joshua\Desktop\lexy sofware\wj_professional web_updated_temp\wj_professionals\apps\reviews\admin.py
 from django.contrib import admin
 from .models import Review, ReviewResponse
 
