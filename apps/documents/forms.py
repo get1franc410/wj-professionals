@@ -68,10 +68,21 @@ class DocumentUploadForm(forms.ModelForm):
             }),
         }
 
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['category'].queryset = DocumentCategory.objects.filter(is_active=True).order_by('name')
+            self.fields['category'].empty_label = "Select a category"
+            
+            # Add this debug line temporarily
+            print(f"Available categories: {list(self.fields['category'].queryset.values_list('name', flat=True))}")
+
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['category'].queryset = DocumentCategory.objects.filter(is_active=True)
+        self.fields['category'].queryset = DocumentCategory.objects.filter(is_active=True).order_by('name')
         self.fields['category'].empty_label = "Select a category"
+            
+        print(f"Available categories: {list(self.fields['category'].queryset.values_list('name', flat=True))}")
         
         # Help texts
         self.fields['title'].help_text = "Choose a clear, descriptive title"

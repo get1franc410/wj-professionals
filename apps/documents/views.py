@@ -28,11 +28,11 @@ class DocumentListView(ListView):
                 category_obj = DocumentCategory.objects.get(slug=category, is_active=True)
                 queryset = queryset.filter(category=category_obj)
             except DocumentCategory.DoesNotExist:
-                # If slug doesn't exist, try by ID as fallback
                 try:
-                    queryset = queryset.filter(category_id=int(category))
-                except (ValueError, TypeError):
-                    pass 
+                    category_obj = DocumentCategory.objects.get(name__iexact=category, is_active=True)
+                    queryset = queryset.filter(category=category_obj)
+                except DocumentCategory.DoesNotExist:
+                    pass
         
         if search:
             queryset = queryset.filter(
@@ -157,17 +157,18 @@ def upload_document_view(request):
     context = {'form': form}
     return render(request, 'documents/upload.html', context)
 
-def category_view(request, category_id):
-    """View documents by category"""
-    category = get_object_or_404(DocumentCategory, id=category_id, is_active=True)
+def category_view(request, category_slug):
+    """View documents by category using slug"""
+    category = get_object_or_404(DocumentCategory, slug=category_slug, is_active=True)
     documents = Document.objects.filter(
         category=category,
         is_active=True,
         access_level='public'
-    )
+    ).select_related('category').order_by('-created_at')
     
     context = {
         'category': category,
         'documents': documents,
+        'categories': DocumentCategory.objects.filter(is_active=True),
     }
     return render(request, 'documents/category_detail.html', context)

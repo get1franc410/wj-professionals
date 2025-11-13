@@ -111,8 +111,8 @@ input[type="search"]:focus,
 textarea:focus,
 select:focus {
     background-color: #ffffff !important;
-    border-color: #007bff !important;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    border-color: #ffc800 !important;
+    box-shadow: 0 0 0 0.2rem rgba(237, 204, 17, 0.774) !important;
     color: #495057 !important;
     filter: none !important;
     text-shadow: none !important;
@@ -206,8 +206,8 @@ input[type="search"],
 input[type="search"]:focus,
 .search-form input:focus {
     background-color: #ffffff !important;
-    border-color: #007bff !important;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    border-color: #ffd000b1 !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 191, 0, 0.725) !important;
     color: #495057 !important;
 }
 
