@@ -464,6 +464,11 @@ def manage_documents(request):
     if access_filter:
         documents = documents.filter(access_level=access_filter)
     
+    # Filter by is_featured
+    featured_filter = request.GET.get('is_featured')
+    if featured_filter:
+        documents = documents.filter(is_featured=featured_filter == 'true')
+    
     # Search
     search = request.GET.get('search')
     if search:
@@ -483,6 +488,7 @@ def manage_documents(request):
         'access_levels': Document.ACCESS_LEVELS,
         'selected_category': category_filter,
         'selected_access': access_filter,
+        'selected_featured': featured_filter,
         'search_query': search,
     }
     return render(request, 'dashboard/documents/list.html', context)
@@ -496,15 +502,28 @@ def upload_document(request):
         if form.is_valid():
             document = form.save(commit=False)
             document.uploaded_by = request.user
+            
+            # Set file size and type
+            if document.file:
+                document.file_size = document.file.size
+                document.file_type = document.file.name.split('.')[-1].lower()
+            
             document.save()
-            messages.success(request, 'Document uploaded successfully!')
+            messages.success(request, f'Document "{document.title}" uploaded successfully!')
             return redirect('dashboard:manage_documents')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.title()}: {error}")
     else:
         form = DocumentUploadForm()
     
+    # Get categories for template context
+    categories = DocumentCategory.objects.filter(is_active=True).order_by('name')
+    
     context = {
         'form': form,
-        'categories': DocumentCategory.objects.filter(is_active=True),
+        'categories': categories,
     }
     return render(request, 'dashboard/documents/upload.html', context)
 

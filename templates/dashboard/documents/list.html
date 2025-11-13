@@ -17,6 +17,39 @@
         </div>
     </div>
     
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="search-input" class="form-label">Search</label>
+            <input type="text" id="search-input" name="search" class="form-control" placeholder="Search documents..." value="{{ search_query }}">
+        </div>
+        <div class="col-md-3">
+            <label for="category-filter" class="form-label">Category</label>
+            <select id="category-filter" name="category" class="form-select">
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"i" %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="access-filter" class="form-label">Access Level</label>
+            <select id="access-filter" name="access_level" class="form-select">
+                <option value="">All Access Levels</option>
+                {% for level, label in access_levels.items %}
+                    <option value="{{ level }}" {% if selected_access == level %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="featured-filter" class="form-label">Featured</label>
+            <select id="featured-filter" name="is_featured" class="form-select">
+                <option value="">All Documents</option>
+                <option value="true" {% if selected_featured == 'true' %}selected{% endif %}>Featured</option>
+                <option value="false" {% if selected_featured == 'false' %}selected{% endif %}>Not Featured</option>
+            </select>
+        </div>
+    </div>
+    
     <div class="row">
         <div class="col-12">
             <div class="card">

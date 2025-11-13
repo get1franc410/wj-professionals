@@ -4,7 +4,7 @@ Dashboard Forms
 ===============
 Forms for dashboard functionality including article creation, document upload, etc.
 """
-
+import json
 from django import forms
 from django_ckeditor_5.widgets import CKEditor5Widget
 from django.contrib.auth.models import User
@@ -110,6 +110,22 @@ class ArticleForm(forms.ModelForm):
 class DocumentUploadForm(forms.ModelForm):
     """Form for uploading documents"""
     
+    tags = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter tags separated by commas (e.g., tax, forms, 2024)'
+        }),
+        help_text='Enter tags separated by commas'
+    )
+    is_featured = forms.BooleanField(
+        required=False,
+        label='Featured Document',
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-check-input'
+        })
+    )
+    
     class Meta:
         model = Document
         fields = [
@@ -139,24 +155,88 @@ class DocumentUploadForm(forms.ModelForm):
             'is_featured': forms.CheckboxInput(attrs={
                 'class': 'form-check-input'
             }),
-            'tags': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Enter tags separated by commas'
-            }),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['category'].queryset = DocumentCategory.objects.filter(is_active=True)
+        # Populate category choices
+        self.fields['category'].queryset = DocumentCategory.objects.filter(is_active=True).order_by('name')
         self.fields['category'].empty_label = "Select a category"
+        
+        # Set required fields
+        self.fields['title'].required = True
+        self.fields['category'].required = True
+        self.fields['file'].required = True
+        self.fields['access_level'].required = True
+        
+        # Set default access level
+        if not self.instance.pk:
+            self.fields['access_level'].initial = 'public'
+        
+        # If editing existing document, convert JSON tags back to string
+        if self.instance.pk and self.instance.tags:
+            if isinstance(self.instance.tags, list):
+                self.fields['tags'].initial = ', '.join(self.instance.tags)
+            elif isinstance(self.instance.tags, str):
+                try:
+                    tags_list = json.loads(self.instance.tags)
+                    self.fields['tags'].initial = ', '.join(tags_list)
+                except:
+                    self.fields['tags'].initial = self.instance.tags
+
+    def clean_tags(self):
+        """Convert comma-separated tags to JSON list"""
+        tags_input = self.cleaned_data.get('tags', '')
+        
+        if not tags_input or not tags_input.strip():
+            return []
+        
+        # Split by comma and clean up
+        tags_list = [tag.strip() for tag in tags_input.split(',') if tag.strip()]
+        
+        # Remove duplicates while preserving order
+        unique_tags = []
+        for tag in tags_list:
+            if tag not in unique_tags:
+                unique_tags.append(tag)
+        
+        return unique_tags
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if not title or not title.strip():
+            raise ValidationError("Title is required.")
+        return title.strip()
+
+    def clean_category(self):
+        category = self.cleaned_data.get('category')
+        if not category:
+            raise ValidationError("Please select a category.")
+        return category
 
     def clean_file(self):
         file = self.cleaned_data.get('file')
+        if not file and not self.instance.pk:
+            raise ValidationError("Please select a file to upload.")
+        
         if file:
             # Check file size (max 50MB)
             if file.size > 50 * 1024 * 1024:
                 raise ValidationError("File size cannot exceed 50MB.")
+            
+            # Check file extension
+            allowed_extensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx']
+            file_extension = file.name.lower().split('.')[-1]
+            if f'.{file_extension}' not in allowed_extensions:
+                raise ValidationError(f"File type not allowed. Allowed types: {', '.join(allowed_extensions)}")
+        
         return file
+
+    def clean_access_level(self):
+        access_level = self.cleaned_data.get('access_level')
+        if not access_level:
+            raise ValidationError("Please select an access level.")
+        return access_level
 
 class ContactFilterForm(forms.Form):
     """Form for filtering contact submissions"""

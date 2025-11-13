@@ -91,7 +91,7 @@
                     <h5 class="mb-0"><i class="fas fa-file-upload me-2"></i>Document Upload</h5>
                 </div>
                 <div class="card-body">
-                    <form method="post" enctype="multipart/form-data" id="uploadForm">
+                    <form method="post" enctype="multipart/form-data" id="uploadForm" class="needs-validation" novalidate>
                         {% csrf_token %}
                         
                         {% if form.errors %}
@@ -101,12 +101,28 @@
                             <ul class="mb-0 mt-2">
                                 {% for field, errors in form.errors.items %}
                                     {% for error in errors %}
-                                    <li><strong>{{ field|title }}:</strong> {{ error }}</li>
+                                    <li>
+                                        {% if field == '__all__' %}
+                                            {{ error }}
+                                        {% else %}
+                                            <strong>{{ field|title }}:</strong> {{ error }}
+                                        {% endif %}
+                                    </li>
                                     {% endfor %}
                                 {% endfor %}
                             </ul>
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
+                        {% endif %}
+
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                                <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-triangle{% else %}info-circle{% endif %} me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                            {% endfor %}
                         {% endif %}
                         
                         <div class="row">
@@ -114,37 +130,40 @@
                                 <!-- Title Field -->
                                 <div class="mb-4">
                                     <label for="{{ form.title.id_for_label }}" class="form-label fw-bold required-field">Document Title</label>
-                                    <input type="text" 
-                                           class="form-control form-control-lg" 
-                                           id="{{ form.title.id_for_label }}" 
-                                           name="{{ form.title.name }}" 
-                                           value="{{ form.title.value|default:'' }}"
-                                           placeholder="Enter document title..."
-                                           required>
+                                    {{ form.title }}
+                                    {% if form.title.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.title.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
                                     <div class="form-text">A clear, descriptive title for your document</div>
                                 </div>
                                 
                                 <!-- Description Field - ENLARGED -->
                                 <div class="mb-4">
                                     <label for="{{ form.description.id_for_label }}" class="form-label fw-bold">Description</label>
-                                    <textarea class="form-control description-textarea" 
-                                              id="{{ form.description.id_for_label }}" 
-                                              name="{{ form.description.name }}" 
-                                              rows="8"
-                                              placeholder="Provide a detailed description of the document...
-
-Include information about:
-• Purpose and content overview
-• Target audience
-• Key topics covered
-• How to use this document
-• Any special instructions or requirements
-
-This description will help users understand what the document contains and how it can benefit them.">{{ form.description.value|default:'' }}</textarea>
+                                    {{ form.description }}
+                                    {% if form.description.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.description.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
                                     <div class="form-text">
                                         <i class="fas fa-info-circle me-1"></i>
                                         Provide a comprehensive description to help users understand the document's content and purpose.
                                     </div>
+                                </div>
+                                
+                                <!-- Tags field -->
+                                <div class="mb-4">
+                                    <label for="{{ form.tags.id_for_label }}" class="form-label fw-bold">Tags</label>
+                                    {{ form.tags }}
+                                    {% if form.tags.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.tags.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">{{ form.tags.help_text }}</div>
                                 </div>
                                 
                                 <!-- File Upload Area - ENHANCED -->
@@ -156,15 +175,7 @@ This description will help users understand what the document contains and how i
                                         </div>
                                         <h5>Drag & Drop your file here</h5>
                                         <p class="text-muted mb-3">or click to browse and select a file</p>
-                                        <input type="file" 
-                                               class="form-control d-none" 
-                                               id="{{ form.file.id_for_label }}" 
-                                               name="{{ form.file.name }}"
-                                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
-                                               required>
-                                        <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('{{ form.file.id_for_label }}').click()">
-                                            <i class="fas fa-folder-open me-2"></i>Choose File
-                                        </button>
+                                        {{ form.file }}
                                         <div class="supported-formats">
                                             <span class="format-badge">PDF</span>
                                             <span class="format-badge">DOC</span>
@@ -175,6 +186,11 @@ This description will help users understand what the document contains and how i
                                             <span class="format-badge">PPTX</span>
                                         </div>
                                     </div>
+                                    {% if form.file.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.file.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
                                     <div class="form-text mt-2">
                                         <i class="fas fa-info-circle me-1"></i>
                                         <strong>Maximum file size:</strong> 50MB | <strong>Supported formats:</strong> PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX
@@ -193,38 +209,40 @@ This description will help users understand what the document contains and how i
                             <div class="col-md-4">
                                 <!-- Category Field -->
                                 <div class="mb-3">
-                                    <label for="{{ form.category.id_for_label }}" class="form-label fw-bold">Category</label>
-                                    <select class="form-select" id="{{ form.category.id_for_label }}" name="{{ form.category.name }}">
-                                        <option value="">Select Category</option>
-                                        <!-- Add your category options here -->
-                                    </select>
+                                    <label for="{{ form.category.id_for_label }}" class="form-label fw-bold required-field">Category</label>
+                                    {{ form.category }}
+                                    {% if form.category.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.category.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
                                     <div class="form-text">Choose the most appropriate category</div>
                                 </div>
                                 
                                 <!-- Access Level Field -->
                                 <div class="mb-3">
                                     <label for="{{ form.access_level.id_for_label }}" class="form-label fw-bold">Access Level</label>
-                                    <select class="form-select" id="{{ form.access_level.id_for_label }}" name="{{ form.access_level.name }}">
-                                        <option value="public">🌍 Public - Everyone can access</option>
-                                        <option value="members">👥 Members Only - Registered users</option>
-                                        <option value="staff">🔒 Staff Only - Internal use</option>
-                                        <option value="private">🔐 Private - Restricted access</option>
-                                    </select>
+                                    {{ form.access_level }}
+                                    {% if form.access_level.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.access_level.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
                                     <div class="form-text">Set who can access this document</div>
                                 </div>
-                                
-                                <!-- Featured Document Checkbox -->
+
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" 
-                                               type="checkbox" 
-                                               id="{{ form.is_featured.id_for_label }}" 
-                                               name="{{ form.is_featured.name }}"
-                                               {% if form.is_featured.value %}checked{% endif %}>
+                                        {{ form.is_featured }}
                                         <label class="form-check-label fw-bold" for="{{ form.is_featured.id_for_label }}">
-                                            <i class="fas fa-star text-warning me-1"></i>Featured Document
+                                        <i class="fas fa-star text-warning me-1"></i>Featured Document
                                         </label>
                                     </div>
+                                    {% if form.is_featured.errors %}
+                                        <div class="invalid-feedback d-block">
+                                        {% for error in form.is_featured.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
                                     <div class="form-text">Featured documents appear prominently in the document library</div>
                                 </div>
                                 
@@ -345,19 +363,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Word counter for description
-    const wordCounter = document.createElement('div');
-    wordCounter.className = 'form-text text-end mt-1';
-    wordCounter.innerHTML = '<i class="fas fa-file-word me-1"></i><span id="word-count">0</span> words';
-    descriptionTextarea.parentNode.appendChild(wordCounter);
-    
-    function updateWordCount() {
-        const text = descriptionTextarea.value.trim();
-        const words = text ? text.split(/\s+/).length : 0;
-        document.getElementById('word-count').textContent = words;
+    if (descriptionTextarea) {
+        const wordCounter = document.createElement('div');
+        wordCounter.className = 'form-text text-end mt-1';
+        wordCounter.innerHTML = '<i class="fas fa-file-word me-1"></i><span id="word-count">0</span> words';
+        descriptionTextarea.parentNode.appendChild(wordCounter);
+        
+        function updateWordCount() {
+            const text = descriptionTextarea.value.trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            document.getElementById('word-count').textContent = words;
+        }
+        
+        descriptionTextarea.addEventListener('input', updateWordCount);
+        updateWordCount(); // Initial count
     }
-    
-    descriptionTextarea.addEventListener('input', updateWordCount);
-    updateWordCount(); // Initial count
     
     // File upload handling
     function formatFileSize(bytes) {
@@ -421,10 +441,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // File input change event
-    fileInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        handleFileSelect(file);
-    });
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            handleFileSelect(file);
+        });
+    }
     
     // Drag and drop functionality
     fileUploadArea.addEventListener('dragover', function(e) {
@@ -448,9 +470,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Client-side file size validation
+    if (fileInput) {
+        fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const maxSize = 50 * 1024 * 1024; // 50MB
+                if (file.size > maxSize) {
+                    alert('File size exceeds 50MB limit. Please choose a smaller file.');
+                    this.value = '';
+                }
+            }
+        });
+    }
+    
     // Form submission with progress
     document.getElementById('uploadForm').addEventListener('submit', function(e) {
-        if (fileInput.files.length > 0) {
+        if (fileInput && fileInput.files.length > 0) {
             uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Uploading...';
             uploadBtn.disabled = true;
             progressContainer.style.display = 'block';
