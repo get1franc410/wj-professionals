@@ -5,6 +5,7 @@ Dashboard Forms
 Forms for dashboard functionality including article creation, document upload, etc.
 """
 import json
+import math
 from django import forms
 from django_ckeditor_5.widgets import CKEditor5Widget
 from django.contrib.auth.models import User
@@ -213,7 +214,16 @@ class DocumentUploadForm(forms.ModelForm):
         if not category:
             raise ValidationError("Please select a category.")
         return category
-
+    
+    def format_file_size(self, bytes_size):
+        """Format file size for display - ADD THIS NEW METHOD"""
+        if bytes_size == 0:
+            return "0 Bytes"
+        k = 1024
+        sizes = ['Bytes', 'KB', 'MB', 'GB']
+        i = int(math.floor(math.log(bytes_size) / math.log(k)))
+        return f"{round(bytes_size / math.pow(k, i), 2)} {sizes[i]}"
+    
     def clean_file(self):
         file = self.cleaned_data.get('file')
         if not file and not self.instance.pk:
@@ -221,14 +231,22 @@ class DocumentUploadForm(forms.ModelForm):
         
         if file:
             # Check file size (max 50MB)
-            if file.size > 50 * 1024 * 1024:
-                raise ValidationError("File size cannot exceed 50MB.")
+            max_size = 50 * 1024 * 1024  # 50MB
+            if file.size > max_size:
+                raise ValidationError(
+                    f"File size ({self.format_file_size(file.size)}) exceeds the maximum allowed size (50MB)."
+                )
             
-            # Check file extension
+            # Check file extension - FIXED VERSION
             allowed_extensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx']
-            file_extension = file.name.lower().split('.')[-1]
-            if f'.{file_extension}' not in allowed_extensions:
-                raise ValidationError(f"File type not allowed. Allowed types: {', '.join(allowed_extensions)}")
+            file_name = file.name.lower()
+            file_extension = '.' + file_name.split('.')[-1] if '.' in file_name else ''
+            
+            if file_extension not in allowed_extensions:
+                raise ValidationError(
+                    f"File type '{file_extension}' is not allowed. "
+                    f"Allowed types: {', '.join(allowed_extensions)}"
+                )
         
         return file
 

@@ -499,18 +499,34 @@ def upload_document(request):
     """Upload new document"""
     if request.method == 'POST':
         form = DocumentUploadForm(request.POST, request.FILES)
+
+        print("=== FORM DEBUG ===")
+        print(f"Form data: {request.POST}")
+        print(f"Files: {request.FILES}")
+        print(f"Content type: {request.content_type}")
+        print(f"Form is bound: {form.is_bound}")
+        print(f"Form is valid: {form.is_valid()}")
+        if not form.is_valid():
+            print(f"Form errors: {form.errors}")
+            print(f"Non-field errors: {form.non_field_errors()}")
+
         if form.is_valid():
-            document = form.save(commit=False)
-            document.uploaded_by = request.user
-            
-            # Set file size and type
-            if document.file:
-                document.file_size = document.file.size
-                document.file_type = document.file.name.split('.')[-1].lower()
-            
-            document.save()
-            messages.success(request, f'Document "{document.title}" uploaded successfully!')
-            return redirect('dashboard:manage_documents')
+            try:  # ADD TRY-EXCEPT
+                document = form.save(commit=False)
+                document.uploaded_by = request.user
+                
+                # Set file size and type
+                if document.file:
+                    document.file_size = document.file.size
+                    document.file_type = document.file.name.split('.')[-1].lower()
+                
+                document.save()
+                messages.success(request, f'Document "{document.title}" uploaded successfully!')
+                return redirect('dashboard:manage_documents')
+                
+            except Exception as e:  # ADD EXCEPTION HANDLING
+                print(f"Save error: {str(e)}")
+                messages.error(request, f'Error saving document: {str(e)}')
         else:
             for field, errors in form.errors.items():
                 for error in errors:
